@@ -1,0 +1,11 @@
+.DS_Store
+target/
+/data/raw
+/data/interim
+/data/gold/*.zst
+/data/gold/**/*.zst
+/data/patterns
+/external
+/runs
+/reports
+*.profraw

@@ -1,0 +1,14 @@
+[[methods]]
+slug = "hypher"
+method = "hypher"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "guarded_ngram"
+method = "safe-ngram-model"
+dictionary = "../../../models/guarded_ngram/v1/wiktextract_cs.bin"
+

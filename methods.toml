@@ -1,0 +1,88 @@
+# Method manifest used by `hyphlab matrix`.
+#
+# To add a Rust-native method:
+# 1. Implement `MethodAdapter` in `crates/hyph-adapters/src/<method>.rs`.
+# 2. Register a factory in `native_adapter_registry` in `crates/hyph-adapters/src/lib.rs`.
+# 3. Add one manifest entry here.
+#
+# Methods that need the dataset's pattern file set `requires_patterns = true`.
+# Methods with limited language coverage should set `supports` to language tags
+# or primary language subtags.
+
+[[methods]]
+slug = "identity_oracle"
+method = "identity-oracle"
+enabled = false
+
+[[methods]]
+slug = "dict_oracle"
+method = "dict"
+enabled = false
+
+[[methods]]
+slug = "no_hyphen"
+method = "no-hyphen"
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["cs", "de", "en", "es", "it", "nl", "pt", "ru", "tr"]
+
+[[methods]]
+slug = "hyphenation_embedded"
+method = "hyphenation-embedded"
+supports = ["en"]
+requires_feature = "adapters-hyphenation-embedded"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+# Compiled Guarded N-gram model. Build reusable models with:
+# `bash scripts/build_guarded_ngram_models.sh`
+#
+# [[methods]]
+# slug = "guarded_ngram"
+# method = "safe-ngram-model"
+# dictionary = "models/guarded_ngram/v1/moby_en_us.bin"
+# supports = ["en"]
+#
+[[methods]]
+slug = "hypher_liang_consensus"
+method = "hypher-liang-consensus"
+requires_patterns = true
+supports = ["cs", "de", "en", "es", "it", "nl", "pt", "ru", "tr"]
+
+[[methods]]
+slug = "italian_onset_syllable"
+method = "italian-syllable-model"
+dictionary = "models/guarded_ngram/v1/wiktextract_it.json"
+supports = ["it"]
+
+# Italian onset-syllable model trained from a specific split.
+# Point `dictionary` at the train split for the dataset being evaluated.
+#
+# [[methods]]
+# slug = "italian_syllable_trained"
+# method = "italian-syllable"
+# dictionary = "data/splits/wiktextract_it/train.jsonl.zst"
+# supports = ["it"]
+
+# Trainable reproduction of Trogkanis & Elkan (ACL 2010), "Conditional
+# Random Fields for Word Hyphenation". Train a model first, then uncomment or
+# copy this entry to a custom manifest.
+#
+# [[methods]]
+# slug = "trogkanis_elkan_crf"
+# method = "trogkanis-elkan-crf"
+# dictionary = "target/hyphlab-models/trogkanis_elkan_crf_en_us.json"
+# supports = ["en"]
+#
+# Fair dictionary baseline for Moby split experiments:
+#
+# [[methods]]
+# slug = "dict_moby_train"
+# method = "dict"
+# dictionary = "data/splits/moby_en_us/train.jsonl.zst"
+# supports = ["en"]

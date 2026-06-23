@@ -1,0 +1,39 @@
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "hyphenation_embedded"
+method = "hyphenation-embedded"
+supports = ["en"]
+requires_feature = "adapters-hyphenation-embedded"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "trogkanis_elkan_crf_original09"
+method = "trogkanis-elkan-crf"
+dictionary = "../../target/hyphlab-models/trogkanis_elkan_crf_moby_en_us_original09.bin.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "trogkanis_elkan_crf_tuned_f1"
+method = "trogkanis-elkan-crf"
+dictionary = "../../target/hyphlab-models/trogkanis_elkan_crf_moby_en_us_tuned_f1_id.bin.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "trogkanis_elkan_crf_tuned_f05"
+method = "trogkanis-elkan-crf"
+dictionary = "../../target/hyphlab-models/trogkanis_elkan_crf_moby_en_us_tuned_f05_id.bin.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "trogkanis_elkan_crf_tuned_precision"
+method = "trogkanis-elkan-crf"
+dictionary = "../../target/hyphlab-models/trogkanis_elkan_crf_moby_en_us_tuned_precision_id.bin.zst"
+supports = ["en"]

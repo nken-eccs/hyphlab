@@ -1,0 +1,38 @@
+[workspace]
+members = [
+    "crates/hyph-core",
+    "crates/hyph-data",
+    "crates/hyph-patterns",
+    "crates/hyph-crf",
+    "crates/hyph-eval",
+    "crates/hyph-adapters",
+    "crates/hyph-cli",
+]
+resolver = "2"
+
+[workspace.package]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+rust-version = "1.80"
+
+[workspace.dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+csv = "1"
+criterion = "0.5"
+hyphenation = "0.8.4"
+hypher = { version = "0.1.7", default-features = false, features = ["alloc", "english", "german", "dutch", "czech", "spanish", "italian", "portuguese", "russian", "turkish"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+smallvec = { version = "1", features = ["serde"] }
+thiserror = "1"
+toml = "0.8"
+unicode-normalization = "0.1"
+unicode-segmentation = "1"
+zstd = "0.13"
+
+[profile.release]
+debug = 1
+
+[profile.bench]
+debug = 1

@@ -1,0 +1,6 @@
+% Minimal TeX-style patterns for the toy fixture.
+LEFTHYPHENMIN 2
+RIGHTHYPHENMIN 3
+hy3phen
+phen3a
+a3tion

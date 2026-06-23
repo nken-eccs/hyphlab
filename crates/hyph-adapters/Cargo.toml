@@ -1,0 +1,26 @@
+[package]
+name = "hyph-adapters"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[features]
+default = ["hypher-adapter"]
+hypher-adapter = []
+rust-hyphenation = ["dep:hyphenation"]
+rust-hyphenation-embedded = ["rust-hyphenation", "hyphenation/embed_en-us"]
+
+[dependencies]
+anyhow.workspace = true
+hyph-core = { path = "../hyph-core" }
+hypher.workspace = true
+hyphenation = { workspace = true, optional = true }
+smallvec.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
+
+[[bench]]
+name = "crate_baselines"
+harness = false

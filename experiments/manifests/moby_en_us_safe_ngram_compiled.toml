@@ -1,0 +1,10 @@
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p65_veto_multi_s1_n0_model"
+method = "safe-ngram-model"
+dictionary = "../../target/hyphlab-models/safe-ngram-multi-s1-p65-veto-multi-s1-n0.bin"
+supports = ["en"]

@@ -1,0 +1,5 @@
+{"id":"toy:000001","lang":"en","locale":"en-US","word":"hyphenation","breaks":[2,6,7],"hyphenated":"hy-phen-a-tion","source":"toy","license":null,"normalization":"nfc","ambiguous":false}
+{"id":"toy:000002","lang":"en","locale":"en-US","word":"dictionary","breaks":[3,7],"hyphenated":"dic-tion-ary","source":"toy","license":null,"normalization":"nfc","ambiguous":false}
+{"id":"toy:000003","lang":"en","locale":"en-US","word":"extensive","breaks":[2,5],"hyphenated":"ex-ten-sive","source":"toy","license":null,"normalization":"nfc","ambiguous":false}
+{"id":"toy:000004","lang":"en","locale":"en-US","word":"about","breaks":[],"hyphenated":"about","source":"toy","license":null,"normalization":"nfc","ambiguous":false}
+{"id":"toy:000005","lang":"en","locale":"en-US","word":"diagnostics","breaks":[2,4,7],"hyphenated":"di-ag-nos-tics","source":"toy","license":null,"normalization":"nfc","ambiguous":false}

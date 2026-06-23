@@ -1,0 +1,391 @@
+[[methods]]
+slug = "no_hyphen"
+method = "no-hyphen"
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "hyphenation_embedded"
+method = "hyphenation-embedded"
+supports = ["en"]
+requires_feature = "adapters-hyphenation-embedded"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "safe_ngram_3x3_s2"
+method = "safe-ngram-3x3-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_4x4_s1"
+method = "safe-ngram-4x4-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_4x4_s2"
+method = "safe-ngram-4x4-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_5x5_s1"
+method = "safe-ngram-5x5-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_5x5_s2"
+method = "safe-ngram-5x5-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s2"
+method = "safe-ngram-multi-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_3x3_s2_n1"
+method = "safe-ngram-3x3-s2-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_3x3_s2_n2"
+method = "safe-ngram-3x3-s2-n2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s2_n1"
+method = "safe-ngram-multi-s2-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s2_n2"
+method = "safe-ngram-multi-s2-n2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n1"
+method = "safe-ngram-multi-s1-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p75"
+method = "safe-ngram-multi-s1-p75"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p60"
+method = "safe-ngram-multi-s1-p60"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p65"
+method = "safe-ngram-multi-s1-p65"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p65_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-p65-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w30"
+method = "safe-ngram-multi-s1-w30"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w35"
+method = "safe-ngram-multi-s1-w35"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w40"
+method = "safe-ngram-multi-s1-w40"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w45"
+method = "safe-ngram-multi-s1-w45"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w35_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-w35-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_w40_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-w40-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p65_veto_4x4_s1_n0"
+method = "safe-ngram-multi-s1-p65-veto-4x4-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p60_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-p60-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p50_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-p50-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_mixcv_multi_s1_p85_veto_multi_s1_n0"
+method = "safe-ngram-mixcv-multi-s1-p85-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_mixson_multi_s1_p90_veto_multi_s1_n0"
+method = "safe-ngram-mixson-multi-s1-p90-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p67"
+method = "safe-ngram-multi-s1-p67"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p70"
+method = "safe-ngram-multi-s1-p70"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p72"
+method = "safe-ngram-multi-s1-p72"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_p80"
+method = "safe-ngram-multi-s1-p80"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s2_p80"
+method = "safe-ngram-multi-s2-p80"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s2_p90"
+method = "safe-ngram-multi-s2-p90"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s3_p80"
+method = "safe-ngram-multi-s3-p80"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_bucket_multi_s1_n1"
+method = "safe-ngram-bucket-multi-s1-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_mixbucket_multi_s1_n1"
+method = "safe-ngram-mixbucket-multi-s1-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_mixbucket_multi_s1_n2_veto_mixbucket_multi_s1_n0"
+method = "safe-ngram-mixbucket-multi-s1-n2-veto-mixbucket-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_mixbucket_multi_s1_n2_veto_multi_s1_n0"
+method = "safe-ngram-mixbucket-multi-s1-n2-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_bucket_multi_s1_n2"
+method = "safe-ngram-bucket-multi-s1-n2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_bucket_multi_s1_n2_veto_multi_s1_n0"
+method = "safe-ngram-bucket-multi-s1-n2-veto-bucket-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_bucket_multi_s1_n3_veto_multi_s1_n0"
+method = "safe-ngram-bucket-multi-s1-n3-veto-bucket-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_bucket_3x3_s1_n2_veto_4x4_s1_n0"
+method = "safe-ngram-bucket-3x3-s1-n2-veto-bucket-4x4-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n2_veto_4x4_s1_n0"
+method = "safe-ngram-multi-s1-n2-veto-4x4-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n2_veto_3x3_s1_n0"
+method = "safe-ngram-multi-s1-n2-veto-3x3-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n2_veto_3x3_s1_n1"
+method = "safe-ngram-multi-s1-n2-veto-3x3-s1-n1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n2_veto_5x5_s1_n0"
+method = "safe-ngram-multi-s1-n2-veto-5x5-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n2_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-n2-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n3_veto_4x4_s1_n0"
+method = "safe-ngram-multi-s1-n3-veto-4x4-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n3_veto_5x5_s1_n0"
+method = "safe-ngram-multi-s1-n3-veto-5x5-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n3_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-n3-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_multi_s1_n4_veto_multi_s1_n0"
+method = "safe-ngram-multi-s1-n4-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_3x3_s1_n2_veto_4x4_s1_n0"
+method = "safe-ngram-3x3-s1-n2-veto-4x4-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_3x3_s1_n2_veto_3x3_s1_n0"
+method = "safe-ngram-3x3-s1-n2-veto-3x3-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_3x3_s1_n3_veto_3x3_s1_n0"
+method = "safe-ngram-3x3-s1-n3-veto-3x3-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_3x3_s2"
+method = "hypher-safe-add-3x3-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_4x4_s2"
+method = "hypher-safe-add-4x4-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_5x5_s2"
+method = "hypher-safe-add-5x5-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_multi_s2"
+method = "hypher-safe-add-multi-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_3x3_s2_veto_3x3_s1"
+method = "hypher-safe-add-3x3-s2-veto-3x3-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_4x4_s2_veto_3x3_s1"
+method = "hypher-safe-add-4x4-s2-veto-3x3-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_multi_s2_veto_3x3_s1"
+method = "hypher-safe-add-multi-s2-veto-3x3-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_multi_s2_veto_4x4_s1"
+method = "hypher-safe-add-multi-s2-veto-4x4-s1"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_add_multi_s2_veto_4x4_s2"
+method = "hypher-safe-add-multi-s2-veto-4x4-s2"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]

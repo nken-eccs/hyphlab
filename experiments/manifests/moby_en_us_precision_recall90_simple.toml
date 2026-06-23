@@ -1,0 +1,30 @@
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+supports = ["en"]
+
+[[methods]]
+slug = "liang_safe_precision_r90"
+method = "liang-safe-add-multi-s1-p98-veto-mixcv-multi-s1-p98"
+dictionary = "../../target/probes/moby_train_dev.jsonl.zst"
+requires_patterns = true
+supports = ["en"]
+
+[[methods]]
+slug = "liang_safe_fast_r90"
+method = "liang-safe-add-multi-s1-p98-veto-mixcv-4x4-s1-p98"
+dictionary = "../../target/probes/moby_train_dev.jsonl.zst"
+requires_patterns = true
+supports = ["en"]
+
+[[methods]]
+slug = "hypher_safe_fast_r90"
+method = "hypher-safe-add-multi-s1-p75-veto-mixcv-4x4-s1-p98"
+dictionary = "../../target/probes/moby_train_dev.jsonl.zst"
+supports = ["en"]

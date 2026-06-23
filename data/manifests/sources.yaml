@@ -1,0 +1,81 @@
+generated_at: 2026-06-22
+notes:
+  - Raw downloads and generated compressed gold files are intentionally ignored by Git.
+  - CELEX/WebCelex is license-restricted and must be supplied locally.
+sources:
+  - id: moby_hyphenator_ii
+    kind: hyphenated_wordlist
+    url: https://www.gutenberg.org/files/3204/files/mhyph.txt
+    local_path: data/raw/moby/mhyph.txt
+    generated_gold: data/gold/moby_en_us.jsonl.zst
+    license_note: Public-domain status depends on jurisdiction; treat as public-domain-in-USA unless reviewed.
+    status: downloaded
+  - id: tex_hyphen
+    kind: patterns
+    url: https://github.com/hyphenation/tex-hyphen/archive/refs/heads/master.tar.gz
+    archive_path: data/raw/archives/tex-hyphen-master.tar.gz
+    extracted_path: external/tex-hyphen
+    copied_patterns: data/patterns/tex-hyphen/tex
+    status: downloaded
+  - id: libreoffice_dictionaries
+    kind: patterns
+    url: https://github.com/LibreOffice/dictionaries/archive/refs/heads/master.tar.gz
+    archive_path: data/raw/archives/libreoffice-dictionaries-master.tar.gz
+    extracted_path: external/libreoffice-dictionaries
+    copied_patterns: data/patterns/libreoffice
+    status: downloaded
+  - id: hunspell_hyphen
+    kind: reference_implementation
+    url: https://github.com/hunspell/hyphen/archive/refs/heads/master.tar.gz
+    archive_path: data/raw/archives/hunspell-hyphen-master.tar.gz
+    extracted_path: external/hunspell-hyphen
+    status: downloaded
+  - id: hyph_bench
+    kind: benchmark_gold_data
+    url: https://github.com/Kozea/hyph-bench/archive/refs/heads/main.tar.gz
+    archive_path: data/raw/archives/hyph-bench-main.tar.gz
+    extracted_path: external/hyph-bench
+    gold_paths:
+      - external/hyph-bench/data/cs/cshyphen_cstenten/cs_cstenten.wlhamb
+      - external/hyph-bench/data/cs/cshyphen_ujc/cs_ujc.wlhamb
+      - external/hyph-bench/data/cssk/cshyphen/cssk_cshyphen.wlhamb
+      - external/hyph-bench/data/de/wortliste/de_wortliste.wlhamb
+      - external/hyph-bench/data/is/hyphenation-is/is_hyphis.wlhamb
+      - external/hyph-bench/data/th/orchid/th_orchid.wlhamb
+      - external/hyph-bench/data/uk/cshyphen/uk_wiktionary.wlhamb
+    generated_gold:
+      - data/gold/hyph_bench/cs_cstenten.jsonl.zst
+      - data/gold/hyph_bench/cs_ujc.jsonl.zst
+      - data/gold/hyph_bench/cssk_cshyphen.jsonl.zst
+      - data/gold/hyph_bench/de_wortliste.jsonl.zst
+      - data/gold/hyph_bench/is_hyphis.jsonl.zst
+      - data/gold/hyph_bench/th_orchid.jsonl.zst
+      - data/gold/hyph_bench/uk_wiktionary.jsonl.zst
+    import_note: Thai Orchid skips invalid separators that fall inside Unicode grapheme clusters.
+    status: downloaded
+  - id: kaikki_wiktionary_extracts
+    kind: wiktionary_extracts
+    base_url: https://kaikki.org/dictionary/rawdata
+    local_path_template: data/raw/kaikki/{lang}/{lang}-extract.jsonl.gz
+    languages:
+      - cs
+      - de
+      - es
+      - it
+      - nl
+      - pt
+      - ru
+      - th
+      - tr
+    status: downloaded
+  - id: kaikki_raw_wiktextract_english
+    kind: wiktionary_raw_dump
+    url: https://kaikki.org/dictionary/raw-wiktextract-data.jsonl.gz
+    local_path: data/raw/kaikki/enwiktionary/raw-wiktextract-data.jsonl.gz
+    size_note: Approximately 2.6 GiB compressed at download time.
+    status: downloaded
+  - id: celex_webcelex
+    kind: restricted_lexical_database
+    url: https://celex.mpi.nl/
+    local_path: data/raw/celex
+    status: restricted_not_downloaded

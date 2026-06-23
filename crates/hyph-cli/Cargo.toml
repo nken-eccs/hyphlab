@@ -1,0 +1,32 @@
+[package]
+name = "hyph-cli"
+version = "0.1.0"
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[[bin]]
+name = "hyphlab"
+path = "src/main.rs"
+
+[features]
+default = ["adapters-default"]
+adapters-default = ["hyph-adapters/default"]
+adapters-hyphenation = ["hyph-adapters/rust-hyphenation"]
+adapters-hyphenation-embedded = ["adapters-hyphenation", "hyph-adapters/rust-hyphenation-embedded"]
+
+[dependencies]
+anyhow.workspace = true
+clap.workspace = true
+hyph-adapters = { path = "../hyph-adapters", default-features = false }
+hyph-core = { path = "../hyph-core" }
+hyph-crf = { path = "../hyph-crf" }
+hyph-data = { path = "../hyph-data" }
+hyph-eval = { path = "../hyph-eval" }
+hyph-patterns = { path = "../hyph-patterns" }
+serde.workspace = true
+serde_json.workspace = true
+smallvec.workspace = true
+toml.workspace = true
+unicode-segmentation.workspace = true
+zstd.workspace = true

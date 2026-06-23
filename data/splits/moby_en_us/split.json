@@ -1,0 +1,25 @@
+{
+  "group_key": "lang + lowercase(word)",
+  "groups": {
+    "dev": 18234,
+    "test": 18234,
+    "train": 145863
+  },
+  "input": "data/gold/moby_en_us.jsonl.zst",
+  "outputs": {
+    "dev": "data/splits/moby_en_us/dev.jsonl.zst",
+    "test": "data/splits/moby_en_us/test.jsonl.zst",
+    "train": "data/splits/moby_en_us/train.jsonl.zst"
+  },
+  "ratios": {
+    "dev": 0.1,
+    "test": 0.1,
+    "train": 0.8
+  },
+  "records": {
+    "dev": 18555,
+    "test": 18568,
+    "train": 148026
+  },
+  "seed": "moby_en_us_v1"
+}

@@ -1,0 +1,89 @@
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "liang_moby_patgen_l1_4"
+method = "liang"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "safe_ngram_p65_veto"
+method = "safe-ngram-multi-s1-p65-veto-multi-s1-n0"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p65_veto"
+method = "liang-safe-add-multi-s1-p65-veto-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p50_veto"
+method = "liang-safe-add-multi-s1-p50-veto-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_mixson_p50_veto"
+method = "liang-safe-add-mixson-multi-s1-p50-veto-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p65_veto_mixson"
+method = "liang-safe-add-multi-s1-p65-veto-mixson-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p50_veto_mixson"
+method = "liang-safe-add-multi-s1-p50-veto-mixson-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p65_veto_mixcv"
+method = "liang-safe-add-multi-s1-p65-veto-mixcv-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]
+
+[[methods]]
+slug = "liang_patgen_safe_p80_veto_mixson"
+method = "liang-safe-add-multi-s1-p80-veto-mixson-multi-s1-n0"
+patterns = "../../target/probes/patgen/moby_patgen_l1_4.pat"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+requires_patterns = true
+left_min = 2
+right_min = 3
+supports = ["en"]

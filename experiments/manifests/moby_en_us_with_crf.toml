@@ -1,0 +1,37 @@
+[[methods]]
+slug = "no_hyphen"
+method = "no-hyphen"
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "hyphenation_embedded"
+method = "hyphenation-embedded"
+supports = ["en"]
+requires_feature = "adapters-hyphenation-embedded"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "hypher_liang_consensus"
+method = "hypher-liang-consensus"
+requires_patterns = true
+supports = ["en"]
+
+[[methods]]
+slug = "dict_train"
+method = "dict"
+dictionary = "../../data/splits/moby_en_us/train.jsonl.zst"
+supports = ["en"]
+
+[[methods]]
+slug = "trogkanis_elkan_crf"
+method = "trogkanis-elkan-crf"
+dictionary = "../../target/hyphlab-models/trogkanis_elkan_crf_moby_en_us.json"
+supports = ["en"]
