@@ -32,6 +32,19 @@ bash scripts/import_wiktextract.sh
 bash scripts/prepare_filtered_wiktextract_data.sh
 ```
 
+Current data and model roles are deliberately separated:
+
+| file or directory | role |
+| --- | --- |
+| `models/guarded_ngram/v1/*.bin` and `*.json` | Reusable runtime models trained from full normalized corpora. |
+| `docs/reports/multilingual_5fold_v1/` | Main held-out comparison using Moby and filtered Wiktextract / Kaikki gold data. |
+| `docs/reports/hyph_bench_5fold_v1/` | Additional held-out comparison using selected hyph-bench Czech/German gold data. |
+| `data/gold/` | Normalized labels for training, splitting, and evaluation. |
+| TeX, LibreOffice, and Hunspell hyphen resources | Pattern/reference resources for Liang/libhyphen-style baselines, not gold labels for the main report. |
+
+See [`docs/data_usage.md`](docs/data_usage.md) for the full map of which data
+and model files are used where.
+
 The filtered Wiktextract step keeps the original normalized corpora and adds
 script-specific / duplicate-normalized corpora used by multilingual experiments,
 for example `data/gold/wiktextract/ru_cyrl_dedup.jsonl.zst`. For Russian it
@@ -53,8 +66,8 @@ target/hyphlab-reports/baselines/index.md
 
 For trainable methods, use split-based or 5-fold tracks so the evaluated labels
 are not visible during training or tuning. The fixed multilingual comparison is
-published under `docs/reports/multilingual_5fold_v1/` and can be regenerated
-with `scripts/run_multilingual_5fold_evaluation.sh`.
+available at `docs/reports/multilingual_5fold_v1/` and can be regenerated with
+`scripts/run_multilingual_5fold_evaluation.sh`.
 
 ## Evaluation Tracks
 
@@ -103,16 +116,40 @@ cat docs/reports/multilingual_5fold_v1/summary.md
 The selected methods and reusable recipes are documented in
 [`docs/guarded_ngram.md`](docs/guarded_ngram.md).
 
-## Reusable Model Artifacts
+Run the additional `hyph-bench` 5-fold comparison with TeX and LibreOffice
+pattern baselines:
 
-Prebuilt reusable models and manifests are kept in the repository:
+```bash
+DATASETS="hyph_bench_cs_cstenten hyph_bench_cs_ujc hyph_bench_cssk_cshyphen hyph_bench_de_wortliste" \
+ENABLE_LIBREOFFICE_BASELINE=1 \
+REPORT_TITLE="hyph-bench 5-Fold Evaluation" \
+REPORT_ROOT=target/hyphlab-reports/hyph_bench_5fold_v1 \
+FOLD_ROOT=target/hyphlab-folds/hyph_bench_5fold_v1 \
+MODEL_ROOT=target/hyphlab-models/hyph_bench_5fold_v1 \
+MANIFEST_ROOT=target/hyphlab-manifests/hyph_bench_5fold_v1 \
+PUBLIC_REPORT_ROOT=docs/reports/hyph_bench_5fold_v1 \
+bash scripts/run_multilingual_5fold_evaluation.sh
+```
+
+The report is written to
+[`docs/reports/hyph_bench_5fold_v1/summary.md`](docs/reports/hyph_bench_5fold_v1/summary.md).
+
+## Reusable Models
+
+Reusable models and manifests:
 
 ```text
 models/guarded_ngram/v1/
 manifests/guarded_ngram/v1/
 ```
 
-For example, run the English model from a fresh checkout:
+The `.bin` models and the Italian `.json` model are trained from the full
+normalized corpora listed in
+[`models/guarded_ngram/v1/README.md`](models/guarded_ngram/v1/README.md). They
+are ready-to-run runtime models. For accuracy claims, use the 5-fold reports or
+rerun the 5-fold script so learned models are evaluated on held-out folds.
+
+For example, run the English model:
 
 ```bash
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
@@ -146,19 +183,19 @@ printf "informazione\nstraordinario\nuniversita\n" |
     --dictionary models/guarded_ngram/v1/wiktextract_it.json
 ```
 
-## Published Artifacts And Local Reports
-
-Committed artifacts:
+## Reports And Models
 
 - Multilingual 5-fold evaluation:
   `docs/reports/multilingual_5fold_v1/summary.md`
+- `hyph-bench` 5-fold evaluation:
+  `docs/reports/hyph_bench_5fold_v1/summary.md`
 - Reusable Guarded N-gram models:
   `models/guarded_ngram/v1/README.md`
 - Reusable Guarded N-gram manifests:
   `manifests/guarded_ngram/v1/`
 
-Generated local reports and scratch models are written under `target/`, which
-is ignored by Git. Common outputs include:
+Generated reports and temporary models are written under `target/`. Common
+outputs include:
 
 - Full-gold baseline matrix:
   `target/hyphlab-reports/baselines/index.md`
@@ -320,6 +357,7 @@ For a non-Rust prototype, use `external-jsonl` in a manifest with
 
 - [Research workflow](docs/research_start.md)
 - [Evaluation policy](docs/evaluation.md)
+- [Data and model usage](docs/data_usage.md)
 - [Method roadmap](docs/method_roadmap.md)
 - [Data setup](data/README.md)
 - [Experiment manifests](experiments/README.md)

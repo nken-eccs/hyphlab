@@ -9,6 +9,10 @@ Protocol:
 - Ambiguous records use the default `exclude` policy.
 - Runtime uses `target/release/hyphlab`, `50` steady-state iterations, `10` init iterations, and `2` init warmup.
 - Runtime values are machine-local and should be used for within-run comparison unless hardware details are documented separately.
+- Gold data in this report is Moby plus filtered Wiktextract / Kaikki records.
+  TeX pattern files are used only by the Liang baseline. LibreOffice
+  dictionaries, Hunspell hyphen sources, and hyph-bench are not used as gold
+  data in this report.
 
 Selected methods:
 

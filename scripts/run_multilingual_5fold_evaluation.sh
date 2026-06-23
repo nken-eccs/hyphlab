@@ -15,6 +15,8 @@ ITERATIONS="${ITERATIONS:-50}"
 INIT_ITERATIONS="${INIT_ITERATIONS:-10}"
 INIT_WARMUP="${INIT_WARMUP:-2}"
 DATASETS="${DATASETS:-moby_en_us wiktextract_cs wiktextract_de wiktextract_es wiktextract_it wiktextract_nl wiktextract_ru_cyrl_trusted_dedup wiktextract_tr}"
+ENABLE_LIBREOFFICE_BASELINE="${ENABLE_LIBREOFFICE_BASELINE:-0}"
+REPORT_TITLE="${REPORT_TITLE:-Multilingual 5-Fold Evaluation}"
 
 if [ "${SKIP_BUILD:-0}" != "1" ]; then
   cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
@@ -27,9 +29,12 @@ dataset_config() {
   GOLD=""
   LOCALE=""
   PATTERNS=""
+  LIBREOFFICE_PATTERNS=""
   SELECTED_KIND=""
   SELECTED_METHOD=""
   SELECTED_SLUG=""
+  INCLUDE_HYPHER="1"
+  INCLUDE_LIANG="1"
 
   case "$dataset" in
     moby_en_us)
@@ -44,6 +49,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/cs.jsonl.zst"
       LOCALE="cs"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
       SELECTED_SLUG="guarded_ngram"
@@ -52,6 +58,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/de.jsonl.zst"
       LOCALE="de"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-de-1996.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
       SELECTED_SLUG="guarded_ngram"
@@ -60,6 +67,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/es.jsonl.zst"
       LOCALE="es"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-es.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/es/hyph_es.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-3x2-s1-p60"
       SELECTED_SLUG="guarded_ngram"
@@ -68,6 +76,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/it.jsonl.zst"
       LOCALE="it"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/it/hyph_it_IT.dic"
       SELECTED_KIND="italian-syllable"
       SELECTED_METHOD="italian-syllable"
       SELECTED_SLUG="italian_onset_syllable"
@@ -76,6 +85,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/nl.jsonl.zst"
       LOCALE="nl"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-nl.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/nl/hyph_nl_NL.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
       SELECTED_SLUG="guarded_ngram"
@@ -84,6 +94,7 @@ dataset_config() {
       GOLD="data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst"
       LOCALE="ru"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-ru.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/ru/hyph_ru_RU.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
       SELECTED_SLUG="guarded_ngram"
@@ -95,6 +106,71 @@ dataset_config() {
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x2-s1-p70"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    hyph_bench_cs_cstenten)
+      GOLD="data/gold/hyph_bench/cs_cstenten.jsonl.zst"
+      LOCALE="cs"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_SLUG="guarded_ngram"
+      ;;
+    hyph_bench_cs_ujc)
+      GOLD="data/gold/hyph_bench/cs_ujc.jsonl.zst"
+      LOCALE="cs"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_SLUG="guarded_ngram"
+      ;;
+    hyph_bench_cssk_cshyphen)
+      GOLD="data/gold/hyph_bench/cssk_cshyphen.jsonl.zst"
+      LOCALE="cs"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_SLUG="guarded_ngram"
+      ;;
+    hyph_bench_de_wortliste)
+      GOLD="data/gold/hyph_bench/de_wortliste.jsonl.zst"
+      LOCALE="de-DE"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-de-1996.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_SLUG="guarded_ngram"
+      ;;
+    hyph_bench_is_hyphis)
+      GOLD="data/gold/hyph_bench/is_hyphis.jsonl.zst"
+      LOCALE="is-IS"
+      PATTERNS=""
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_SLUG="guarded_ngram"
+      INCLUDE_HYPHER="0"
+      INCLUDE_LIANG="0"
+      ;;
+    hyph_bench_th_orchid)
+      GOLD="data/gold/hyph_bench/th_orchid.jsonl.zst"
+      LOCALE="th-TH"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-th.tex"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_SLUG="guarded_ngram"
+      INCLUDE_HYPHER="0"
+      ;;
+    hyph_bench_uk_wiktionary)
+      GOLD="data/gold/hyph_bench/uk_wiktionary.jsonl.zst"
+      LOCALE="uk-UA"
+      PATTERNS=""
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
+      SELECTED_SLUG="guarded_ngram"
+      INCLUDE_HYPHER="0"
+      INCLUDE_LIANG="0"
       ;;
     *)
       printf 'unknown dataset: %s\n' "$dataset" >&2
@@ -114,13 +190,24 @@ write_manifest() {
   mkdir -p "$model_dir" "$(dirname "$manifest")"
 
   {
-    printf '[[methods]]\n'
-    printf 'slug = "hypher"\n'
-    printf 'method = "hypher"\n\n'
-    printf '[[methods]]\n'
-    printf 'slug = "liang_tex"\n'
-    printf 'method = "liang"\n'
-    printf 'requires_patterns = true\n\n'
+    if [ "$INCLUDE_HYPHER" = "1" ]; then
+      printf '[[methods]]\n'
+      printf 'slug = "hypher"\n'
+      printf 'method = "hypher"\n\n'
+    fi
+    if [ "$INCLUDE_LIANG" = "1" ]; then
+      printf '[[methods]]\n'
+      printf 'slug = "liang_tex"\n'
+      printf 'method = "liang"\n'
+      printf 'requires_patterns = true\n\n'
+    fi
+    if [ "$ENABLE_LIBREOFFICE_BASELINE" = "1" ] && [ -n "$LIBREOFFICE_PATTERNS" ]; then
+      printf '[[methods]]\n'
+      printf 'slug = "liang_libreoffice"\n'
+      printf 'method = "liang"\n'
+      printf 'patterns = "%s"\n' "$(pwd)/$LIBREOFFICE_PATTERNS"
+      printf 'requires_patterns = true\n\n'
+    fi
   } > "$manifest"
 
   case "$SELECTED_KIND" in
@@ -228,12 +315,15 @@ summarize_overall() {
   } > "$summary_tsv"
 
   {
-    printf '# Multilingual 5-Fold Evaluation\n\n'
+    printf '# %s\n\n' "$REPORT_TITLE"
     printf 'Protocol:\n\n'
     printf '%s\n' '- The selected method per dataset is fixed before this run.'
     printf -- '- Each dataset is evaluated with deterministic grouped `%s`-fold cross-validation.\n' "$FOLDS"
     printf '%s\n' '- For each fold, trainable methods are trained only on that fold train file and evaluated on that fold test file.'
-    printf '%s\n' '- Hypher and Liang are evaluated on the same fold test files.'
+    printf '%s\n' '- Hypher and Liang are evaluated on the same fold test files when supported for the dataset.'
+    if [ "$ENABLE_LIBREOFFICE_BASELINE" = "1" ]; then
+      printf '%s\n' '- LibreOffice hyphen dictionaries are included as an additional Liang/libhyphen pattern baseline when available.'
+    fi
     printf '%s\n' '- Ambiguous records use the default `exclude` policy.'
     printf -- '- Runtime uses `target/release/hyphlab`, `%s` steady-state iterations, `%s` init iterations, and `%s` init warmup.\n' "$ITERATIONS" "$INIT_ITERATIONS" "$INIT_WARMUP"
     printf -- '- Runtime values are machine-local and should be used for within-run comparison unless hardware details are documented separately.\n\n'
@@ -277,8 +367,15 @@ if [ "${SUMMARIZE_ONLY:-0}" = "1" ]; then
   for dataset in $DATASETS; do
     dataset_config "$dataset"
     dataset_report="$REPORT_ROOT/$dataset"
-    fold_row "$dataset" "$dataset_report" "hypher" "hypher" >> "$fold_tsv"
-    fold_row "$dataset" "$dataset_report" "liang_tex" "liang_tex" >> "$fold_tsv"
+    if [ "$INCLUDE_HYPHER" = "1" ]; then
+      fold_row "$dataset" "$dataset_report" "hypher" "hypher" >> "$fold_tsv"
+    fi
+    if [ "$INCLUDE_LIANG" = "1" ]; then
+      fold_row "$dataset" "$dataset_report" "liang_tex" "liang_tex" >> "$fold_tsv"
+    fi
+    if [ "$ENABLE_LIBREOFFICE_BASELINE" = "1" ] && [ -n "$LIBREOFFICE_PATTERNS" ]; then
+      fold_row "$dataset" "$dataset_report" "liang_libreoffice" "liang_libreoffice" >> "$fold_tsv"
+    fi
     fold_row "$dataset" "$dataset_report" "$SELECTED_SLUG" "$SELECTED_SLUG" >> "$fold_tsv"
   done
 
@@ -322,23 +419,35 @@ for dataset in $DATASETS; do
 
     write_manifest "$train" "$manifest" "$fold_model_dir"
 
-    "$BIN" matrix \
+    matrix_args=(
       --manifest "$manifest" \
       --gold "$test" \
       --locale "$LOCALE" \
-      --patterns "$PATTERNS" \
       --output-dir "$fold_report" \
       --iterations "$ITERATIONS" \
       --init-iterations "$INIT_ITERATIONS" \
       --init-warmup "$INIT_WARMUP"
+    )
+    if [ -n "$PATTERNS" ]; then
+      matrix_args+=(--patterns "$PATTERNS")
+    fi
+
+    "$BIN" matrix "${matrix_args[@]}"
   done
 
   "$BIN" fold-summary \
     --input-dir "$dataset_report" \
     --output "$dataset_report/summary.md"
 
-  fold_row "$dataset" "$dataset_report" "hypher" "hypher" >> "$fold_tsv"
-  fold_row "$dataset" "$dataset_report" "liang_tex" "liang_tex" >> "$fold_tsv"
+  if [ "$INCLUDE_HYPHER" = "1" ]; then
+    fold_row "$dataset" "$dataset_report" "hypher" "hypher" >> "$fold_tsv"
+  fi
+  if [ "$INCLUDE_LIANG" = "1" ]; then
+    fold_row "$dataset" "$dataset_report" "liang_tex" "liang_tex" >> "$fold_tsv"
+  fi
+  if [ "$ENABLE_LIBREOFFICE_BASELINE" = "1" ] && [ -n "$LIBREOFFICE_PATTERNS" ]; then
+    fold_row "$dataset" "$dataset_report" "liang_libreoffice" "liang_libreoffice" >> "$fold_tsv"
+  fi
   fold_row "$dataset" "$dataset_report" "$SELECTED_SLUG" "$SELECTED_SLUG" >> "$fold_tsv"
 done
 

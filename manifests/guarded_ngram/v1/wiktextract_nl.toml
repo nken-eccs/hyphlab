@@ -1,3 +1,7 @@
+# Reusable runtime manifest.
+# Model trained from full normalized corpus: data/gold/wiktextract/nl.jsonl.zst
+# Use split-based or 5-fold runs for unbiased accuracy evaluation.
+
 [[methods]]
 slug = "hypher"
 method = "hypher"
@@ -11,4 +15,3 @@ requires_patterns = true
 slug = "guarded_ngram"
 method = "safe-ngram-model"
 dictionary = "../../../models/guarded_ngram/v1/wiktextract_nl.bin"
-

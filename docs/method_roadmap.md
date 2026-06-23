@@ -176,14 +176,14 @@ This targets `serious_error` directly.
 ### 4. Cost-Sensitive Pattern Miner
 
 Mine positive and negative Liang-like patterns from train substrings. Select
-patterns by beam search against the same cost-sensitive loss. The production
-artifact should be a compact trie, not a large model.
+patterns by beam search against the same cost-sensitive loss. The runtime form
+should be a compact trie, not a large model.
 
 ### 5. Calibrated Boundary Scorer
 
 Use CRF/logistic scoring with Liang and n-gram features as an offline scorer.
 Then distill accepted high-confidence boundaries into a compact `safe-ngram` or
-pattern artifact. This keeps runtime fast while allowing richer training.
+pattern table. This keeps runtime fast while allowing richer training.
 
 ### 6. Distilled Production Automaton
 

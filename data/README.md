@@ -1,8 +1,8 @@
 # Data
 
-The checked-in repository keeps only small fixtures and manifests. Large raw
-downloads, copied pattern corpora, and generated compressed gold files are
-ignored by Git and can be recreated.
+The data directory starts with small fixtures and manifests. Large raw
+downloads, copied pattern corpora, and generated compressed gold files can be
+recreated from the scripts below.
 
 ## Recreate Downloads
 
@@ -16,6 +16,42 @@ This downloads Moby Hyphenator II, TeX hyphen patterns, hyph-bench,
 LibreOffice dictionaries, and Hunspell hyphen sources. It also copies the
 representative TeX/LibreOffice pattern files into `data/patterns` and imports
 Moby into `data/gold/moby_en_us.jsonl.zst`.
+
+Current evaluation usage:
+
+- `data/gold/moby_en_us.jsonl.zst` and selected
+  `data/gold/wiktextract/*.jsonl.zst` files are the gold data for the
+  multilingual 5-fold report.
+- `data/patterns/tex-hyphen/...` drives Liang / TeX pattern baselines.
+- `data/gold/hyph_bench/*.jsonl.zst` is used by the optional full-gold
+  baseline matrix and the additional `hyph-bench` 5-fold report.
+- Copied LibreOffice dictionaries and extracted Hunspell hyphen sources are
+  kept as reference pattern resources. LibreOffice hyphen dictionaries can be
+  enabled as an additional Liang/libhyphen pattern baseline. They are not used
+  as gold data in the multilingual 5-fold report.
+
+## Choosing Data
+
+Use `data/gold/moby_en_us.jsonl.zst` for en-US English experiments and the
+`moby_en_us.bin` reusable model.
+
+Use `data/gold/wiktextract/*.jsonl.zst` for multilingual learned-model
+experiments and the `wiktextract_*` reusable models. Russian experiments should
+usually use
+`data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst`.
+
+Use `data/gold/hyph_bench/*.jsonl.zst` for additional external-corpus checks.
+The hyph-bench report covers Czech/German datasets that can be compared with
+Hypher and the selected Guarded N-gram recipes.
+
+Use `data/patterns/*` and `external/*` when you need pattern resources for
+Liang/libhyphen-style baselines or source comparison. These files are not the
+training source for the Guarded N-gram runtime models and are not gold labels
+for the main multilingual 5-fold report.
+
+The models under `models/guarded_ngram/v1/` are full-corpus runtime models. For
+unbiased trainable-method evaluation, create train/test splits or use
+`scripts/run_multilingual_5fold_evaluation.sh`.
 
 The Moby importer collapses duplicate words into one record. Conflicting
 hyphenations for the same word are preserved as `ambiguous=true` records with
@@ -59,7 +95,8 @@ gzip -dc data/raw/kaikki/enwiktionary/raw-wiktextract-data.jsonl.gz | \
 
 - `data/raw`: downloaded source archives and raw corpora.
 - `external`: expanded upstream repositories.
-- `data/patterns`: copied TeX and LibreOffice pattern files used by Liang runs.
+- `data/patterns`: copied TeX and LibreOffice pattern files. Current Liang
+  runs use the TeX pattern files.
 - `data/gold`: normalized JSONL and JSONL.zst gold corpora.
 - `data/manifests`: source inventory and license notes.
 

@@ -28,8 +28,8 @@ This writes reports under:
 target/hyphlab-reports/baselines/
 ```
 
-Use this track when the question is "how do published or fixed engines compare
-on all available labeled words?"
+Use this track when the question is "how do fixed engines compare on all
+available labeled words?"
 
 ## Split-Based Trainable Runs
 

@@ -102,6 +102,9 @@ write_manifest() {
   mkdir -p "$(dirname "$manifest")"
 
   {
+    printf '# Reusable runtime manifest.\n'
+    printf '# Model trained from full normalized corpus: %s\n' "$GOLD"
+    printf '# Use split-based or 5-fold runs for unbiased accuracy evaluation.\n\n'
     printf '[[methods]]\n'
     printf 'slug = "hypher"\n'
     printf 'method = "hypher"\n\n'
@@ -130,12 +133,68 @@ write_manifest() {
 }
 
 index="$MODEL_ROOT/README.md"
-{
-  printf '# Guarded N-gram Models\n\n'
-  printf 'These models are generated from the configured normalized corpora. Use them for reuse, demos, and downstream integration. For unbiased evaluation, train on a split and evaluate on held-out data instead of evaluating a full-corpus model on its own training corpus.\n\n'
-  printf '| dataset | locale | slug | recipe | model | manifest |\n'
-  printf '| --- | --- | --- | --- | --- | --- |\n'
-} > "$index"
+cat > "$index" <<'EOF'
+# Guarded N-gram Models
+
+These are reusable runtime models built from the full normalized corpora listed
+below. Use them for demos, application integration, and quick experiments. For
+unbiased accuracy claims, use the 5-fold scripts so every fold trains on its
+train split and evaluates on held-out data.
+
+## Use
+
+Build the CLI once:
+
+```bash
+cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
+```
+
+Run a reusable model directly:
+
+```bash
+target/release/hyphlab eval \
+  --gold data/gold/toy_en.jsonl \
+  --locale en-US \
+  --method safe-ngram-model \
+  --dictionary models/guarded_ngram/v1/moby_en_us.bin \
+  --output target/hyphlab-reports/manual/guarded_ngram_toy_en.json
+```
+
+Try the Italian onset-syllable model without an evaluation corpus:
+
+```bash
+printf "informazione\nstraordinario\nuniversita\n" |
+  target/release/hyphlab predict \
+    --locale it \
+    --method italian-syllable-model \
+    --dictionary models/guarded_ngram/v1/wiktextract_it.json
+```
+
+The manifests in `manifests/guarded_ngram/v1/` can be passed to
+`target/release/hyphlab matrix`; their model paths are relative to the manifest
+file location.
+
+## Which Model Should I Use?
+
+Use the model whose locale and source corpus match your target:
+
+- English en-US: `moby_en_us.bin`, trained from Moby Hyphenator II.
+- Czech, German, Spanish, Dutch, Russian, and Turkish: the matching
+  `wiktextract_*.bin` model, trained from normalized Wiktextract / Kaikki
+  entries for that language.
+- Italian: `wiktextract_it.json`, an onset-syllable model trained from
+  normalized Italian Wiktextract / Kaikki entries.
+
+These files are full-corpus runtime models. Do not evaluate them on the same
+full corpus as an independent test. For reproducible comparisons against Hypher
+or Liang baselines, use `docs/reports/multilingual_5fold_v1/` or rerun
+`scripts/run_multilingual_5fold_evaluation.sh`.
+
+## Inventory
+
+| dataset | locale | trained from | training policy | slug | recipe | model | manifest |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+EOF
 
 for dataset in $DATASETS; do
   dataset_config "$dataset"
@@ -184,8 +243,8 @@ for dataset in $DATASETS; do
   write_manifest "$dataset" "$manifest" "$manifest_model"
 
   {
-    printf '| `%s` | `%s` | `%s` | `%s` | `%s` | `%s` |\n' \
-      "$dataset" "$LOCALE" "$SLUG" "$RECIPE" "$model" "$manifest"
+    printf '| `%s` | `%s` | `%s` | full normalized corpus | `%s` | `%s` | `%s` | `%s` |\n' \
+      "$dataset" "$LOCALE" "$GOLD" "$SLUG" "$RECIPE" "$model" "$manifest"
   } >> "$index"
 done
 

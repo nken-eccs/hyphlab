@@ -50,8 +50,8 @@ dictionary = "models/guarded_ngram/custom/en_us.bin"
 ```
 
 Paths in a manifest are resolved relative to the manifest file location. A
-manifest kept at the repository root can use `models/...`; generated manifests
-under `manifests/guarded_ngram/v1/` use paths such as
+manifest at the project root can use `models/...`; generated manifests under
+`manifests/guarded_ngram/v1/` use paths such as
 `../../../models/guarded_ngram/v1/moby_en_us.bin`.
 
 Use the manifest with the matrix runner:
@@ -90,7 +90,11 @@ bash scripts/build_guarded_ngram_models.sh
 cat models/guarded_ngram/v1/README.md
 ```
 
-The generated manifests are self-contained for runtime use from a fresh clone.
-Italian uses `models/guarded_ngram/v1/wiktextract_it.json` there; the 5-fold
-evaluation script still trains its cluster table from each fold's train split
-for the measured comparison.
+The generated manifests point at the reusable runtime models. Italian uses
+`models/guarded_ngram/v1/wiktextract_it.json` there; the 5-fold evaluation
+script still trains its cluster table from each fold's train split for the
+measured comparison.
+
+The runtime models are trained from the full normalized corpora listed in
+`models/guarded_ngram/v1/README.md`. Use split-based or 5-fold runs for claims
+about generalization.
