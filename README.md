@@ -149,17 +149,15 @@ normalized corpora listed in
 are ready-to-run runtime models. For accuracy claims, use the 5-fold reports or
 rerun the 5-fold script so learned models are evaluated on held-out folds.
 
-For example, run the English model:
+For example, inspect the available runtime models and run the English model on
+words supplied on the command line:
 
 ```bash
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 
-target/release/hyphlab eval \
-  --gold data/gold/toy_en.jsonl \
-  --locale en-US \
-  --method safe-ngram-model \
-  --dictionary models/guarded_ngram/v1/moby_en_us.bin \
-  --output target/hyphlab-reports/manual/guarded_ngram_toy_en.json
+target/release/hyphlab predict --list-saved-models
+target/release/hyphlab predict --saved-model en-US --word hyphenation --word typesetting
+target/release/hyphlab predict --saved-model de --text "Silbentrennung fuer lange Woerter"
 ```
 
 Regenerate the reusable models after fetching and importing the full data:
@@ -173,14 +171,10 @@ Guarded N-gram languages generate compact `.bin` files under `models/`. Italian
 uses a compact onset-syllable JSON model under `models/`. For unbiased
 evaluation, train on a split and evaluate on held-out data.
 
-Try the reusable Italian model without downloading any evaluation corpus:
+Try the reusable Italian model:
 
 ```bash
-printf "informazione\nstraordinario\nuniversita\n" |
-  target/release/hyphlab predict \
-    --locale it \
-    --method italian-syllable-model \
-    --dictionary models/guarded_ngram/v1/wiktextract_it.json
+target/release/hyphlab predict --saved-model it --word informazione --word straordinario
 ```
 
 ## Reports And Models

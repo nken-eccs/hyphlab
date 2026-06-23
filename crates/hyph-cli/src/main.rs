@@ -629,6 +629,10 @@ struct PredictArgs {
     method: String,
     #[arg(short, long, default_value = "en-US")]
     locale: String,
+    #[arg(long, value_name = "KEY")]
+    saved_model: Option<String>,
+    #[arg(long)]
+    list_saved_models: bool,
     #[arg(long)]
     patterns: Option<PathBuf>,
     #[arg(long)]
@@ -643,6 +647,14 @@ struct PredictArgs {
     min_word_len: Option<usize>,
     #[arg(short, long)]
     input: Option<PathBuf>,
+    #[arg(long, value_name = "WORD")]
+    word: Vec<String>,
+    #[arg(long, alias = "sentence", value_name = "TEXT")]
+    text: Vec<String>,
+    #[arg(long, default_value = "-")]
+    separator: String,
+    #[arg(long)]
+    show_breaks: bool,
 }
 
 #[derive(Debug, Parser)]
@@ -2838,31 +2850,186 @@ fn init_method_options(args: &InitBenchArgs) -> Result<MethodOptions> {
     })
 }
 
+#[derive(Debug, Clone, Copy)]
+struct SavedModelSpec {
+    key: &'static str,
+    aliases: &'static [&'static str],
+    locale: &'static str,
+    method: &'static str,
+    dictionary: &'static str,
+}
+
+const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
+    SavedModelSpec {
+        key: "en-US",
+        aliases: &["en", "english", "moby", "moby-en-us", "moby_en_us"],
+        locale: "en-US",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/moby_en_us.bin",
+    },
+    SavedModelSpec {
+        key: "cs",
+        aliases: &["czech", "wiktextract-cs", "wiktextract_cs"],
+        locale: "cs",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_cs.bin",
+    },
+    SavedModelSpec {
+        key: "de",
+        aliases: &["german", "wiktextract-de", "wiktextract_de"],
+        locale: "de",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_de.bin",
+    },
+    SavedModelSpec {
+        key: "es",
+        aliases: &["spanish", "wiktextract-es", "wiktextract_es"],
+        locale: "es",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_es.bin",
+    },
+    SavedModelSpec {
+        key: "it",
+        aliases: &["italian", "wiktextract-it", "wiktextract_it"],
+        locale: "it",
+        method: "italian-syllable-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_it.json",
+    },
+    SavedModelSpec {
+        key: "nl",
+        aliases: &["dutch", "wiktextract-nl", "wiktextract_nl"],
+        locale: "nl",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_nl.bin",
+    },
+    SavedModelSpec {
+        key: "ru",
+        aliases: &[
+            "russian",
+            "wiktextract-ru",
+            "wiktextract_ru",
+            "ru-cyrl-trusted-dedup",
+            "wiktextract-ru-cyrl-trusted-dedup",
+            "wiktextract_ru_cyrl_trusted_dedup",
+        ],
+        locale: "ru",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_ru_cyrl_trusted_dedup.bin",
+    },
+    SavedModelSpec {
+        key: "tr",
+        aliases: &["turkish", "wiktextract-tr", "wiktextract_tr"],
+        locale: "tr",
+        method: "safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_tr.bin",
+    },
+];
+
+fn print_saved_models() {
+    println!("key\tlocale\tmethod\tdictionary");
+    for spec in SAVED_MODEL_SPECS {
+        println!(
+            "{}\t{}\t{}\t{}",
+            spec.key, spec.locale, spec.method, spec.dictionary
+        );
+    }
+}
+
+fn resolve_saved_model(key: &str) -> Result<&'static SavedModelSpec> {
+    let normalized = normalize_saved_model_key(key);
+    SAVED_MODEL_SPECS
+        .iter()
+        .find(|spec| {
+            normalize_saved_model_key(spec.key) == normalized
+                || spec
+                    .aliases
+                    .iter()
+                    .any(|alias| normalize_saved_model_key(alias) == normalized)
+        })
+        .with_context(|| {
+            format!("unknown --saved-model {key:?}; run `hyphlab predict --list-saved-models`")
+        })
+}
+
+fn normalize_saved_model_key(value: &str) -> String {
+    value
+        .trim()
+        .to_ascii_lowercase()
+        .replace('_', "-")
+        .replace('/', "-")
+}
+
 fn cmd_predict(args: PredictArgs) -> Result<()> {
+    if args.list_saved_models {
+        print_saved_models();
+        return Ok(());
+    }
+
+    let PredictArgs {
+        mut method,
+        mut locale,
+        saved_model,
+        list_saved_models: _,
+        patterns,
+        mut dictionary,
+        external_command,
+        left_min,
+        right_min,
+        min_word_len,
+        input,
+        word,
+        text,
+        separator,
+        show_breaks,
+    } = args;
+
+    if let Some(saved_model) = saved_model {
+        anyhow::ensure!(
+            patterns.is_none(),
+            "--saved-model cannot be combined with --patterns"
+        );
+        anyhow::ensure!(
+            dictionary.is_none(),
+            "--saved-model cannot be combined with --dictionary"
+        );
+        let spec = resolve_saved_model(&saved_model)?;
+        method = spec.method.to_string();
+        locale = spec.locale.to_string();
+        dictionary = Some(PathBuf::from(spec.dictionary));
+    }
+
     let method = prepare_method(MethodOptions {
-        method: args.method,
-        locale: args.locale,
-        patterns: args.patterns,
-        dictionary: args.dictionary,
+        method,
+        locale,
+        patterns,
+        dictionary,
         dictionary_is_gold_oracle: false,
-        external_command: args.external_command,
-        left_min: args.left_min,
-        right_min: args.right_min,
-        min_word_len: args.min_word_len,
+        external_command,
+        left_min,
+        right_min,
+        min_word_len,
     })?;
     let mut out = SmallVec::<[GraphemeIndex; 8]>::new();
+    let has_direct_input = !word.is_empty() || !text.is_empty();
 
-    if let Some(input) = args.input {
+    for word in &word {
+        predict_word_display(&method, word, &separator, show_breaks, &mut out)?;
+    }
+    for text in &text {
+        predict_text_display(&method, text, &separator, &mut out)?;
+    }
+
+    if let Some(input) = input {
         let file =
             std::fs::File::open(&input).with_context(|| format!("open {}", input.display()))?;
         let reader = io::BufReader::new(file);
         for line in reader.lines() {
-            predict_one(&method, &line?, &mut out)?;
+            predict_one(&method, &line?, &separator, &mut out)?;
         }
-    } else {
+    } else if !has_direct_input {
         let stdin = io::stdin();
         for line in stdin.lock().lines() {
-            predict_one(&method, &line?, &mut out)?;
+            predict_one(&method, &line?, &separator, &mut out)?;
         }
     }
 
@@ -3241,15 +3408,96 @@ fn ceil_div(numerator: usize, denominator: usize) -> usize {
 fn predict_one(
     method: &PreparedMethod,
     word: &str,
+    separator: &str,
     out: &mut SmallVec<[GraphemeIndex; 8]>,
 ) -> Result<()> {
     let word = word.trim();
     if word.is_empty() {
         return Ok(());
     }
+    out.clear();
     method.hyphenate_into(word, out)?;
-    println!("{}\t{}\t{:?}", word, insert_separator(word, out, "-"), out);
+    println!(
+        "{}\t{}\t{:?}",
+        word,
+        insert_separator(word, out, separator),
+        out
+    );
     Ok(())
+}
+
+fn predict_word_display(
+    method: &PreparedMethod,
+    word: &str,
+    separator: &str,
+    show_breaks: bool,
+    out: &mut SmallVec<[GraphemeIndex; 8]>,
+) -> Result<()> {
+    let word = word.trim();
+    if word.is_empty() {
+        return Ok(());
+    }
+    out.clear();
+    method.hyphenate_into(word, out)?;
+    let rendered = insert_separator(word, out, separator);
+    if show_breaks {
+        println!("{word} -> {rendered}\t{:?}", out);
+    } else {
+        println!("{word} -> {rendered}");
+    }
+    Ok(())
+}
+
+fn predict_text_display(
+    method: &PreparedMethod,
+    text: &str,
+    separator: &str,
+    out: &mut SmallVec<[GraphemeIndex; 8]>,
+) -> Result<()> {
+    let rendered = hyphenate_text(method, text, separator, out)?;
+    println!("{text} -> {rendered}");
+    Ok(())
+}
+
+fn hyphenate_text(
+    method: &PreparedMethod,
+    text: &str,
+    separator: &str,
+    out: &mut SmallVec<[GraphemeIndex; 8]>,
+) -> Result<String> {
+    let mut rendered = String::with_capacity(text.len());
+    let mut word = String::new();
+    for ch in text.chars() {
+        if is_text_word_char(ch) {
+            word.push(ch);
+        } else {
+            flush_text_word(method, &mut word, &mut rendered, separator, out)?;
+            rendered.push(ch);
+        }
+    }
+    flush_text_word(method, &mut word, &mut rendered, separator, out)?;
+    Ok(rendered)
+}
+
+fn flush_text_word(
+    method: &PreparedMethod,
+    word: &mut String,
+    rendered: &mut String,
+    separator: &str,
+    out: &mut SmallVec<[GraphemeIndex; 8]>,
+) -> Result<()> {
+    if word.is_empty() {
+        return Ok(());
+    }
+    out.clear();
+    method.hyphenate_into(word, out)?;
+    rendered.push_str(&insert_separator(word, out, separator));
+    word.clear();
+    Ok(())
+}
+
+fn is_text_word_char(ch: char) -> bool {
+    ch.is_alphabetic() || ch == '\''
 }
 
 struct MethodOptions {

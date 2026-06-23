@@ -149,25 +149,18 @@ Build the CLI once:
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 ```
 
-Run a reusable model directly:
+List the reusable models and run one directly:
 
 ```bash
-target/release/hyphlab eval \
-  --gold data/gold/toy_en.jsonl \
-  --locale en-US \
-  --method safe-ngram-model \
-  --dictionary models/guarded_ngram/v1/moby_en_us.bin \
-  --output target/hyphlab-reports/manual/guarded_ngram_toy_en.json
+target/release/hyphlab predict --list-saved-models
+target/release/hyphlab predict --saved-model en-US --word hyphenation --word typesetting
+target/release/hyphlab predict --saved-model de --text "Silbentrennung fuer lange Woerter"
 ```
 
-Try the Italian onset-syllable model without an evaluation corpus:
+Try the Italian onset-syllable model:
 
 ```bash
-printf "informazione\nstraordinario\nuniversita\n" |
-  target/release/hyphlab predict \
-    --locale it \
-    --method italian-syllable-model \
-    --dictionary models/guarded_ngram/v1/wiktextract_it.json
+target/release/hyphlab predict --saved-model it --word informazione --word straordinario
 ```
 
 The manifests in `manifests/guarded_ngram/v1/` can be passed to
