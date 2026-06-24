@@ -1,6 +1,6 @@
-# Research Start Checklist
+# Research Workflow
 
-Use this checklist when setting up or resuming a local research run.
+Use this when setting up or resuming local experiments.
 
 ## 1. Smoke Test
 
@@ -9,62 +9,41 @@ bash scripts/run_toy_experiment.sh
 cat target/hyphlab-reports/compare.md
 ```
 
-Expected coverage:
-
-- TSV import into normalized JSONL.
-- `no-hyphen`, `hypher`, `hyphenation-embedded`, dictionary lookup, Liang, and
-  consensus baselines.
-- Metrics JSON, word-error JSONL, speed JSON, and Markdown comparison output.
+This checks import, fixed baselines, metrics JSON, word-error JSONL, speed JSON,
+and Markdown comparison output.
 
 ## 2. Data
-
-Core data:
 
 ```bash
 bash scripts/fetch_core_data.sh
 bash scripts/import_hyph_bench.sh
-```
-
-Optional Wiktionary / Kaikki data:
-
-```bash
 bash scripts/fetch_kaikki.sh
 bash scripts/import_wiktextract.sh
+bash scripts/prepare_filtered_wiktextract_data.sh
 ```
 
-Important outputs:
+See [`data_usage.md`](data_usage.md) and [`../data/README.md`](../data/README.md)
+before choosing a corpus.
 
-```text
-data/gold/moby_en_us.jsonl.zst
-data/gold/hyph_bench/*.jsonl.zst
-data/gold/wiktextract/*.jsonl.zst
-data/patterns/
-```
+## 3. Fixed Baselines
 
-See `data/README.md` for source inventory and restricted-data notes.
-
-## 3. Baseline Matrix
-
-For fixed, non-trainable methods, evaluate full gold corpora:
+Use full gold corpora only for methods that do not learn from the evaluated
+file:
 
 ```bash
 DATASETS=moby_en_us ITERATIONS=5 INIT_ITERATIONS=5 \
   bash scripts/run_baseline_matrix.sh
 ```
 
-Open:
+Reports are written under:
 
 ```text
-target/hyphlab-reports/baselines/index.md
-target/hyphlab-reports/baselines/moby_en_us/compare.md
+target/hyphlab-reports/baselines/
 ```
 
-Each `compare.md` starts with `Evaluation Data`, so the gold file and pattern
-file are visible in the report itself.
+## 4. Trainable Methods
 
-## 4. Split-Based Trainable Runs
-
-Build the split once:
+Use grouped splits or deterministic 5-fold evaluation. For a manual Moby split:
 
 ```bash
 cargo run -p hyph-cli --release -- data split \
@@ -73,73 +52,51 @@ cargo run -p hyph-cli --release -- data split \
   --seed moby_en_us_v1
 ```
 
-Train a CRF model:
+Use `train.jsonl.zst` for fitting, `dev.jsonl.zst` for choices, and
+`test.jsonl.zst` for final comparison.
+
+For the maintained multilingual comparison:
 
 ```bash
-cargo run -p hyph-cli --release -- crf train \
-  --gold data/splits/moby_en_us/train.jsonl.zst \
-  --locale en-US \
-  --id trogkanis-elkan-crf \
-  --epochs 5 \
-  --threshold 0.9 \
-  --output target/hyphlab-models/trogkanis_elkan_crf_moby_en_us.json
+bash scripts/run_multilingual_5fold_evaluation.sh
+cat docs/reports/multilingual_5fold_v1/summary.md
 ```
 
-Tune the threshold on dev and write a compact model:
+## 5. Reusable Models
+
+Build full-corpus runtime models after the data is available:
 
 ```bash
-cargo run -p hyph-cli --release -- crf tune-threshold \
-  --model target/hyphlab-models/trogkanis_elkan_crf_moby_en_us.json \
-  --gold data/splits/moby_en_us/dev.jsonl.zst \
-  --objective f05 \
-  --output target/hyphlab-models/trogkanis_elkan_crf_moby_en_us_tuned.bin.zst \
-  --report target/hyphlab-reports/trogkanis_elkan_crf_thresholds.json
+bash scripts/build_guarded_ngram_models.sh
+target/release/hyphlab predict --list-saved-models
 ```
 
-Run the current CRF comparison on test:
+Use reusable models for demos and application integration. Use held-out folds
+for claims about generalization.
 
-```bash
-ITERATIONS=5 INIT_ITERATIONS=5 bash scripts/run_crf_unified_matrix.sh
-```
+## 6. Add A Method
 
-Open:
-
-```text
-target/hyphlab-reports/unified/moby_en_us_test_crf_sgd_tuned/compare.md
-```
-
-## 5. Add A New Method
-
-The current high-precision fast-rule candidate is `safe-ngram`:
-
-```bash
-ITERATIONS=5 INIT_ITERATIONS=1 bash scripts/run_safe_ngram_matrix.sh
-```
-
-See `docs/method_roadmap.md` for the development plan.
-
-Rust-native adapter path:
+Rust-native adapter:
 
 ```bash
 bash scripts/new_native_method.sh my_algo --supports en
 cargo fmt --all
 cargo check -p hyph-cli
 bash scripts/run_method_smoke.sh my_algo
-DATASETS=moby_en_us bash scripts/run_baseline_matrix.sh
 ```
 
-External prototype path:
+Non-Rust prototype:
 
 1. Implement a persistent JSONL stdin/stdout process.
-2. Add an `external-jsonl` manifest entry with `external_command = "..."`.
-3. Run `hyphlab matrix` or `scripts/run_baseline_matrix.sh`.
+2. Add an `external-jsonl` manifest entry with `external_command`.
+3. Run `hyphlab matrix` or one of the matrix scripts.
 
-## 6. Report Hygiene
+## 7. Report Hygiene
 
-Before using a result in notes or a table, check:
+Before using a result:
 
-- Is the report full-gold or split-based?
-- Does the `Evaluation Data` block show the expected gold file?
-- Are trainable/tuned methods evaluated only on `test.jsonl.zst`?
-- Are `identity-oracle` and `dict-oracle` excluded from claim tables?
-- Are speed values from release builds with enough iterations?
+- Check whether the report is full-gold, split, or 5-fold.
+- Check the `Evaluation Data` block.
+- Keep trainable/tuned methods off their training labels.
+- Exclude `identity-oracle` and dictionary-oracle rows from claim tables.
+- Use release builds and enough iterations for speed comparisons.
