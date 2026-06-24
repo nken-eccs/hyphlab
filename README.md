@@ -1,13 +1,13 @@
 # hyphlab
 
-Rust research environment for multilingual hyphenation experiments.
+Research environment for multilingual hyphenation experiments.
 
 `hyphlab` is organized around one repeatable loop:
 
 1. Normalize gold corpora into JSONL / JSONL.zst records.
 2. Register hyphenation methods in a manifest.
 3. Run accuracy, steady-state speed, and initialization benchmarks.
-4. Compare all methods in Markdown reports with explicit evaluation metadata.
+4. Compare all methods in Markdown reports with dataset and run settings.
 
 ## Start Here
 
@@ -58,7 +58,7 @@ Run the full-gold baseline matrix for non-trainable methods:
 bash scripts/run_baseline_matrix.sh
 ```
 
-The main index is written to:
+The baseline summary is written to:
 
 ```text
 target/hyphlab-reports/baselines/index.md
@@ -158,6 +158,10 @@ cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 target/release/hyphlab predict --list-saved-models
 target/release/hyphlab predict --saved-model en-US --word hyphenation --word typesetting
 target/release/hyphlab predict --saved-model de --text "Silbentrennung fuer lange Woerter"
+target/release/hyphlab predict --saved-model en-US --with-hypher \
+  --gold data/gold/toy_en.jsonl \
+  --word hyphenation \
+  --show-breaks
 ```
 
 Regenerate the reusable models after fetching and importing the full data:
@@ -341,11 +345,20 @@ bash scripts/run_method_smoke.sh my_algo
 DATASETS=moby_en_us bash scripts/run_baseline_matrix.sh
 ```
 
-For a method needing custom setup, add a `prepare_<method>` path in
-`crates/hyph-cli/src/main.rs` and add a manifest entry.
+For a method needing custom setup, add a `prepare_<method>` branch to the
+method registry and add a manifest entry.
 
 For a non-Rust prototype, use `external-jsonl` in a manifest with
 `external_command = "..."`.
+
+## Source Layout
+
+- `crates/hyph-cli/src/main.rs`: imports and command dispatch.
+- `crates/hyph-cli/src/cli.rs`: CLI subcommands and argument structs.
+- `crates/hyph-cli/src/commands/`: data preparation, evaluation, benchmarks, matrix runs, CRF, and adapter scaffolding.
+- `crates/hyph-cli/src/methods/`: method registry, baselines, guarded n-gram models, Italian onset models, and saved model IO.
+- `crates/hyph-cli/src/predict.rs`: interactive prediction and method comparison output.
+- `crates/hyph-cli/src/reports.rs`: report parsing and Markdown rendering.
 
 ## More Detail
 

@@ -1,6 +1,7 @@
 generated_at: 2026-06-22
 notes:
-  - Raw downloads and generated compressed gold files are intentionally ignored by Git.
+  - Raw source archives live under data/raw or external when fetched.
+  - Compressed gold files live under data/gold when generated.
   - CELEX/WebCelex is license-restricted and must be supplied locally.
 sources:
   - id: moby_hyphenator_ii

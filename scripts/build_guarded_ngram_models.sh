@@ -155,6 +155,10 @@ List the reusable models and run one directly:
 target/release/hyphlab predict --list-saved-models
 target/release/hyphlab predict --saved-model en-US --word hyphenation --word typesetting
 target/release/hyphlab predict --saved-model de --text "Silbentrennung fuer lange Woerter"
+target/release/hyphlab predict --saved-model en-US --with-hypher \
+  --gold data/gold/toy_en.jsonl \
+  --word hyphenation \
+  --show-breaks
 ```
 
 Try the Italian onset-syllable model:

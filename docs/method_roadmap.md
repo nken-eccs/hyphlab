@@ -104,9 +104,6 @@ Interpretation:
 - `safe-ngram-mixson-multi-s1-p90-veto-multi-s1-n0` is the best high-recall
   sonority variant. It is useful for research, but not the current production
   choice because `serious_error` and runtime are higher than the raw candidate.
-- `hypher-safe-add-*-veto-*` variants are useful diagnostic hybrids: they show
-  that adding high-confidence train contexts can recover recall, but they are
-  not the fastest production path because they still call `hypher`.
 
 The training-time version reports high init ms because it learns from
 `train.jsonl.zst` during method preparation. Use `compile-safe-ngram` and
