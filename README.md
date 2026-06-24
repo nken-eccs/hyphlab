@@ -1,6 +1,6 @@
 # hyphlab
 
-Toolkit for multilingual hyphenation research and runtime models.
+Toolkit for multilingual hyphenation data, evaluation, and runtime models.
 
 `hyphlab` has three main jobs:
 
@@ -11,21 +11,14 @@ Toolkit for multilingual hyphenation research and runtime models.
 
 ## Quick Start
 
-Run the smoke test:
-
-```bash
-cd hyphenation/hyphlab
-bash scripts/run_toy_experiment.sh
-cat target/hyphlab-reports/compare.md
-```
-
 Build the CLI:
 
 ```bash
+cd hyphenation/hyphlab
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 ```
 
-Use the English typesetting model:
+Use the recommended English typesetting model:
 
 ```bash
 target/release/hyphlab predict --saved-model en-US-typeset --word Japanese
@@ -33,32 +26,28 @@ target/release/hyphlab predict --saved-model en-US-typeset \
   --text "Japanese typography needs careful hyphenation."
 ```
 
-`en-US-typeset` is the recommended English model for line-breaking use. It is
-trained from the curated Moby typesetting corpus and applies the same fragment
-guard at runtime, so sensitive fragments filtered during curation are also
-blocked during prediction.
+Use `en-US-typeset` for reader-facing line breaks. It is trained from the
+curated Moby typesetting corpus and applies the same fragment guard at runtime.
+Use `en-US` when you want labels closer to the source syllable dictionary.
 
-Use `en-US` when you want labels close to the source syllable dictionary. Use
-`en-US-typeset` when the break may be shown to readers: it keeps useful
-hyphenation points while also considering semantic fragments and typographic
-appropriateness.
-
-For Czech, German, Spanish, Italian, Dutch, Russian, and Turkish, use the
-matching `*-typeset` model for reader-facing line breaks:
+Reader-facing multilingual models use the `*-typeset` suffix:
 
 ```bash
 target/release/hyphlab predict --saved-model de-typeset --word Scheißhaus
-target/release/hyphlab predict --saved-model es-typeset --word extraordinario
 target/release/hyphlab predict --saved-model tr-typeset --word cumhuriyet
 ```
 
-List every reusable model, or use a non-typesetting model:
+List every reusable model:
 
 ```bash
 target/release/hyphlab predict --list-saved-models
-target/release/hyphlab predict --saved-model en-US --word hyphenation --word typesetting
-target/release/hyphlab predict --saved-model de --text "Silbentrennung fuer lange Woerter"
-target/release/hyphlab predict --saved-model it --word informazione --word straordinario
+```
+
+Run the smoke test:
+
+```bash
+bash scripts/run_toy_experiment.sh
+cat target/hyphlab-reports/compare.md
 ```
 
 Compare with Hypher and known gold labels when available:
@@ -72,17 +61,16 @@ target/release/hyphlab predict --saved-model en-US-typeset --with-hypher \
 
 ## Main Workflows
 
-Prepare the core English data:
+Prepare English data:
 
 ```bash
 bash scripts/fetch_core_data.sh
 bash scripts/curate_moby_typeset.sh
 ```
 
-Additional corpora such as Wiktextract / Kaikki and hyph-bench are described in
-[`data/README.md`](data/README.md).
-After importing Wiktextract / Kaikki, build the multilingual typesetting
-derivatives with:
+Additional corpora such as Wiktextract / Kaikki and hyph-bench are covered in
+[`data/README.md`](data/README.md). After importing Wiktextract / Kaikki, build
+the multilingual typesetting derivatives with:
 
 ```bash
 bash scripts/curate_wiktextract_typeset.sh
@@ -112,14 +100,14 @@ bash scripts/build_guarded_ngram_models.sh
 cat models/guarded_ngram/v1/README.md
 ```
 
-For fixed baselines, custom matrices, or one-off method evaluation, start from
+For fixed baselines, custom matrices, or one-off evaluations, start from
 [`docs/research_start.md`](docs/research_start.md).
 
 ## What Goes Where
 
 | location | purpose |
 | --- | --- |
-| `docs/` | Evaluation policy, data usage, method notes, and reading order. |
+| `docs/` | Evaluation policy, data usage, method notes, and reports. |
 | `docs/reports/` | Reproducible summary reports for selected comparisons. |
 | `models/guarded_ngram/v1/` | Ready-to-run full-corpus runtime models. |
 | `manifests/guarded_ngram/v1/` | Matrix manifests for reusable models. |
@@ -133,29 +121,27 @@ normalized corpora. They are convenient for demos and application integration.
 For accuracy claims about trainable methods, use held-out split or 5-fold
 reports.
 
-## Add A Method
+## Add a Method
 
 Create a simple Rust-native adapter:
 
 ```bash
 bash scripts/new_native_method.sh my_algo --supports en,de
 cargo fmt --all
-cargo check -p hyph-cli
+cargo check -p hyph-cli --features adapters-hyphenation-embedded
 bash scripts/run_method_smoke.sh my_algo
 DATASETS=moby_en_us bash scripts/run_baseline_matrix.sh
 ```
 
-For a method needing custom setup, add a preparation branch in
-`crates/hyph-cli/src/methods/registry.rs` and add a manifest entry. For a
-non-Rust prototype, use an `external-jsonl` manifest entry with an
-`external_command`.
+For trainable methods, saved-model methods, or non-Rust prototypes, use
+[`docs/add_method.md`](docs/add_method.md).
 
 ## More Detail
 
 - [Documentation map](docs/README.md)
 - [Evaluation policy](docs/evaluation.md)
+- [Add a method](docs/add_method.md)
 - [Data and model usage](docs/data_usage.md)
 - [Guarded N-gram](docs/guarded_ngram.md)
-- [Method development](docs/method_roadmap.md)
 - [Data setup](data/README.md)
 - [Experiment manifests](experiments/README.md)

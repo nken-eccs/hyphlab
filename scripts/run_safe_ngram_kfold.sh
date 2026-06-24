@@ -52,10 +52,10 @@ for ((fold = 0; fold < FOLDS; fold++)); do
   for method in "${METHOD_LIST[@]}"; do
     slug="$(printf '%s' "$method" | tr '-' '_' | tr -c '[:alnum:]_' '_')"
     model="$(pwd)/$fold_model_dir/$slug.bin"
-    "$BIN" compile-safe-ngram \
+    "$BIN" method train \
+      --method "$method" \
       --gold "$train" \
       --locale "$LOCALE" \
-      --method "$method" \
       --output "$model"
     {
       printf '[[methods]]\n'

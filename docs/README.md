@@ -9,9 +9,9 @@ models, and exploratory outputs should stay under `target/`.
 | --- | --- |
 | [`../README.md`](../README.md) | You want to run the CLI or the main scripts. |
 | [`evaluation.md`](evaluation.md) | You need to know which comparisons are fair. |
+| [`add_method.md`](add_method.md) | You are adding a Rust method, trainable model, or external prototype. |
 | [`data_usage.md`](data_usage.md) | You need to know which data or model file to use. |
 | [`guarded_ngram.md`](guarded_ngram.md) | You need the current method recipes or model format. |
-| [`method_roadmap.md`](method_roadmap.md) | You are developing a new method or tuning a candidate. |
 | [`research_start.md`](research_start.md) | You are resuming hands-on experiments. |
 
 ## Maintained Reports
@@ -32,8 +32,8 @@ tables.
 
 - Put data and model roles in `data_usage.md`.
 - Put evaluation policy in `evaluation.md`.
+- Put method integration steps in `add_method.md`.
 - Put method mechanics and recipes in `guarded_ngram.md`.
-- Put open research directions in `method_roadmap.md`.
 - Keep exploratory commands in `experiments/README.md` or scripts, not in the
   main README.
 - Prefer linking to report summaries instead of duplicating metric tables.

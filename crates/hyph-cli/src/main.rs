@@ -60,6 +60,10 @@ fn main() -> Result<()> {
             DataCommand::Kfold(args) => cmd_kfold(args),
             DataCommand::Stats(args) => cmd_stats(args),
         },
+        Command::Method { command } => match command {
+            MethodCommand::Train(args) => cmd_method_train(args),
+            MethodCommand::Materialize(args) => cmd_method_materialize(args),
+        },
         Command::Crf { command } => match command {
             CrfCommand::Train(args) => cmd_crf_train(args),
             CrfCommand::TuneThreshold(args) => cmd_crf_tune_threshold(args),
@@ -82,6 +86,8 @@ fn main() -> Result<()> {
 }
 
 include!("commands/data.rs");
+
+include!("commands/method.rs");
 
 include!("commands/dev.rs");
 

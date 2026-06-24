@@ -18,10 +18,10 @@ Use a labeled train corpus in hyphlab JSONL or JSONL.zst format:
 ```bash
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 
-target/release/hyphlab compile-safe-ngram \
+target/release/hyphlab method train \
+  --method safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85 \
   --gold data/splits/moby_en_us/train.jsonl.zst \
   --locale en-US \
-  --method safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85 \
   --output models/guarded_ngram/custom/en_us.bin
 ```
 
@@ -54,11 +54,11 @@ manifest at the project root can use `models/...`; generated manifests under
 `manifests/guarded_ngram/v1/` use paths such as
 `../../../models/guarded_ngram/v1/moby_en_us.bin`.
 
-Use the manifest with the matrix runner:
+Save the entry to a manual manifest, then run it with the matrix runner:
 
 ```bash
 target/release/hyphlab matrix \
-  --manifest methods.toml \
+  --manifest target/hyphlab-manifests/manual/guarded_ngram_en_us.toml \
   --gold data/splits/moby_en_us/test.jsonl.zst \
   --locale en-US \
   --patterns data/patterns/tex-hyphen/tex/hyph-en-us.tex \

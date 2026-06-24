@@ -106,14 +106,14 @@ target/release/hyphlab predict --list-saved-models
 Use reusable models for demos and application integration. Use held-out folds
 for claims about generalization.
 
-## 6. Add A Method
+## 6. Add a Method
 
 Rust-native adapter:
 
 ```bash
 bash scripts/new_native_method.sh my_algo --supports en
 cargo fmt --all
-cargo check -p hyph-cli
+cargo check -p hyph-cli --features adapters-hyphenation-embedded
 bash scripts/run_method_smoke.sh my_algo
 ```
 
@@ -122,6 +122,26 @@ Non-Rust prototype:
 1. Implement a persistent JSONL stdin/stdout process.
 2. Add an `external-jsonl` manifest entry with `external_command`.
 3. Run `hyphlab matrix` or one of the matrix scripts.
+
+Trainable method:
+
+```bash
+target/release/hyphlab method materialize \
+  --manifest experiments/manifests/method_workflow_example.toml \
+  --gold data/splits/moby_en_us/train.jsonl.zst \
+  --locale en-US \
+  --model-dir target/hyphlab-models/my_algo \
+  --output target/hyphlab-manifests/my_algo/runtime.toml
+
+target/release/hyphlab matrix \
+  --manifest target/hyphlab-manifests/my_algo/runtime.toml \
+  --gold data/splits/moby_en_us/test.jsonl.zst \
+  --locale en-US \
+  --patterns data/patterns/tex-hyphen/tex/hyph-en-us.tex \
+  --output-dir target/hyphlab-reports/my_algo
+```
+
+See [`add_method.md`](add_method.md) for the full integration paths.
 
 ## 7. Report Hygiene
 

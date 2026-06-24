@@ -20,10 +20,10 @@ if [ "${SKIP_BUILD:-0}" != "1" ]; then
   cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 fi
 
-"$BIN" compile-safe-ngram \
+"$BIN" method train \
+  --method "$METHOD" \
   --gold "$TRAIN" \
   --locale "$LOCALE" \
-  --method "$METHOD" \
   --output "$MODEL"
 
 "$BIN" matrix \

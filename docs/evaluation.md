@@ -22,6 +22,8 @@ DATASETS=moby_en_us ITERATIONS=5 INIT_ITERATIONS=5 \
   bash scripts/run_baseline_matrix.sh
 ```
 
+This uses `manifests/baselines.toml`, which contains only fixed methods.
+
 This writes reports under:
 
 ```text

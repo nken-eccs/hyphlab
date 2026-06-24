@@ -12,7 +12,7 @@ METHOD="$1"
 shift
 
 cargo run -p hyph-cli --features adapters-hyphenation-embedded -- matrix \
-  --manifest "${METHODS_MANIFEST:-methods.toml}" \
+  --manifest "${METHODS_MANIFEST:-manifests/baselines.toml}" \
   --gold "${GOLD:-data/gold/toy_en.jsonl}" \
   --locale "${LOCALE:-en-US}" \
   --patterns "${PATTERNS:-tests/fixtures/toy_en.patterns}" \

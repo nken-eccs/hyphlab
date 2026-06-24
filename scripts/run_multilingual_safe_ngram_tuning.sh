@@ -230,7 +230,7 @@ write_manifest() {
     local model
     slug="$(method_slug "$method")"
     model="$(pwd)/$model_dir/$slug.bin"
-    local compile_args=(compile-safe-ngram --gold "$train" --locale "$LOCALE" --method "$method" --output "$model")
+    local compile_args=(method train --method "$method" --gold "$train" --locale "$LOCALE" --output "$model")
     if [ -n "$LEFT_MIN" ]; then
       compile_args+=(--left-min "$LEFT_MIN")
     fi

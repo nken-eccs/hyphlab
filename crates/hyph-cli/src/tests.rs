@@ -110,3 +110,56 @@ fn script_filter_distinguishes_russian_cyrillic_from_mixed_words() {
         ScriptFilterArg::Latin
     ));
 }
+
+#[test]
+fn method_train_kind_inference_covers_supported_families() {
+    assert_eq!(
+        infer_train_kind("safe-ngram-3x3-s1-p80", None).unwrap(),
+        TrainKind::SafeNgram
+    );
+    assert_eq!(
+        infer_train_kind("italian-syllable", None).unwrap(),
+        TrainKind::ItalianSyllable
+    );
+    assert_eq!(
+        infer_train_kind("trogkanis-elkan-crf", None).unwrap(),
+        TrainKind::Crf
+    );
+    assert_eq!(
+        infer_train_kind("my-custom-name", Some("guarded-ngram")).unwrap(),
+        TrainKind::SafeNgram
+    );
+}
+
+#[test]
+fn relative_manifest_path_points_from_output_to_model() {
+    let base = Path::new("target/hyphlab-manifests/dev-workflow");
+    let target = Path::new("target/hyphlab-models/dev-workflow/model.bin");
+    assert_eq!(
+        relative_path_from(base, target).unwrap(),
+        PathBuf::from("../../hyphlab-models/dev-workflow/model.bin")
+    );
+}
+
+#[test]
+fn methods_manifest_accepts_train_blocks() {
+    let manifest: MethodsManifest = toml::from_str(
+        r#"
+[[methods]]
+slug = "candidate"
+method = "safe-ngram-3x3-s1-p80"
+supports = ["en"]
+
+[methods.train]
+runtime_method = "safe-ngram-model"
+output = "{model_dir}/{slug}.bin"
+"#,
+    )
+    .unwrap();
+    let method = &manifest.methods[0];
+    assert_eq!(method.slug, "candidate");
+    assert_eq!(
+        method.train.as_ref().unwrap().runtime_method.as_deref(),
+        Some("safe-ngram-model")
+    );
+}

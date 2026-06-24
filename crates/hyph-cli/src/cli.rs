@@ -14,6 +14,10 @@ enum Command {
         #[command(subcommand)]
         command: DataCommand,
     },
+    Method {
+        #[command(subcommand)]
+        command: MethodCommand,
+    },
     Crf {
         #[command(subcommand)]
         command: CrfCommand,
@@ -61,6 +65,12 @@ enum DataCommand {
 enum DevCommand {
     NewAdapter(NewAdapterArgs),
     Smoke(SmokeArgs),
+}
+
+#[derive(Debug, Subcommand)]
+enum MethodCommand {
+    Train(MethodTrainArgs),
+    Materialize(MethodMaterializeArgs),
 }
 
 #[derive(Debug, Subcommand)]
@@ -264,7 +274,7 @@ struct NewAdapterArgs {
     pass_patterns: bool,
     #[arg(long)]
     requires_feature: Option<String>,
-    #[arg(long, default_value = "methods.toml")]
+    #[arg(long, default_value = "manifests/baselines.toml")]
     manifest: PathBuf,
     #[arg(long, default_value = ".")]
     root: PathBuf,
@@ -277,7 +287,7 @@ struct NewAdapterArgs {
 #[derive(Debug, Parser)]
 struct SmokeArgs {
     slug: String,
-    #[arg(long, default_value = "methods.toml")]
+    #[arg(long, default_value = "manifests/baselines.toml")]
     manifest: PathBuf,
     #[arg(long, default_value = "data/gold/toy_en.jsonl")]
     gold: PathBuf,
@@ -361,6 +371,56 @@ struct CrfConvertArgs {
     threshold: Option<f32>,
     #[arg(long)]
     id: Option<String>,
+}
+
+#[derive(Debug, Parser)]
+struct MethodTrainArgs {
+    #[arg(long)]
+    method: String,
+    #[arg(short, long)]
+    gold: PathBuf,
+    #[arg(short, long)]
+    output: PathBuf,
+    #[arg(short, long, default_value = "en-US")]
+    locale: String,
+    #[arg(long)]
+    id: Option<String>,
+    #[arg(long)]
+    left_min: Option<usize>,
+    #[arg(long)]
+    right_min: Option<usize>,
+    #[arg(long)]
+    min_word_len: Option<usize>,
+    #[arg(long)]
+    include_ambiguous: bool,
+    #[arg(long, default_value_t = 5)]
+    epochs: usize,
+    #[arg(long, default_value_t = 0.05)]
+    learning_rate: f32,
+    #[arg(long, default_value_t = 1.0e-5)]
+    l2: f32,
+    #[arg(long, default_value_t = 0.9)]
+    threshold: f32,
+    #[arg(long, default_value_t = 2)]
+    min_n: usize,
+    #[arg(long, default_value_t = 5)]
+    max_n: usize,
+    #[arg(long)]
+    limit: Option<usize>,
+}
+
+#[derive(Debug, Parser)]
+struct MethodMaterializeArgs {
+    #[arg(short, long)]
+    manifest: PathBuf,
+    #[arg(short, long)]
+    gold: PathBuf,
+    #[arg(short, long)]
+    output: PathBuf,
+    #[arg(long)]
+    model_dir: PathBuf,
+    #[arg(short, long, default_value = "en-US")]
+    locale: String,
 }
 
 #[derive(Debug, Parser)]
@@ -525,7 +585,7 @@ struct InitBenchArgs {
 
 #[derive(Debug, Parser)]
 struct MatrixArgs {
-    #[arg(long, default_value = "methods.toml")]
+    #[arg(long, default_value = "manifests/baselines.toml")]
     manifest: PathBuf,
     #[arg(short, long)]
     gold: PathBuf,
@@ -558,6 +618,8 @@ struct MethodsManifest {
 struct ManifestMethod {
     slug: String,
     method: String,
+    #[serde(default)]
+    train: Option<ManifestTrain>,
     #[serde(default = "default_enabled")]
     enabled: bool,
     #[serde(default)]
@@ -580,6 +642,34 @@ struct ManifestMethod {
     right_min: Option<usize>,
     #[serde(default)]
     min_word_len: Option<usize>,
+}
+
+#[derive(Debug, Clone, Deserialize)]
+struct ManifestTrain {
+    #[serde(default)]
+    kind: Option<String>,
+    #[serde(default)]
+    output: Option<PathBuf>,
+    #[serde(default)]
+    runtime_method: Option<String>,
+    #[serde(default)]
+    include_ambiguous: bool,
+    #[serde(default)]
+    id: Option<String>,
+    #[serde(default)]
+    epochs: Option<usize>,
+    #[serde(default)]
+    learning_rate: Option<f32>,
+    #[serde(default)]
+    l2: Option<f32>,
+    #[serde(default)]
+    threshold: Option<f32>,
+    #[serde(default)]
+    min_n: Option<usize>,
+    #[serde(default)]
+    max_n: Option<usize>,
+    #[serde(default)]
+    limit: Option<usize>,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, ValueEnum)]

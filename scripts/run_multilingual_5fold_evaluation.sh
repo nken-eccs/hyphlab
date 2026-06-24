@@ -128,7 +128,7 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/it/hyph_it_IT.dic"
       SELECTED_KIND="italian-syllable"
       SELECTED_METHOD="italian-syllable"
-      SELECTED_RUNTIME_METHOD="italian-syllable"
+      SELECTED_RUNTIME_METHOD="italian-syllable-model"
       SELECTED_SLUG="italian_onset_syllable"
       ;;
     wiktextract_it_typeset)
@@ -282,16 +282,22 @@ dataset_config() {
   esac
 }
 
-method_slug() {
-  printf '%s' "$1" | tr '-' '_' | tr -c '[:alnum:]_' '_'
-}
-
 write_manifest() {
   local train="$1"
   local manifest="$2"
   local model_dir="$3"
+  local training_manifest="$manifest.train.toml"
   mkdir -p "$model_dir" "$(dirname "$manifest")"
   local method_fragments="$FRAGMENTS"
+  local model_extension
+  case "$SELECTED_KIND" in
+    safe-ngram) model_extension="bin" ;;
+    italian-syllable) model_extension="json" ;;
+    *)
+      printf 'unknown selected method kind: %s\n' "$SELECTED_KIND" >&2
+      exit 1
+      ;;
+  esac
 
   {
     if [ "$INCLUDE_HYPHER" = "1" ]; then
@@ -312,46 +318,26 @@ write_manifest() {
       printf 'patterns = "%s"\n' "$(pwd)/$LIBREOFFICE_PATTERNS"
       printf 'requires_patterns = true\n\n'
     fi
-  } > "$manifest"
+    printf '[[methods]]\n'
+    printf 'slug = "%s"\n' "$SELECTED_SLUG"
+    printf 'method = "%s"\n' "$SELECTED_METHOD"
+    if [ -n "$method_fragments" ]; then
+      printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
+      printf 'pass_patterns = true\n'
+    fi
+    printf '\n'
+    printf '[methods.train]\n'
+    printf 'runtime_method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
+    printf 'output = "{model_dir}/{slug}.%s"\n' "$model_extension"
+    printf '\n'
+  } > "$training_manifest"
 
-  case "$SELECTED_KIND" in
-    safe-ngram)
-      local model="$model_dir/selected.bin"
-      "$BIN" compile-safe-ngram \
-        --gold "$train" \
-        --locale "$LOCALE" \
-        --method "$SELECTED_METHOD" \
-        --output "$model"
-      {
-      printf '[[methods]]\n'
-      printf 'slug = "%s"\n' "$SELECTED_SLUG"
-      printf 'method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
-      printf 'dictionary = "%s"\n' "$(pwd)/$model"
-      if [ -n "$method_fragments" ]; then
-        printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
-        printf 'pass_patterns = true\n'
-      fi
-      printf '\n'
-      } >> "$manifest"
-      ;;
-    italian-syllable)
-      {
-        printf '[[methods]]\n'
-        printf 'slug = "%s"\n' "$SELECTED_SLUG"
-        printf 'method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
-        printf 'dictionary = "%s"\n' "$(pwd)/$train"
-        if [ -n "$method_fragments" ]; then
-          printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
-          printf 'pass_patterns = true\n'
-        fi
-        printf '\n'
-      } >> "$manifest"
-      ;;
-    *)
-      printf 'unknown selected method kind: %s\n' "$SELECTED_KIND" >&2
-      exit 1
-      ;;
-  esac
+  "$BIN" method materialize \
+    --manifest "$training_manifest" \
+    --gold "$train" \
+    --locale "$LOCALE" \
+    --model-dir "$model_dir" \
+    --output "$manifest"
 }
 
 fold_row() {

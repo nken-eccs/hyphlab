@@ -8,7 +8,7 @@ ITERATIONS="${ITERATIONS:-1}"
 INIT_ITERATIONS="${INIT_ITERATIONS:-1}"
 INIT_WARMUP="${INIT_WARMUP:-0}"
 BIN="${BIN:-target/release/hyphlab}"
-METHODS_MANIFEST="${METHODS_MANIFEST:-methods.toml}"
+METHODS_MANIFEST="${METHODS_MANIFEST:-manifests/baselines.toml}"
 DATASETS="${DATASETS:-moby_en_us hyph_bench_cs_cstenten hyph_bench_cs_ujc hyph_bench_cssk_cshyphen hyph_bench_de_wortliste hyph_bench_is_hyphis hyph_bench_th_orchid hyph_bench_uk_wiktionary wiktextract_cs wiktextract_de wiktextract_es wiktextract_it wiktextract_nl wiktextract_ru wiktextract_th wiktextract_tr}"
 
 mkdir -p "$REPORT_ROOT"

@@ -15,5 +15,4 @@ target/
 /data/patterns
 /external
 /runs
-/reports
 *.profraw

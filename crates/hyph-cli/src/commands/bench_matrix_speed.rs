@@ -68,6 +68,35 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
     );
 
     let manifest = read_methods_manifest(&args.manifest)?;
+    let only = args
+        .only
+        .iter()
+        .map(|value| normalize_manifest_selector(value))
+        .collect::<Vec<_>>();
+    for method in &manifest.methods {
+        validate_manifest_slug(&method.slug)?;
+        if !only.is_empty() && !manifest_method_selected(method, &only) {
+            continue;
+        }
+        if !method.enabled {
+            continue;
+        }
+        if let Some(feature) = &method.requires_feature {
+            if !manifest_feature_available(feature) {
+                continue;
+            }
+        }
+        if !manifest_method_supports_locale(method, &args.locale) {
+            continue;
+        }
+        if method.train.is_some() {
+            anyhow::bail!(
+                "manifest method {:?} has a [methods.train] block; run `hyphlab method materialize` before `hyphlab matrix`",
+                method.slug
+            );
+        }
+    }
+
     std::fs::create_dir_all(&args.output_dir)
         .with_context(|| format!("create {}", args.output_dir.display()))?;
     let speed_dir = args.output_dir.join("speed");
@@ -81,11 +110,6 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
     let mut speed_inputs = Vec::new();
     let mut init_inputs = Vec::new();
     let skip_method_errors = !args.abort_method_errors;
-    let only = args
-        .only
-        .iter()
-        .map(|value| normalize_manifest_selector(value))
-        .collect::<Vec<_>>();
 
     for method in manifest.methods {
         validate_manifest_slug(&method.slug)?;

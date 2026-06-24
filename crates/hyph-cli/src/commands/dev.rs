@@ -64,7 +64,7 @@ fn cmd_dev_new_adapter(args: NewAdapterArgs) -> Result<()> {
     println!();
     println!("next:");
     println!("  cargo fmt --all");
-    println!("  cargo check -p hyph-cli");
+    println!("  cargo check -p hyph-cli --features adapters-hyphenation-embedded");
     println!("  cargo run -p hyph-cli -- dev smoke {}", args.slug);
     Ok(())
 }
@@ -318,4 +318,3 @@ fn to_pascal_identifier(value: &str) -> String {
     }
     out
 }
-

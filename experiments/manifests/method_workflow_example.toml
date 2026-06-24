@@ -1,0 +1,16 @@
+# Minimal example for `hyphlab method materialize`.
+# Trainable rows use [methods.train]; fixed rows are copied to the runtime manifest.
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["en"]
+
+[[methods]]
+slug = "guarded_ngram_experiment"
+method = "safe-ngram-3x3-s1-p80"
+supports = ["en"]
+
+[methods.train]
+runtime_method = "safe-ngram-model"
+output = "{model_dir}/{slug}.bin"

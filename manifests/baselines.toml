@@ -1,0 +1,31 @@
+# Fixed-method baseline manifest for `hyphlab matrix`.
+#
+# This file is for methods that do not learn from the evaluated gold file.
+# Trainable models, tuned recipes, dictionary oracles, and full-corpus reusable
+# models should live in experiment-specific manifests instead.
+
+[[methods]]
+slug = "no_hyphen"
+method = "no-hyphen"
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+supports = ["cs", "de", "en", "es", "it", "nl", "pt", "ru", "tr"]
+
+[[methods]]
+slug = "hyphenation_embedded"
+method = "hyphenation-embedded"
+supports = ["en"]
+requires_feature = "adapters-hyphenation-embedded"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "hypher_liang_consensus"
+method = "hypher-liang-consensus"
+requires_patterns = true
+supports = ["cs", "de", "en", "es", "it", "nl", "pt", "ru", "tr"]

@@ -342,17 +342,17 @@ for dataset in $DATASETS; do
 
   case "$MODEL_KIND" in
     safe-ngram)
-      "$BIN" compile-safe-ngram \
+      "$BIN" method train \
+        --method "$RECIPE" \
         --gold "$GOLD" \
         --locale "$LOCALE" \
-        --method "$RECIPE" \
         --output "$model"
       ;;
     italian-syllable-model)
-      "$BIN" compile-italian-syllable \
+      "$BIN" method train \
+        --method "$RECIPE" \
         --gold "$GOLD" \
         --locale "$LOCALE" \
-        --method "$RECIPE" \
         --output "$model"
       ;;
     *)
