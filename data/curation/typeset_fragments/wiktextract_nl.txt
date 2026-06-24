@@ -1,0 +1,12 @@
+# Exact visible fragments blocked for Dutch typesetting curation.
+
+kut
+lul
+hoer
+neger
+nazi
+poep
+kak
+seks
+
+# Manual review only: homo.

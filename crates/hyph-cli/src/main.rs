@@ -41,6 +41,7 @@ use hashing::{mix_u64, U64HashMap, U64HashSet};
 use predict::{cmd_predict, PredictArgs};
 
 include!("cli.rs");
+include!("typeset_fragments.rs");
 
 fn main() -> Result<()> {
     let cli = Cli::parse();
@@ -48,6 +49,7 @@ fn main() -> Result<()> {
         Command::Data { command } => match command {
             DataCommand::ImportTsv(args) => cmd_import_tsv(args),
             DataCommand::ImportMoby(args) => cmd_import_moby(args),
+            DataCommand::CurateTypeset(args) => cmd_curate_typeset(args),
             DataCommand::ImportWlhamb(args) => cmd_import_wlhamb(args),
             DataCommand::ImportWiktextract(args) => cmd_import_wiktextract(args),
             DataCommand::ExportPatgen(args) => cmd_export_patgen(args),

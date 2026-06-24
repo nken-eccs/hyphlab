@@ -8,7 +8,10 @@ sources:
     kind: hyphenated_wordlist
     url: https://www.gutenberg.org/files/3204/files/mhyph.txt
     local_path: data/raw/moby/mhyph.txt
-    generated_gold: data/gold/moby_en_us.jsonl.zst
+    generated_gold:
+      - data/gold/moby_en_us.jsonl.zst
+      - data/gold/moby_en_us_typeset.jsonl.zst
+    derived_gold_note: data/gold/moby_en_us_typeset.jsonl.zst is generated from the normalized Moby corpus with typesetting fragment filters.
     license_note: Public-domain status depends on jurisdiction; treat as public-domain-in-USA unless reviewed.
     status: downloaded
   - id: tex_hyphen
@@ -68,6 +71,22 @@ sources:
       - ru
       - th
       - tr
+    generated_gold:
+      - data/gold/wiktextract/cs.jsonl.zst
+      - data/gold/wiktextract/cs_typeset.jsonl.zst
+      - data/gold/wiktextract/de.jsonl.zst
+      - data/gold/wiktextract/de_typeset.jsonl.zst
+      - data/gold/wiktextract/es.jsonl.zst
+      - data/gold/wiktextract/es_typeset.jsonl.zst
+      - data/gold/wiktextract/it.jsonl.zst
+      - data/gold/wiktextract/it_typeset.jsonl.zst
+      - data/gold/wiktextract/nl.jsonl.zst
+      - data/gold/wiktextract/nl_typeset.jsonl.zst
+      - data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst
+      - data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst
+      - data/gold/wiktextract/tr.jsonl.zst
+      - data/gold/wiktextract/tr_typeset.jsonl.zst
+    derived_gold_note: The *_typeset files are generated from normalized Wiktextract / Kaikki corpora with typesetting fragment filters.
     status: downloaded
   - id: kaikki_raw_wiktextract_english
     kind: wiktionary_raw_dump

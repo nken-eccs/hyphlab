@@ -8,6 +8,7 @@ impl PreparedMethod {
             Self::Dictionary { id, .. } => id,
             Self::DictionaryFallback { id, .. } => id,
             Self::SafeNgram(inner) => inner.id(),
+            Self::FragmentFiltered { id, .. } => id,
             Self::ItalianSyllable(inner) => inner.id(),
             Self::IdentityOracle { .. } => "identity-oracle",
             Self::Crf(inner) => inner.id(),
@@ -23,6 +24,7 @@ impl PreparedMethod {
             Self::Dictionary { config, .. } => config,
             Self::DictionaryFallback { config, .. } => config,
             Self::SafeNgram(inner) => inner.config(),
+            Self::FragmentFiltered { config, .. } => config,
             Self::ItalianSyllable(inner) => inner.config(),
             Self::IdentityOracle { config } => config,
             Self::Crf(inner) => inner.config(),
@@ -52,6 +54,16 @@ impl PreparedMethod {
             Self::Liang(inner) => inner.hyphenate_into(word, out),
             Self::Crf(inner) => inner.hyphenate_into(word, out),
             Self::SafeNgram(inner) => inner.hyphenate_into(word, out),
+            Self::FragmentFiltered {
+                inner,
+                config,
+                fragments,
+                ..
+            } => {
+                inner.hyphenate_into(word, out)?;
+                filter_typeset_fragments(word, config, fragments, out);
+                Ok(())
+            }
             Self::ItalianSyllable(inner) => inner.hyphenate_into(word, out),
             Self::Dictionary { entries, .. } => {
                 out.clear();
@@ -249,6 +261,9 @@ fn prepare_method(options: MethodOptions) -> Result<PreparedMethod> {
             prepare_italian_syllable(options)
         }
         "safe-ngram-model" => prepare_safe_ngram_model(options),
+        "typeset-safe-ngram-model" | "moby-typeset-safe-ngram-model" => {
+            prepare_typeset_safe_ngram_model(options)
+        }
         method if method.starts_with("safe-ngram") => prepare_safe_ngram(options),
         "trogkanis-elkan-crf" => prepare_crf(options),
         "hyphenation-runtime" | "hyphenation-standard-runtime" | "hyphenation-file" => {
@@ -457,6 +472,34 @@ fn prepare_safe_ngram_model(options: MethodOptions) -> Result<PreparedMethod> {
     )?))
 }
 
+fn prepare_typeset_safe_ngram_model(options: MethodOptions) -> Result<PreparedMethod> {
+    anyhow::ensure!(
+        options.left_min.is_none() && options.right_min.is_none() && options.min_word_len.is_none(),
+        "typeset-safe-ngram-model uses the saved model config; CLI config overrides are not supported"
+    );
+    let model_path = options.dictionary.as_ref().context(
+        "--dictionary is required as the model path for --method typeset-safe-ngram-model",
+    )?;
+    let fragments_path = options
+        .patterns
+        .clone()
+        .unwrap_or_else(|| PathBuf::from("data/curation/typeset_fragments/moby_en_us.txt"));
+    let model = SafeNgramModelFile::load(model_path)?;
+    let inner = SafeNgramMethod::from_model(model_path, &options.locale, model)?;
+    let config = inner.config().clone();
+    let id = format!(
+        "typeset-filter:{}:{}",
+        inner.id(),
+        file_stem(&fragments_path)
+    );
+    Ok(PreparedMethod::FragmentFiltered {
+        id,
+        config,
+        inner: Box::new(PreparedMethod::SafeNgram(inner)),
+        fragments: TypesetFragmentFilter::new(load_sensitive_fragments(&fragments_path)?),
+    })
+}
+
 fn prepare_dictionary(options: MethodOptions) -> Result<PreparedMethod> {
     let path = options
         .dictionary
@@ -535,4 +578,3 @@ fn apply_config_overrides(config: &mut HyphenationConfig, options: &MethodOption
         config.min_word_len = min_word_len;
     }
 }
-

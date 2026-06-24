@@ -1,8 +1,8 @@
 # Data
 
-The data directory starts with small fixtures and manifests. Large raw
-downloads, copied pattern corpora, and generated compressed gold files can be
-recreated from the scripts below.
+The data directory contains small fixtures, source manifests, and curated
+typesetting corpora. Large raw downloads, copied pattern corpora, and the
+remaining normalized gold files can be recreated from the scripts below.
 
 ## Recreate Downloads
 
@@ -21,7 +21,10 @@ Current evaluation usage:
 
 - `data/gold/moby_en_us.jsonl.zst` and selected
   `data/gold/wiktextract/*.jsonl.zst` files are the gold data for the
-  multilingual 5-fold report.
+  multilingual 5-fold report. `data/gold/moby_en_us_typeset.jsonl.zst` is a
+  curated derivative for English typesetting experiments.
+- `data/gold/wiktextract/*_typeset.jsonl.zst` files are curated derivatives
+  for multilingual typesetting experiments.
 - `data/patterns/tex-hyphen/...` drives Liang / TeX pattern baselines.
 - `data/gold/hyph_bench/*.jsonl.zst` is used by the optional full-gold
   baseline matrix and the additional `hyph-bench` 5-fold report.
@@ -32,13 +35,29 @@ Current evaluation usage:
 
 ## Choosing Data
 
-Use `data/gold/moby_en_us.jsonl.zst` for en-US English experiments and the
-`moby_en_us.bin` reusable model.
+Use `data/gold/moby_en_us.jsonl.zst` for en-US English experiments that need
+the original Moby syllable labels and the `moby_en_us.bin` reusable model.
+
+Use `data/gold/moby_en_us_typeset.jsonl.zst` for en-US typesetting experiments
+where unsafe line fragments are filtered out by the current fragment policy.
+Regenerate it with:
+
+```bash
+bash scripts/curate_moby_typeset.sh
+```
 
 Use `data/gold/wiktextract/*.jsonl.zst` for multilingual learned-model
 experiments and the `wiktextract_*` reusable models. Russian experiments should
 usually use
 `data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst`.
+
+Use the matching `data/gold/wiktextract/*_typeset.jsonl.zst` files when the
+target is reader-facing line breaking. Regenerate them after importing
+Wiktextract / Kaikki with:
+
+```bash
+bash scripts/curate_wiktextract_typeset.sh
+```
 
 Use `data/gold/hyph_bench/*.jsonl.zst` for additional external-corpus checks.
 The hyph-bench report covers Czech/German datasets that can be compared with
@@ -56,6 +75,16 @@ unbiased trainable-method evaluation, create train/test splits or use
 The Moby importer collapses duplicate words into one record. Conflicting
 hyphenations for the same word are preserved as `ambiguous=true` records with
 all distinct break sets in `variants`.
+
+The Moby typesetting curation scans every record and removes candidate
+boundaries that violate the configured line-fragment policy. It also drops
+records containing the Unicode replacement character. The curation report is
+written under `target/hyphlab-reports/curation/`.
+
+The Wiktextract typesetting curation uses the same boundary policy with
+language-specific fragment files under `data/curation/typeset_fragments/`.
+Summary notes are in
+`docs/reports/wiktextract_typeset_5fold_v1/curation.md`.
 
 Normalize hyph-bench WLHAMB files:
 

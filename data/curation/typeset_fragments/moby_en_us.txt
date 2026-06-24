@@ -1,0 +1,51 @@
+# Case-insensitive fragments that should not appear as a standalone
+# hyphenation line fragment in the Moby en-US typesetting corpus.
+#
+# The rule is exact and local: a Moby break is removed only when the line
+# fragment immediately before or after that break exactly matches one of these
+# entries inside the alphabetic token.
+#
+# This list was built from a full scan of Moby break fragments, then filtered
+# to fragments with small corpus impact and high risk as visible line-end
+# pieces.
+
+# Identity or ethnicity slurs and slur-like fragments.
+jap
+gyp
+nig
+paki
+spic
+fag
+gook
+coon
+dago
+
+# Body, sexual, and coarse fragments that are poor visible line fragments.
+anal
+arse
+anus
+ass
+bastard
+bitch
+clit
+idiot
+klan
+moron
+nazi
+piss
+scum
+shit
+fuck
+fucker
+twat
+slut
+crap
+sodo
+pedo
+paedo
+peder
+rape
+rectum
+vagina
+boob
+whore

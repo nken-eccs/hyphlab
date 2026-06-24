@@ -30,6 +30,12 @@ enum PreparedMethod {
         fallback: Box<PreparedMethod>,
     },
     SafeNgram(SafeNgramMethod),
+    FragmentFiltered {
+        id: String,
+        config: HyphenationConfig,
+        inner: Box<PreparedMethod>,
+        fragments: TypesetFragmentFilter,
+    },
     ItalianSyllable(ItalianSyllableMethod),
     IdentityOracle {
         config: HyphenationConfig,
@@ -177,4 +183,3 @@ struct SafeNgramModelMeta {
     #[serde(default)]
     veto_rule_count: usize,
 }
-

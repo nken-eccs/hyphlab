@@ -19,13 +19,29 @@ Use the hyph-bench report as an additional external-corpus check:
 docs/reports/hyph_bench_5fold_v1/summary.md
 ```
 
+Use the curated Moby typesetting report when the target is en-US line-break
+behavior rather than preserving every Moby syllable boundary:
+
+```text
+docs/reports/moby_typeset_5fold_v1/summary.md
+```
+
+Use the curated Wiktextract typesetting report for multilingual line-break
+behavior:
+
+```text
+docs/reports/wiktextract_typeset_5fold_v1/summary.md
+```
+
 The selected learned methods are:
 
 | language/data | selected method family |
 | --- | --- |
 | en-US Moby | Guarded N-gram |
+| en-US Moby typesetting | Guarded N-gram |
 | Czech, German, Spanish, Dutch, Russian, Turkish Wiktextract | Guarded N-gram |
 | Italian Wiktextract | Italian onset-syllable model |
+| Wiktextract typesetting derivatives | Guarded N-gram |
 | Czech/German hyph-bench | Guarded N-gram |
 
 Detailed recipes live in [`guarded_ngram.md`](guarded_ngram.md), and full-corpus

@@ -4,6 +4,14 @@ target/
 /data/interim
 /data/gold/*.zst
 /data/gold/**/*.zst
+!/data/gold/moby_en_us_typeset.jsonl.zst
+!/data/gold/wiktextract/cs_typeset.jsonl.zst
+!/data/gold/wiktextract/de_typeset.jsonl.zst
+!/data/gold/wiktextract/es_typeset.jsonl.zst
+!/data/gold/wiktextract/it_typeset.jsonl.zst
+!/data/gold/wiktextract/nl_typeset.jsonl.zst
+!/data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst
+!/data/gold/wiktextract/tr_typeset.jsonl.zst
 /data/patterns
 /external
 /runs

@@ -1,0 +1,9 @@
+# Exact visible fragments blocked for Spanish typesetting curation.
+# Spanish has many false positives for broad fragments such as ano, pene,
+# culo, puta, and puto, so the active list starts narrow.
+
+coño
+mierda
+prefix:nazi
+
+# Manual review only: ano, pene, culo, puta, puto.

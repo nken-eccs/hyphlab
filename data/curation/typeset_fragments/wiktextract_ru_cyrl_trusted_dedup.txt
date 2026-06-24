@@ -1,0 +1,12 @@
+# Exact visible fragments blocked for Russian Cyrillic typesetting curation.
+# This list is intentionally narrow: several short Cyrillic strings have many
+# ordinary or name-like false positives when used as exact line fragments.
+
+ёб
+ёба
+еба
+пиз
+бля
+хуе
+
+# Manual review only: ху, сра, муд, сука, гомо, ниг, трах, чур, жид, пед.

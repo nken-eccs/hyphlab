@@ -1,0 +1,9 @@
+# Exact visible fragments blocked for Turkish typesetting curation.
+# Side-specific rules avoid false positives such as ek-sik and tok-sik.
+
+prefix:sik
+prefix:bok
+göt
+prefix:salak
+
+# Manual review only: broad suffix forms of sik/bok.

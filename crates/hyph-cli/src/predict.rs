@@ -60,6 +60,7 @@ struct SavedModelSpec {
     locale: &'static str,
     method: &'static str,
     dictionary: &'static str,
+    patterns: Option<&'static str>,
 }
 
 const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
@@ -69,6 +70,21 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "en-US",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/moby_en_us.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "en-US-typeset",
+        aliases: &[
+            "en-typeset",
+            "english-typeset",
+            "moby-typeset",
+            "moby_en_us_typeset",
+            "moby-en-us-typeset",
+        ],
+        locale: "en-US",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/moby_en_us_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/moby_en_us.txt"),
     },
     SavedModelSpec {
         key: "cs",
@@ -76,6 +92,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "cs",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_cs.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "cs-typeset",
+        aliases: &[
+            "czech-typeset",
+            "wiktextract-cs-typeset",
+            "wiktextract_cs_typeset",
+        ],
+        locale: "cs",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_cs_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_cs.txt"),
     },
     SavedModelSpec {
         key: "de",
@@ -83,6 +112,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "de",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_de.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "de-typeset",
+        aliases: &[
+            "german-typeset",
+            "wiktextract-de-typeset",
+            "wiktextract_de_typeset",
+        ],
+        locale: "de",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_de_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_de.txt"),
     },
     SavedModelSpec {
         key: "es",
@@ -90,6 +132,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "es",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_es.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "es-typeset",
+        aliases: &[
+            "spanish-typeset",
+            "wiktextract-es-typeset",
+            "wiktextract_es_typeset",
+        ],
+        locale: "es",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_es_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_es.txt"),
     },
     SavedModelSpec {
         key: "it",
@@ -97,6 +152,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "it",
         method: "italian-syllable-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_it.json",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "it-typeset",
+        aliases: &[
+            "italian-typeset",
+            "wiktextract-it-typeset",
+            "wiktextract_it_typeset",
+        ],
+        locale: "it",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_it_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_it.txt"),
     },
     SavedModelSpec {
         key: "nl",
@@ -104,6 +172,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "nl",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_nl.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "nl-typeset",
+        aliases: &[
+            "dutch-typeset",
+            "wiktextract-nl-typeset",
+            "wiktextract_nl_typeset",
+        ],
+        locale: "nl",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_nl_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_nl.txt"),
     },
     SavedModelSpec {
         key: "ru",
@@ -118,6 +199,22 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "ru",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_ru_cyrl_trusted_dedup.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "ru-typeset",
+        aliases: &[
+            "russian-typeset",
+            "wiktextract-ru-typeset",
+            "wiktextract_ru_typeset",
+            "ru-cyrl-trusted-dedup-typeset",
+            "wiktextract-ru-cyrl-trusted-dedup-typeset",
+            "wiktextract_ru_cyrl_trusted_dedup_typeset",
+        ],
+        locale: "ru",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_ru_cyrl_trusted_dedup_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"),
     },
     SavedModelSpec {
         key: "tr",
@@ -125,6 +222,19 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         locale: "tr",
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_tr.bin",
+        patterns: None,
+    },
+    SavedModelSpec {
+        key: "tr-typeset",
+        aliases: &[
+            "turkish-typeset",
+            "wiktextract-tr-typeset",
+            "wiktextract_tr_typeset",
+        ],
+        locale: "tr",
+        method: "typeset-safe-ngram-model",
+        dictionary: "models/guarded_ngram/v1/wiktextract_tr_typeset.bin",
+        patterns: Some("data/curation/typeset_fragments/wiktextract_tr.txt"),
     },
 ];
 
@@ -143,7 +253,7 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
         with_hypher,
         list_saved_models: _,
         gold,
-        patterns,
+        mut patterns,
         mut dictionary,
         external_command,
         left_min,
@@ -170,6 +280,9 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
         method = spec.method.to_string();
         locale = spec.locale.to_string();
         dictionary = Some(PathBuf::from(spec.dictionary));
+        if patterns.is_none() {
+            patterns = spec.patterns.map(PathBuf::from);
+        }
     }
 
     if with_hypher
@@ -208,7 +321,7 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
             method: prepare_method(MethodOptions {
                 method: spec.method.to_string(),
                 locale: spec.locale.to_string(),
-                patterns: None,
+                patterns: spec.patterns.map(PathBuf::from),
                 dictionary: Some(PathBuf::from(spec.dictionary)),
                 dictionary_is_gold_oracle: false,
                 external_command: None,
@@ -305,11 +418,15 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
 }
 
 fn print_saved_models() {
-    println!("key\tlocale\tmethod\tdictionary");
+    println!("key\tlocale\tmethod\tdictionary\tpatterns");
     for spec in SAVED_MODEL_SPECS {
         println!(
-            "{}\t{}\t{}\t{}",
-            spec.key, spec.locale, spec.method, spec.dictionary
+            "{}\t{}\t{}\t{}\t{}",
+            spec.key,
+            spec.locale,
+            spec.method,
+            spec.dictionary,
+            spec.patterns.unwrap_or("")
         );
     }
 }

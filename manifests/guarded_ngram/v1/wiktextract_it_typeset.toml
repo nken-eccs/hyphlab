@@ -1,0 +1,19 @@
+# Reusable runtime manifest.
+# Model trained from full curated corpus plus runtime fragment guard: data/gold/wiktextract/it_typeset.jsonl.zst
+# Use split-based or 5-fold runs for unbiased accuracy evaluation.
+
+[[methods]]
+slug = "hypher"
+method = "hypher"
+
+[[methods]]
+slug = "liang_tex"
+method = "liang"
+requires_patterns = true
+
+[[methods]]
+slug = "guarded_ngram"
+method = "typeset-safe-ngram-model"
+dictionary = "../../../models/guarded_ngram/v1/wiktextract_it_typeset.bin"
+patterns = "../../../data/curation/typeset_fragments/wiktextract_it.txt"
+pass_patterns = true

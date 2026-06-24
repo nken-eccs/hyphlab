@@ -1,0 +1,13 @@
+# Exact visible fragments blocked for German typesetting curation.
+
+scheiß
+scheiss
+arsch
+fick
+hure
+huren
+fotze
+nazi
+neger
+
+# Manual review only: sex, jude, jud, kot.

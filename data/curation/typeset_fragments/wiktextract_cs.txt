@@ -1,0 +1,10 @@
+# Exact visible fragments blocked for Czech typesetting curation.
+# Bare entries apply to both sides of a break. Use prefix:/suffix: for
+# side-specific entries when the opposite side has known false positives.
+
+prdel
+hovno
+kurva
+blb
+
+# Manual review only: homo, sex, pica, žid, cikán.

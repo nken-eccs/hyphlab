@@ -32,7 +32,9 @@ dataset_config() {
   LIBREOFFICE_PATTERNS=""
   SELECTED_KIND=""
   SELECTED_METHOD=""
+  SELECTED_RUNTIME_METHOD=""
   SELECTED_SLUG=""
+  FRAGMENTS=""
   INCLUDE_HYPHER="1"
   INCLUDE_LIANG="1"
 
@@ -43,7 +45,18 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-en-us.tex"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    moby_en_us_typeset)
+      GOLD="data/gold/moby_en_us_typeset.jsonl.zst"
+      LOCALE="en-US"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-en-us.tex"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/moby_en_us.txt"
       ;;
     wiktextract_cs)
       GOLD="data/gold/wiktextract/cs.jsonl.zst"
@@ -52,7 +65,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_cs_typeset)
+      GOLD="data/gold/wiktextract/cs_typeset.jsonl.zst"
+      LOCALE="cs"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_cs.txt"
       ;;
     wiktextract_de)
       GOLD="data/gold/wiktextract/de.jsonl.zst"
@@ -61,7 +86,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_de_typeset)
+      GOLD="data/gold/wiktextract/de_typeset.jsonl.zst"
+      LOCALE="de"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-de-1996.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_de.txt"
       ;;
     wiktextract_es)
       GOLD="data/gold/wiktextract/es.jsonl.zst"
@@ -70,7 +107,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/es/hyph_es.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-3x2-s1-p60"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_es_typeset)
+      GOLD="data/gold/wiktextract/es_typeset.jsonl.zst"
+      LOCALE="es"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-es.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/es/hyph_es.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-3x2-s1-p60"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_es.txt"
       ;;
     wiktextract_it)
       GOLD="data/gold/wiktextract/it.jsonl.zst"
@@ -79,7 +128,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/it/hyph_it_IT.dic"
       SELECTED_KIND="italian-syllable"
       SELECTED_METHOD="italian-syllable"
+      SELECTED_RUNTIME_METHOD="italian-syllable"
       SELECTED_SLUG="italian_onset_syllable"
+      ;;
+    wiktextract_it_typeset)
+      GOLD="data/gold/wiktextract/it_typeset.jsonl.zst"
+      LOCALE="it"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/it/hyph_it_IT.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_it.txt"
       ;;
     wiktextract_nl)
       GOLD="data/gold/wiktextract/nl.jsonl.zst"
@@ -88,7 +149,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/nl/hyph_nl_NL.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_nl_typeset)
+      GOLD="data/gold/wiktextract/nl_typeset.jsonl.zst"
+      LOCALE="nl"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-nl.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/nl/hyph_nl_NL.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_nl.txt"
       ;;
     wiktextract_ru_cyrl_trusted_dedup)
       GOLD="data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst"
@@ -97,7 +170,19 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/ru/hyph_ru_RU.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_ru_cyrl_trusted_dedup_typeset)
+      GOLD="data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst"
+      LOCALE="ru"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-ru.tex"
+      LIBREOFFICE_PATTERNS="data/patterns/libreoffice/ru/hyph_ru_RU.dic"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"
       ;;
     wiktextract_tr)
       GOLD="data/gold/wiktextract/tr.jsonl.zst"
@@ -105,7 +190,18 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-tr.tex"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x2-s1-p70"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
+      ;;
+    wiktextract_tr_typeset)
+      GOLD="data/gold/wiktextract/tr_typeset.jsonl.zst"
+      LOCALE="tr"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-tr.tex"
+      SELECTED_KIND="safe-ngram"
+      SELECTED_METHOD="safe-ngram-unicode-mixcv-2x2-s1-p70"
+      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_SLUG="guarded_ngram"
+      FRAGMENTS="data/curation/typeset_fragments/wiktextract_tr.txt"
       ;;
     hyph_bench_cs_cstenten)
       GOLD="data/gold/hyph_bench/cs_cstenten.jsonl.zst"
@@ -114,6 +210,7 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       ;;
     hyph_bench_cs_ujc)
@@ -123,6 +220,7 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       ;;
     hyph_bench_cssk_cshyphen)
@@ -132,6 +230,7 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       ;;
     hyph_bench_de_wortliste)
@@ -141,6 +240,7 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       ;;
     hyph_bench_is_hyphis)
@@ -149,6 +249,7 @@ dataset_config() {
       PATTERNS=""
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       INCLUDE_HYPHER="0"
       INCLUDE_LIANG="0"
@@ -159,6 +260,7 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-th.tex"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       INCLUDE_HYPHER="0"
       ;;
@@ -168,6 +270,7 @@ dataset_config() {
       PATTERNS=""
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
       INCLUDE_HYPHER="0"
       INCLUDE_LIANG="0"
@@ -188,6 +291,7 @@ write_manifest() {
   local manifest="$2"
   local model_dir="$3"
   mkdir -p "$model_dir" "$(dirname "$manifest")"
+  local method_fragments="$FRAGMENTS"
 
   {
     if [ "$INCLUDE_HYPHER" = "1" ]; then
@@ -219,18 +323,28 @@ write_manifest() {
         --method "$SELECTED_METHOD" \
         --output "$model"
       {
-        printf '[[methods]]\n'
-        printf 'slug = "%s"\n' "$SELECTED_SLUG"
-        printf 'method = "safe-ngram-model"\n'
-        printf 'dictionary = "%s"\n\n' "$(pwd)/$model"
+      printf '[[methods]]\n'
+      printf 'slug = "%s"\n' "$SELECTED_SLUG"
+      printf 'method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
+      printf 'dictionary = "%s"\n' "$(pwd)/$model"
+      if [ -n "$method_fragments" ]; then
+        printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
+        printf 'pass_patterns = true\n'
+      fi
+      printf '\n'
       } >> "$manifest"
       ;;
     italian-syllable)
       {
         printf '[[methods]]\n'
         printf 'slug = "%s"\n' "$SELECTED_SLUG"
-        printf 'method = "italian-syllable"\n'
-        printf 'dictionary = "%s"\n\n' "$(pwd)/$train"
+        printf 'method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
+        printf 'dictionary = "%s"\n' "$(pwd)/$train"
+        if [ -n "$method_fragments" ]; then
+          printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
+          printf 'pass_patterns = true\n'
+        fi
+        printf '\n'
       } >> "$manifest"
       ;;
     *)
@@ -333,6 +447,12 @@ summarize_overall() {
     for dataset in $DATASETS; do
       dataset_config "$dataset"
       printf '| `%s` | `%s` | `%s` |\n' "$dataset" "$SELECTED_SLUG" "$SELECTED_METHOD"
+    done
+    printf '\n'
+    printf 'Gold data:\n\n'
+    for dataset in $DATASETS; do
+      dataset_config "$dataset"
+      printf -- '- `%s`: `%s`\n' "$dataset" "$GOLD"
     done
     printf '\n'
     printf 'Mean and sample standard deviation across folds:\n\n'

@@ -1,0 +1,6 @@
+# Exact visible fragments blocked for Italian typesetting curation.
+
+cazzo
+prefix:nazi
+
+# Manual review only: ano, fica, negro.

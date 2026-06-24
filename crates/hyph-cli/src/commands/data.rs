@@ -26,6 +26,170 @@ fn cmd_import_moby(args: ImportMobyArgs) -> Result<()> {
     Ok(())
 }
 
+fn cmd_curate_typeset(args: CurateTypesetArgs) -> Result<()> {
+    anyhow::ensure!(args.left_min > 0, "--left-min must be positive");
+    anyhow::ensure!(args.right_min > 0, "--right-min must be positive");
+
+    let sensitive = load_sensitive_fragments(&args.sensitive_fragments)?;
+    let records = read_records(&args.input)?;
+    anyhow::ensure!(!records.is_empty(), "{} is empty", args.input.display());
+
+    let mut report = Vec::new();
+    let mut output = Vec::with_capacity(records.len());
+    let mut changed_records = 0usize;
+    let mut dropped_records = 0usize;
+    let mut removed_breaks = 0usize;
+    let mut replacement_char_records = 0usize;
+
+    for mut record in records {
+        if !args.keep_replacement_char && record.word.contains('\u{fffd}') {
+            replacement_char_records += 1;
+            dropped_records += 1;
+            report.push(CurationReportRow {
+                id: record.id,
+                word: record.word,
+                original: record.hyphenated,
+                curated: String::new(),
+                removed: Vec::new(),
+                reasons: vec!["drop_replacement_char".to_string()],
+            });
+            continue;
+        }
+
+        let original_hyphenated = record.hyphenated.clone();
+        let original_break_count = record.breaks.len()
+            + record
+                .variants
+                .iter()
+                .map(|variant| variant.len())
+                .sum::<usize>();
+
+        let (curated_breaks, mut reasons) = curate_break_set(
+            &record.word,
+            &record.breaks,
+            args.left_min,
+            args.right_min,
+            &sensitive,
+        );
+        let mut curated_variants = record
+            .variants
+            .iter()
+            .map(|variant| {
+                let (breaks, variant_reasons) = curate_break_set(
+                    &record.word,
+                    variant,
+                    args.left_min,
+                    args.right_min,
+                    &sensitive,
+                );
+                reasons.extend(variant_reasons);
+                breaks
+            })
+            .collect::<Vec<_>>();
+
+        curated_variants.push(curated_breaks);
+        curated_variants.sort();
+        curated_variants.dedup();
+        let breaks = curated_variants.first().cloned().unwrap_or_default();
+        let variants = curated_variants
+            .into_iter()
+            .filter(|variant| variant != &breaks)
+            .collect::<Vec<_>>();
+
+        record.breaks = breaks;
+        record.variants = variants;
+        record.ambiguous = !record.variants.is_empty();
+        record.hyphenated = insert_separator(&record.word, &record.breaks, "-");
+        record.source = format!("{}:{}", record.source, args.source_suffix);
+
+        let new_break_count = record.breaks.len()
+            + record
+                .variants
+                .iter()
+                .map(|variant| variant.len())
+                .sum::<usize>();
+        removed_breaks += original_break_count.saturating_sub(new_break_count);
+
+        if original_hyphenated != record.hyphenated || !reasons.is_empty() {
+            changed_records += 1;
+            reasons.sort();
+            reasons.dedup();
+            record.notes.push(format!(
+                "{}:left_min={},right_min={},fragments={}",
+                args.note_tag,
+                args.left_min,
+                args.right_min,
+                args.sensitive_fragments.display()
+            ));
+            report.push(CurationReportRow {
+                id: record.id.clone(),
+                word: record.word.clone(),
+                original: original_hyphenated,
+                curated: record.hyphenated.clone(),
+                removed: Vec::new(),
+                reasons,
+            });
+        }
+
+        output.push(record);
+    }
+
+    let output_count = write_records(&args.output, output)?;
+    if let Some(report_path) = &args.report {
+        write_curation_report(report_path, &report)?;
+    }
+
+    println!("input_records: {}", output_count + dropped_records);
+    println!("output_records: {output_count}");
+    println!("changed_records: {changed_records}");
+    println!("dropped_records: {dropped_records}");
+    println!("dropped_replacement_char_records: {replacement_char_records}");
+    println!("removed_breaks: {removed_breaks}");
+    println!("output: {}", args.output.display());
+    if let Some(report_path) = &args.report {
+        println!("report: {}", report_path.display());
+    }
+    Ok(())
+}
+
+#[derive(Debug)]
+struct CurationReportRow {
+    id: String,
+    word: String,
+    original: String,
+    curated: String,
+    removed: Vec<String>,
+    reasons: Vec<String>,
+}
+
+fn write_curation_report(path: &Path, rows: &[CurationReportRow]) -> Result<()> {
+    create_parent(path)?;
+    let file = File::create(path).with_context(|| format!("create {}", path.display()))?;
+    let mut writer = BufWriter::new(file);
+    writeln!(
+        writer,
+        "id\tword\toriginal_hyphenated\tcurated_hyphenated\treasons"
+    )?;
+    for row in rows {
+        writeln!(
+            writer,
+            "{}\t{}\t{}\t{}\t{}{}",
+            row.id,
+            row.word,
+            row.original,
+            row.curated,
+            row.reasons.join(";"),
+            if row.removed.is_empty() {
+                String::new()
+            } else {
+                format!(";removed={}", row.removed.join(","))
+            }
+        )?;
+    }
+    writer.flush()?;
+    Ok(())
+}
+
 fn cmd_import_wlhamb(args: ImportWlhambArgs) -> Result<()> {
     let report = import_wlhamb(ImportWlhambOptions {
         input: args.input,
@@ -646,4 +810,3 @@ fn cmd_stats(args: StatsArgs) -> Result<()> {
     println!("locales: {}", locales.join(", "));
     Ok(())
 }
-

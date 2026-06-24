@@ -41,6 +41,8 @@ enum Command {
 enum DataCommand {
     ImportTsv(ImportTsvArgs),
     ImportMoby(ImportMobyArgs),
+    #[command(name = "curate-typeset", alias = "curate-moby-typeset")]
+    CurateTypeset(CurateTypesetArgs),
     ImportWlhamb(ImportWlhambArgs),
     ImportWiktextract(ImportWiktextractArgs),
     ExportPatgen(ExportPatgenArgs),
@@ -96,6 +98,28 @@ struct ImportMobyArgs {
     license: Option<String>,
     #[arg(long, default_value = "0xA5")]
     separator: String,
+}
+
+#[derive(Debug, Parser)]
+struct CurateTypesetArgs {
+    #[arg(short, long)]
+    input: PathBuf,
+    #[arg(short, long)]
+    output: PathBuf,
+    #[arg(long)]
+    report: Option<PathBuf>,
+    #[arg(long, default_value = "data/curation/typeset_fragments/moby_en_us.txt")]
+    sensitive_fragments: PathBuf,
+    #[arg(long, default_value_t = 2)]
+    left_min: usize,
+    #[arg(long, default_value_t = 3)]
+    right_min: usize,
+    #[arg(long, default_value = "typeset")]
+    source_suffix: String,
+    #[arg(long, default_value = "typeset_curated")]
+    note_tag: String,
+    #[arg(long)]
+    keep_replacement_char: bool,
 }
 
 #[derive(Debug, Parser)]
@@ -600,4 +624,3 @@ impl AmbiguousPolicyArg {
 fn default_enabled() -> bool {
     true
 }
-

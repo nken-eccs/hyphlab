@@ -19,6 +19,8 @@ models, and exploratory outputs should stay under `target/`.
 | report | purpose |
 | --- | --- |
 | [`reports/multilingual_5fold_v1/summary.md`](reports/multilingual_5fold_v1/summary.md) | Main held-out multilingual comparison. |
+| [`reports/moby_typeset_5fold_v1/summary.md`](reports/moby_typeset_5fold_v1/summary.md) | Held-out comparison on the curated Moby typesetting corpus. |
+| [`reports/wiktextract_typeset_5fold_v1/summary.md`](reports/wiktextract_typeset_5fold_v1/summary.md) | Held-out comparison on curated Wiktextract typesetting corpora. |
 | [`reports/hyph_bench_5fold_v1/summary.md`](reports/hyph_bench_5fold_v1/summary.md) | Additional held-out comparison on selected hyph-bench data. |
 
 Each report documents its protocol, datasets, selected methods, and runtime
