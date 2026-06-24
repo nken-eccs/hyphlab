@@ -18,7 +18,7 @@ cd hyphenation/hyphlab
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 ```
 
-Use the recommended English typesetting model:
+Use the English typesetting model:
 
 ```bash
 target/release/hyphlab predict --saved-model en-US-typeset --word Japanese
