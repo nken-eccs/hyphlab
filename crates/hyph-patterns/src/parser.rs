@@ -17,10 +17,16 @@ fn decode_pattern_bytes(bytes: &[u8]) -> Result<String> {
     }
 
     let encoding = first_ascii_line(bytes).to_ascii_uppercase();
-    if matches!(encoding.as_str(), "ISO8859-1" | "ISO-8859-1" | "LATIN1" | "LATIN-1") {
+    if matches!(
+        encoding.as_str(),
+        "ISO8859-1" | "ISO-8859-1" | "LATIN1" | "LATIN-1"
+    ) {
         return Ok(decode_latin1(bytes));
     }
-    if matches!(encoding.as_str(), "ISO8859-2" | "ISO-8859-2" | "LATIN2" | "LATIN-2") {
+    if matches!(
+        encoding.as_str(),
+        "ISO8859-2" | "ISO-8859-2" | "LATIN2" | "LATIN-2"
+    ) {
         return Ok(decode_latin2(bytes));
     }
 

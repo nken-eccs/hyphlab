@@ -23,7 +23,7 @@ dataset_config() {
   RUNTIME_METHOD=""
   RECIPE=""
   SLUG=""
-  FRAGMENTS=""
+  GUARD_POLICY=""
   TRAINING_POLICY="full normalized corpus"
 
   case "$dataset" in
@@ -41,11 +41,11 @@ dataset_config() {
       LOCALE="en-US"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-en-us.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/moby_en_us.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/moby_en_us_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_cs)
       GOLD="data/gold/wiktextract/cs.jsonl.zst"
@@ -61,11 +61,11 @@ dataset_config() {
       LOCALE="cs"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-cs.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-2x2-s1-p50"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_cs.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_cs_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_de)
       GOLD="data/gold/wiktextract/de.jsonl.zst"
@@ -81,11 +81,11 @@ dataset_config() {
       LOCALE="de"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-de-1996.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_de.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_de_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_es)
       GOLD="data/gold/wiktextract/es.jsonl.zst"
@@ -101,11 +101,11 @@ dataset_config() {
       LOCALE="es"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-es.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-3x2-s1-p60"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_es.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_es_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_it)
       GOLD="data/gold/wiktextract/it.jsonl.zst"
@@ -121,11 +121,11 @@ dataset_config() {
       LOCALE="it"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
-      RECIPE="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
+      RUNTIME_METHOD="safe-ngram-model"
+      RECIPE="safe-ngram-unicode-2x2-s1-p50"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_it.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_it_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_nl)
       GOLD="data/gold/wiktextract/nl.jsonl.zst"
@@ -141,11 +141,11 @@ dataset_config() {
       LOCALE="nl"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-nl.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_nl.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_nl_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_ru_cyrl_trusted_dedup)
       GOLD="data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst"
@@ -161,11 +161,11 @@ dataset_config() {
       LOCALE="ru"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-ru.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_ru_cyrl_trusted_dedup_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     wiktextract_tr)
       GOLD="data/gold/wiktextract/tr.jsonl.zst"
@@ -181,11 +181,11 @@ dataset_config() {
       LOCALE="tr"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-tr.tex"
       MODEL_KIND="safe-ngram"
-      RUNTIME_METHOD="typeset-safe-ngram-model"
+      RUNTIME_METHOD="safe-ngram-model"
       RECIPE="safe-ngram-unicode-mixcv-2x2-s1-p70"
       SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_tr.txt"
-      TRAINING_POLICY="full curated corpus plus runtime fragment guard"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_tr_typeset.toml"
+      TRAINING_POLICY="full curated corpus plus runtime guard policy"
       ;;
     *)
       printf 'unknown dataset: %s\n' "$dataset" >&2
@@ -199,12 +199,11 @@ write_manifest() {
   local manifest="$2"
   local model="$3"
   mkdir -p "$(dirname "$manifest")"
-  local manifest_fragments="$FRAGMENTS"
-  case "$manifest_fragments" in
-    data/*)
-      manifest_fragments="../../../$manifest_fragments"
-      ;;
-  esac
+  local runtime_method="$RUNTIME_METHOD"
+  local manifest_guard_policy=""
+  if [ -n "$GUARD_POLICY" ]; then
+    manifest_guard_policy="../../../$GUARD_POLICY"
+  fi
 
   {
     printf '# Reusable runtime manifest.\n'
@@ -221,7 +220,7 @@ write_manifest() {
     printf 'slug = "%s"\n' "$SLUG"
     case "$MODEL_KIND" in
       safe-ngram)
-        printf 'method = "%s"\n' "$RUNTIME_METHOD"
+        printf 'method = "%s"\n' "$runtime_method"
         printf 'dictionary = "%s"\n' "$model"
         ;;
       italian-syllable-model)
@@ -233,9 +232,8 @@ write_manifest() {
         exit 1
         ;;
     esac
-    if [ -n "$FRAGMENTS" ]; then
-      printf 'patterns = "%s"\n' "$manifest_fragments"
-      printf 'pass_patterns = true\n'
+    if [ -n "$manifest_guard_policy" ]; then
+      printf 'guard_policy = "%s"\n' "$manifest_guard_policy"
     fi
   } > "$manifest"
 }
@@ -257,7 +255,7 @@ Build the CLI once:
 cargo build -p hyph-cli --release --features adapters-hyphenation-embedded
 ```
 
-For English line breaking, start with the typesetting model:
+For visible English line breaks, use the typesetting model:
 
 ```bash
 target/release/hyphlab predict --saved-model en-US-typeset --word Japanese
@@ -267,7 +265,9 @@ target/release/hyphlab predict --saved-model en-US-typeset \
 
 Use `*-typeset` saved models when the result may become a visible line break.
 The plain models follow source lexical hyphenation more closely; the typeset
-models use curated labels and the same fragment guard at runtime.
+models use curated labels and the same guard policy at runtime: unsafe
+fragments, MixedCase / ALLCAPS tokens, and configured proper names are kept
+intact.
 
 List the reusable models and run other locales directly:
 
@@ -292,14 +292,41 @@ The manifests in `manifests/guarded_ngram/v1/` can be passed to
 `target/release/hyphlab matrix`; their model paths are relative to the manifest
 file location.
 
+## Customize Proper Names
+
+For application-specific names, change the guard policy rather than the model
+binary:
+
+1. Copy the closest policy, for example
+   `data/curation/guard_policies/moby_en_us_typeset.toml`.
+2. Create a house-style name list, for example
+   `data/curation/proper_names/my_en_us.txt`, with one protected name per line.
+3. Use `[proper_names].paths` to layer the base list and your house list.
+4. Use the policy with `--guard-policy`:
+
+```bash
+target/release/hyphlab predict --saved-model en-US-typeset \
+  --guard-policy data/curation/guard_policies/my_en_us_typeset.toml \
+  --word McDonald \
+  --show-breaks
+```
+
+Paths inside a guard policy are resolved relative to the policy file. Use
+`matching = "case-insensitive"` for ordinary name protection and
+`matching = "case-sensitive"` only when case must distinguish entries.
+See `docs/guarded_ngram.md` for runtime order, guard-policy format, and
+tokenization limits.
+
+If the change should become part of a reusable corpus and model, rerun the
+curation, model build, and evaluation scripts with the updated policy.
+
 ## Which Model Should I Use?
 
 Use the model whose locale and source corpus match your target:
 
 - English en-US: `moby_en_us.bin`, trained from Moby Hyphenator II.
 - English en-US typesetting: `moby_en_us_typeset.bin`, trained from the
-  curated Moby typesetting corpus and guarded by the same fragment filter at
-  runtime.
+  curated Moby typesetting corpus and guarded by the same policy at runtime.
 - Czech, German, Spanish, Dutch, Russian, and Turkish: the matching
   `wiktextract_*.bin` or `wiktextract_*_typeset.bin` model.
 - Italian: `wiktextract_it.json` is an onset-style model trained from normalized

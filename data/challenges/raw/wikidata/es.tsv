@@ -1,0 +1,408 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sparql xmlns='http://www.w3.org/2005/sparql-results#'>
+	<head>
+		<variable name='label'/>
+	</head>
+	<results>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Cicerón</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Stendhal</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>T-killah</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Séneca</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Vegecio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Marcial</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Teopompo</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Cleopatra</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Tácito</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Hipócrates</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Madonna</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Coluche</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Molière</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Totò</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Macrino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Heliogábalo</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Béroul</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Wace</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Rigord</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Platón</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Pupieno</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Balbino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Confucio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Barbara</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Aristóteles</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Decio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Sócrates</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Pinturicchio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Rembrandt</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Sinan</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Bourvil</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Eminem</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Gerónimo</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Eloísa</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Carlomagno</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Heino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Kalidasa</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Masaccio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Qinzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Xiaozong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Lizong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Guangzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Salustio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Ningzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Duzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Bing</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Ogodei</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Möngke</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Tolui</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Ovidio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Ziying</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Prince</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Galeno</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Sófocles</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Horacio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Lenin</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Propercio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Zhaozong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Virgilio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Petrarca</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Bacchiacca</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Augusto</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Tiberio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Calígula</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Claudio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Bramantino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Bronzino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Giotto</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Nerón</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Al-Juarismi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Galba</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Vitelio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Otón</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Chanakia</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Vespasiano</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Tito</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Riúrik</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Chenghua</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Domiciano</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='es'>Nerva</literal>
+			</binding>
+		</result>
+	</results>
+</sparql>

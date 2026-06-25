@@ -1,0 +1,11 @@
+[fragments]
+path = "../typeset_fragments/wiktextract_de.txt"
+
+[case]
+protect_mixed_case = true
+protect_all_caps = true
+protect_titlecase = false
+
+[proper_names]
+path = "../proper_names/de.txt"
+matching = "case-insensitive"

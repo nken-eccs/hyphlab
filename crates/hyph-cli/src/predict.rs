@@ -32,6 +32,10 @@ pub(crate) struct PredictArgs {
     #[arg(long)]
     patterns: Option<PathBuf>,
     #[arg(long)]
+    guard_policy: Option<PathBuf>,
+    #[arg(long)]
+    guard_fragments: Option<PathBuf>,
+    #[arg(long)]
     dictionary: Option<PathBuf>,
     #[arg(long)]
     external_command: Option<String>,
@@ -61,6 +65,8 @@ struct SavedModelSpec {
     method: &'static str,
     dictionary: &'static str,
     patterns: Option<&'static str>,
+    guard_policy: Option<&'static str>,
+    guard_fragments: Option<&'static str>,
 }
 
 const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
@@ -71,6 +77,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/moby_en_us.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "en-US-typeset",
@@ -82,9 +90,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "moby-en-us-typeset",
         ],
         locale: "en-US",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/moby_en_us_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/moby_en_us.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/moby_en_us_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "cs",
@@ -93,6 +103,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_cs.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "cs-typeset",
@@ -102,9 +114,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_cs_typeset",
         ],
         locale: "cs",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_cs_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_cs.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_cs_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "de",
@@ -113,6 +127,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_de.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "de-typeset",
@@ -122,9 +138,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_de_typeset",
         ],
         locale: "de",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_de_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_de.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_de_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "es",
@@ -133,6 +151,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_es.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "es-typeset",
@@ -142,9 +162,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_es_typeset",
         ],
         locale: "es",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_es_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_es.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_es_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "it",
@@ -153,6 +175,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "italian-syllable-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_it.json",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "it-typeset",
@@ -162,9 +186,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_it_typeset",
         ],
         locale: "it",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_it_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_it.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_it_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "nl",
@@ -173,6 +199,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_nl.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "nl-typeset",
@@ -182,9 +210,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_nl_typeset",
         ],
         locale: "nl",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_nl_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_nl.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_nl_typeset.toml"),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "ru",
@@ -200,6 +230,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_ru_cyrl_trusted_dedup.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "ru-typeset",
@@ -212,9 +244,13 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_ru_cyrl_trusted_dedup_typeset",
         ],
         locale: "ru",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_ru_cyrl_trusted_dedup_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"),
+        patterns: None,
+        guard_policy: Some(
+            "data/curation/guard_policies/wiktextract_ru_cyrl_trusted_dedup_typeset.toml",
+        ),
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "tr",
@@ -223,6 +259,8 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
         method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_tr.bin",
         patterns: None,
+        guard_policy: None,
+        guard_fragments: None,
     },
     SavedModelSpec {
         key: "tr-typeset",
@@ -232,9 +270,11 @@ const SAVED_MODEL_SPECS: &[SavedModelSpec] = &[
             "wiktextract_tr_typeset",
         ],
         locale: "tr",
-        method: "typeset-safe-ngram-model",
+        method: "safe-ngram-model",
         dictionary: "models/guarded_ngram/v1/wiktextract_tr_typeset.bin",
-        patterns: Some("data/curation/typeset_fragments/wiktextract_tr.txt"),
+        patterns: None,
+        guard_policy: Some("data/curation/guard_policies/wiktextract_tr_typeset.toml"),
+        guard_fragments: None,
     },
 ];
 
@@ -254,6 +294,8 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
         list_saved_models: _,
         gold,
         mut patterns,
+        guard_policy,
+        guard_fragments,
         mut dictionary,
         external_command,
         left_min,
@@ -267,11 +309,13 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
     } = args;
 
     let shared_patterns = patterns.clone();
+    let shared_guard_policy = guard_policy.clone();
+    let shared_guard_fragments = guard_fragments.clone();
     let shared_dictionary = dictionary.clone();
     let shared_external_command = external_command.clone();
     let gold_lookup = gold.map(GoldLookup::load).transpose()?;
 
-    if let Some(saved_model) = saved_model.as_deref() {
+    let saved_model_spec = if let Some(saved_model) = saved_model.as_deref() {
         anyhow::ensure!(
             dictionary.is_none(),
             "--saved-model cannot be combined with --dictionary"
@@ -283,7 +327,10 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
         if patterns.is_none() {
             patterns = spec.patterns.map(PathBuf::from);
         }
-    }
+        Some(spec)
+    } else {
+        None
+    };
 
     if with_hypher
         && !with_method
@@ -305,6 +352,12 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
             method,
             locale: locale.clone(),
             patterns: patterns.clone(),
+            guard_policy: guard_policy
+                .clone()
+                .or_else(|| saved_model_spec.and_then(|spec| spec.guard_policy.map(PathBuf::from))),
+            guard_fragments: guard_fragments.clone().or_else(|| {
+                saved_model_spec.and_then(|spec| spec.guard_fragments.map(PathBuf::from))
+            }),
             dictionary,
             dictionary_is_gold_oracle: false,
             external_command,
@@ -322,6 +375,8 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
                 method: spec.method.to_string(),
                 locale: spec.locale.to_string(),
                 patterns: spec.patterns.map(PathBuf::from),
+                guard_policy: spec.guard_policy.map(PathBuf::from),
+                guard_fragments: spec.guard_fragments.map(PathBuf::from),
                 dictionary: Some(PathBuf::from(spec.dictionary)),
                 dictionary_is_gold_oracle: false,
                 external_command: None,
@@ -339,6 +394,8 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
                 method: extra_method,
                 locale: locale.clone(),
                 patterns: shared_patterns.clone(),
+                guard_policy: shared_guard_policy.clone(),
+                guard_fragments: shared_guard_fragments.clone(),
                 dictionary: shared_dictionary.clone(),
                 dictionary_is_gold_oracle: false,
                 external_command: shared_external_command.clone(),
@@ -418,33 +475,35 @@ pub(crate) fn cmd_predict(args: PredictArgs) -> Result<()> {
 }
 
 fn print_saved_models() {
-    println!("key\tlocale\tmethod\tdictionary\tpatterns");
+    println!("key\tlocale\tmethod\tdictionary\tpatterns\tguard_policy");
     for spec in SAVED_MODEL_SPECS {
         println!(
-            "{}\t{}\t{}\t{}\t{}",
+            "{}\t{}\t{}\t{}\t{}\t{}",
             spec.key,
             spec.locale,
             spec.method,
             spec.dictionary,
-            spec.patterns.unwrap_or("")
+            spec.patterns.unwrap_or(""),
+            spec.guard_policy.unwrap_or("")
         );
     }
 }
 
 fn resolve_saved_model(key: &str) -> Result<&'static SavedModelSpec> {
+    resolve_saved_model_optional(key).with_context(|| {
+        format!("unknown --saved-model {key:?}; run `hyphlab predict --list-saved-models`")
+    })
+}
+
+fn resolve_saved_model_optional(key: &str) -> Option<&'static SavedModelSpec> {
     let normalized = normalize_saved_model_key(key);
-    SAVED_MODEL_SPECS
-        .iter()
-        .find(|spec| {
-            normalize_saved_model_key(spec.key) == normalized
-                || spec
-                    .aliases
-                    .iter()
-                    .any(|alias| normalize_saved_model_key(alias) == normalized)
-        })
-        .with_context(|| {
-            format!("unknown --saved-model {key:?}; run `hyphlab predict --list-saved-models`")
-        })
+    SAVED_MODEL_SPECS.iter().find(|spec| {
+        normalize_saved_model_key(spec.key) == normalized
+            || spec
+                .aliases
+                .iter()
+                .any(|alias| normalize_saved_model_key(alias) == normalized)
+    })
 }
 
 fn normalize_saved_model_key(value: &str) -> String {

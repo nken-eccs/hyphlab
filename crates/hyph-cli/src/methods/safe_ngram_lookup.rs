@@ -11,7 +11,7 @@ impl SafeNgramDenseSet {
             return None;
         }
         let total_bits = (spec.left + spec.right).checked_mul(5)?;
-        if total_bits != 25 {
+        if total_bits > 25 {
             return None;
         }
         Self::from_unprefixed_keys(total_bits, rules.iter().copied())
@@ -55,7 +55,7 @@ impl SafeNgramDualDenseSet {
         }
         let first_bits = (options.specs[0].left + options.specs[0].right).checked_mul(5)?;
         let second_bits = (options.specs[1].left + options.specs[1].right).checked_mul(5)?;
-        if first_bits != 25 || second_bits != 25 {
+        if first_bits > 25 || second_bits > 25 {
             return None;
         }
 
@@ -100,4 +100,3 @@ impl<'a> SafeNgramDualRuleLookup<'a> {
         }
     }
 }
-

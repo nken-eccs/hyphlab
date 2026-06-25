@@ -11,7 +11,7 @@ sources:
     generated_gold:
       - data/gold/moby_en_us.jsonl.zst
       - data/gold/moby_en_us_typeset.jsonl.zst
-    derived_gold_note: data/gold/moby_en_us_typeset.jsonl.zst is generated from the normalized Moby corpus with typesetting fragment filters.
+    derived_gold_note: data/gold/moby_en_us_typeset.jsonl.zst is generated from the normalized Moby corpus with typesetting guard policies.
     license_note: Public-domain status depends on jurisdiction; treat as public-domain-in-USA unless reviewed.
     status: downloaded
   - id: tex_hyphen
@@ -86,7 +86,7 @@ sources:
       - data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst
       - data/gold/wiktextract/tr.jsonl.zst
       - data/gold/wiktextract/tr_typeset.jsonl.zst
-    derived_gold_note: The *_typeset files are generated from normalized Wiktextract / Kaikki corpora with typesetting fragment filters.
+    derived_gold_note: The *_typeset files are generated from normalized Wiktextract / Kaikki corpora with typesetting guard policies.
     status: downloaded
   - id: kaikki_raw_wiktextract_english
     kind: wiktionary_raw_dump

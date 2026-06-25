@@ -8,7 +8,7 @@ impl PreparedMethod {
             Self::Dictionary { id, .. } => id,
             Self::DictionaryFallback { id, .. } => id,
             Self::SafeNgram(inner) => inner.id(),
-            Self::FragmentFiltered { id, .. } => id,
+            Self::Guarded(inner) => &inner.id,
             Self::ItalianSyllable(inner) => inner.id(),
             Self::IdentityOracle { .. } => "identity-oracle",
             Self::Crf(inner) => inner.id(),
@@ -24,7 +24,7 @@ impl PreparedMethod {
             Self::Dictionary { config, .. } => config,
             Self::DictionaryFallback { config, .. } => config,
             Self::SafeNgram(inner) => inner.config(),
-            Self::FragmentFiltered { config, .. } => config,
+            Self::Guarded(inner) => &inner.config,
             Self::ItalianSyllable(inner) => inner.config(),
             Self::IdentityOracle { config } => config,
             Self::Crf(inner) => inner.config(),
@@ -44,6 +44,7 @@ impl PreparedMethod {
                 out.extend(record.breaks.iter().copied());
                 Ok(())
             }
+            Self::Guarded(inner) => inner.hyphenate_record_into(record, out),
             _ => self.hyphenate_into(&record.word, out),
         }
     }
@@ -54,16 +55,7 @@ impl PreparedMethod {
             Self::Liang(inner) => inner.hyphenate_into(word, out),
             Self::Crf(inner) => inner.hyphenate_into(word, out),
             Self::SafeNgram(inner) => inner.hyphenate_into(word, out),
-            Self::FragmentFiltered {
-                inner,
-                config,
-                fragments,
-                ..
-            } => {
-                inner.hyphenate_into(word, out)?;
-                filter_typeset_fragments(word, config, fragments, out);
-                Ok(())
-            }
+            Self::Guarded(inner) => inner.hyphenate_into(word, out),
             Self::ItalianSyllable(inner) => inner.hyphenate_into(word, out),
             Self::Dictionary { entries, .. } => {
                 out.clear();
@@ -241,7 +233,8 @@ impl ExternalJsonlMethod {
 
 fn prepare_method(options: MethodOptions) -> Result<PreparedMethod> {
     let method = options.method.to_ascii_lowercase();
-    match method.as_str() {
+    let wrap_options = options.clone();
+    let prepared = match method.as_str() {
         "identity-oracle" | "record-oracle" => prepare_identity_oracle(options),
         "liang" | "patterns" | "tex" => prepare_liang(options),
         "dict" | "dictionary" | "lookup" => prepare_dictionary(options),
@@ -261,9 +254,6 @@ fn prepare_method(options: MethodOptions) -> Result<PreparedMethod> {
             prepare_italian_syllable(options)
         }
         "safe-ngram-model" => prepare_safe_ngram_model(options),
-        "typeset-safe-ngram-model" | "moby-typeset-safe-ngram-model" => {
-            prepare_typeset_safe_ngram_model(options)
-        }
         method if method.starts_with("safe-ngram") => prepare_safe_ngram(options),
         "trogkanis-elkan-crf" => prepare_crf(options),
         "hyphenation-runtime" | "hyphenation-standard-runtime" | "hyphenation-file" => {
@@ -283,7 +273,27 @@ fn prepare_method(options: MethodOptions) -> Result<PreparedMethod> {
                 config,
             })
         }
+    }?;
+    wrap_method_with_guards(prepared, &wrap_options)
+}
+
+fn wrap_method_with_guards(method: PreparedMethod, options: &MethodOptions) -> Result<PreparedMethod> {
+    let guards = GuardPolicySet::from_options(
+        &options.locale,
+        options.guard_policy.as_ref(),
+        options.guard_fragments.as_ref(),
+    )?;
+    if guards.is_empty() {
+        return Ok(method);
     }
+    let config = method.config().clone();
+    let id = format!("guarded:{}:{}", method.id(), guards.id_suffix());
+    Ok(PreparedMethod::Guarded(GuardedMethod {
+        id,
+        config,
+        inner: Box::new(method),
+        guards,
+    }))
 }
 
 fn prepare_identity_oracle(options: MethodOptions) -> Result<PreparedMethod> {
@@ -361,6 +371,8 @@ fn prepare_hypher_liang_consensus(options: MethodOptions) -> Result<PreparedMeth
         method: "liang".to_string(),
         locale: options.locale.clone(),
         patterns: options.patterns.clone(),
+        guard_policy: None,
+        guard_fragments: None,
         dictionary: None,
         dictionary_is_gold_oracle: false,
         external_command: None,
@@ -470,34 +482,6 @@ fn prepare_safe_ngram_model(options: MethodOptions) -> Result<PreparedMethod> {
         &options.locale,
         model,
     )?))
-}
-
-fn prepare_typeset_safe_ngram_model(options: MethodOptions) -> Result<PreparedMethod> {
-    anyhow::ensure!(
-        options.left_min.is_none() && options.right_min.is_none() && options.min_word_len.is_none(),
-        "typeset-safe-ngram-model uses the saved model config; CLI config overrides are not supported"
-    );
-    let model_path = options.dictionary.as_ref().context(
-        "--dictionary is required as the model path for --method typeset-safe-ngram-model",
-    )?;
-    let fragments_path = options
-        .patterns
-        .clone()
-        .unwrap_or_else(|| PathBuf::from("data/curation/typeset_fragments/moby_en_us.txt"));
-    let model = SafeNgramModelFile::load(model_path)?;
-    let inner = SafeNgramMethod::from_model(model_path, &options.locale, model)?;
-    let config = inner.config().clone();
-    let id = format!(
-        "typeset-filter:{}:{}",
-        inner.id(),
-        file_stem(&fragments_path)
-    );
-    Ok(PreparedMethod::FragmentFiltered {
-        id,
-        config,
-        inner: Box::new(PreparedMethod::SafeNgram(inner)),
-        fragments: TypesetFragmentFilter::new(load_sensitive_fragments(&fragments_path)?),
-    })
 }
 
 fn prepare_dictionary(options: MethodOptions) -> Result<PreparedMethod> {

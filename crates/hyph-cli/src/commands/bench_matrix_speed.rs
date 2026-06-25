@@ -145,6 +145,14 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
             .dictionary
             .as_ref()
             .map(|path| resolve_manifest_path(manifest_dir, path));
+        let guard_policy = method
+            .guard_policy
+            .as_ref()
+            .map(|path| resolve_manifest_path(manifest_dir, path));
+        let guard_fragments = method
+            .guard_fragments
+            .as_ref()
+            .map(|path| resolve_manifest_path(manifest_dir, path));
         let metric_path = args.output_dir.join(format!("{}.json", method.slug));
         let speed_path = speed_dir.join(format!("{}.json", method.slug));
         let init_path = init_dir.join(format!("{}.json", method.slug));
@@ -154,6 +162,8 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
             method: method.method.clone(),
             locale: args.locale.clone(),
             patterns: patterns.clone(),
+            guard_policy: guard_policy.clone(),
+            guard_fragments: guard_fragments.clone(),
             dictionary: dictionary.clone(),
             external_command: method.external_command.clone(),
             left_min: method.left_min,
@@ -175,6 +185,8 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
             method: method.method.clone(),
             locale: args.locale.clone(),
             patterns: patterns.clone(),
+            guard_policy: guard_policy.clone(),
+            guard_fragments: guard_fragments.clone(),
             dictionary: dictionary.clone(),
             external_command: method.external_command.clone(),
             iterations: args.iterations,
@@ -195,6 +207,8 @@ fn cmd_matrix(args: MatrixArgs) -> Result<()> {
             method: method.method,
             locale: args.locale.clone(),
             patterns,
+            guard_policy,
+            guard_fragments,
             dictionary,
             gold: Some(args.gold.clone()),
             external_command: method.external_command,
@@ -350,6 +364,8 @@ fn cmd_speed(args: SpeedArgs) -> Result<()> {
         method: args.method.clone(),
         locale: args.locale.clone(),
         patterns: args.patterns.clone(),
+        guard_policy: args.guard_policy.clone(),
+        guard_fragments: args.guard_fragments.clone(),
         dictionary: args.dictionary.clone().or_else(|| {
             if is_dictionary_method(&args.method) {
                 Some(args.gold.clone())
@@ -474,6 +490,8 @@ fn init_method_options(args: &InitBenchArgs) -> Result<MethodOptions> {
         method: args.method.clone(),
         locale: args.locale.clone(),
         patterns: args.patterns.clone(),
+        guard_policy: args.guard_policy.clone(),
+        guard_fragments: args.guard_fragments.clone(),
         dictionary,
         dictionary_is_gold_oracle,
         external_command: args.external_command.clone(),

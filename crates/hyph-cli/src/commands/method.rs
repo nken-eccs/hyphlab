@@ -54,6 +54,12 @@ fn cmd_method_materialize(args: MethodMaterializeArgs) -> Result<()> {
                 requires_patterns: method.requires_patterns,
                 pass_patterns: method.pass_patterns,
                 patterns: rewrite_manifest_path(source_dir, output_dir, method.patterns.as_ref())?,
+                guard_policy: rewrite_manifest_path(source_dir, output_dir, method.guard_policy.as_ref())?,
+                guard_fragments: rewrite_manifest_path(
+                    source_dir,
+                    output_dir,
+                    method.guard_fragments.as_ref(),
+                )?,
                 dictionary: Some(manifest_output_path(output_dir, &model_path)?),
                 external_command: method.external_command.clone(),
                 left_min: None,
@@ -196,6 +202,8 @@ struct RuntimeManifestMethod {
     requires_patterns: bool,
     pass_patterns: bool,
     patterns: Option<PathBuf>,
+    guard_policy: Option<PathBuf>,
+    guard_fragments: Option<PathBuf>,
     dictionary: Option<PathBuf>,
     external_command: Option<String>,
     left_min: Option<usize>,
@@ -218,6 +226,12 @@ impl RuntimeManifestMethod {
             requires_patterns: method.requires_patterns,
             pass_patterns: method.pass_patterns,
             patterns: rewrite_manifest_path(source_dir, output_dir, method.patterns.as_ref())?,
+            guard_policy: rewrite_manifest_path(source_dir, output_dir, method.guard_policy.as_ref())?,
+            guard_fragments: rewrite_manifest_path(
+                source_dir,
+                output_dir,
+                method.guard_fragments.as_ref(),
+            )?,
             dictionary: rewrite_manifest_path(source_dir, output_dir, method.dictionary.as_ref())?,
             external_command: method.external_command.clone(),
             left_min: method.left_min,
@@ -317,6 +331,12 @@ fn render_runtime_manifest_method(out: &mut String, method: &RuntimeManifestMeth
     }
     if let Some(path) = &method.patterns {
         push_toml_path(out, "patterns", path);
+    }
+    if let Some(path) = &method.guard_policy {
+        push_toml_path(out, "guard_policy", path);
+    }
+    if let Some(path) = &method.guard_fragments {
+        push_toml_path(out, "guard_fragments", path);
     }
     if let Some(path) = &method.dictionary {
         push_toml_path(out, "dictionary", path);

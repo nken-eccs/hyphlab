@@ -1,5 +1,10 @@
 # Wiktextract Typesetting 5-Fold Evaluation
 
+Current reader-facing policy numbers are in
+[`../typeset_policy_5fold_v1/summary.md`](../typeset_policy_5fold_v1/summary.md).
+Use this report for Wiktextract-specific curation context and for comparing the
+older Wiktextract-only run.
+
 Protocol:
 
 - The selected method per dataset is fixed before this run.

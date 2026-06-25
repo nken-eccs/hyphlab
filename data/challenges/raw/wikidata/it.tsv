@@ -1,0 +1,408 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sparql xmlns='http://www.w3.org/2005/sparql-results#'>
+	<head>
+		<variable name='label'/>
+	</head>
+	<results>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Xiaozong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Guangzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ningzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Lizong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Duzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Heino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Duanzong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Bing</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Tolui</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ögödei</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Archimede</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Güyük</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Munke</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Al-Ghazali</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Euclide</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Kālidāsa</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Renaud</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Lena</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Prince</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Galeno</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Eulero</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Alhazen</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ziying</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Al-Zarqali</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Houshao</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Bergognone</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Bramante</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Jingdi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Bramantino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Giotto</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Shang</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Chanakya</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Zhao</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Xuan</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Dezong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Yuan</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Sofocle</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Rjurik</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Voltaire</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Hongwu</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Anwari</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Jianwen</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Aryabhata</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Yongle</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ping</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Hongxi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Xuande</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Zhengtong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Jingtai</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Chenghua</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Hongzhi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Avicenna</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Zhengde</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Jiajing</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Longqing</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Wanli</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Gengshi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Taichang</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Tianqi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Chongzhen</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Shang</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>(.)p(...)nin</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ammurapi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Shun</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Chong</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Huan</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ling</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Cartesio</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Adai</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Oyiradai</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Agbarjin</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Pitagora</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Xian</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Aaliyah</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Al-Biruni</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Tintoretto</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Laozi</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Parmigianino</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Beck</literal>
+			</binding>
+		</result>
+		<result>
+			<binding name='label'>
+				<literal xml:lang='it'>Ipazia</literal>
+			</binding>
+		</result>
+	</results>
+</sparql>

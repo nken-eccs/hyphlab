@@ -1,17 +1,16 @@
 # Documentation
 
-This directory keeps the durable project notes. Local scratch reports, temporary
-models, and exploratory outputs should stay under `target/`.
+This directory keeps the durable project notes and maintained report summaries.
 
-## Reading Order
+## Start Here
 
 | read this | when |
 | --- | --- |
-| [`../README.md`](../README.md) | You want to run the CLI or the main scripts. |
+| [`../README.md`](../README.md) | You want to run the CLI or main scripts. |
+| [`data_usage.md`](data_usage.md) | You are choosing data, models, or reports. |
 | [`evaluation.md`](evaluation.md) | You need to know which comparisons are fair. |
+| [`guarded_ngram.md`](guarded_ngram.md) | You need method mechanics, recipes, or guard-policy customization. |
 | [`add_method.md`](add_method.md) | You are adding a Rust method, trainable model, or external prototype. |
-| [`data_usage.md`](data_usage.md) | You need to know which data or model file to use. |
-| [`guarded_ngram.md`](guarded_ngram.md) | You need the current method recipes or model format. |
 | [`research_start.md`](research_start.md) | You are resuming hands-on experiments. |
 
 ## Maintained Reports
@@ -19,8 +18,10 @@ models, and exploratory outputs should stay under `target/`.
 | report | purpose |
 | --- | --- |
 | [`reports/multilingual_5fold_v1/summary.md`](reports/multilingual_5fold_v1/summary.md) | Main held-out multilingual comparison. |
-| [`reports/moby_typeset_5fold_v1/summary.md`](reports/moby_typeset_5fold_v1/summary.md) | Held-out comparison on the curated Moby typesetting corpus. |
-| [`reports/wiktextract_typeset_5fold_v1/summary.md`](reports/wiktextract_typeset_5fold_v1/summary.md) | Held-out comparison on curated Wiktextract typesetting corpora. |
+| [`reports/typeset_policy_5fold_v1/summary.md`](reports/typeset_policy_5fold_v1/summary.md) | Held-out comparison for the current typesetting guard policy. |
+| [`reports/typeset_guard_challenge_v1/summary.md`](reports/typeset_guard_challenge_v1/summary.md) | No-break challenge for names and case-sensitive tokens. |
+| [`reports/moby_typeset_5fold_v1/summary.md`](reports/moby_typeset_5fold_v1/summary.md) | English typesetting curation details. |
+| [`reports/wiktextract_typeset_5fold_v1/summary.md`](reports/wiktextract_typeset_5fold_v1/summary.md) | Wiktextract typesetting curation details. |
 | [`reports/hyph_bench_5fold_v1/summary.md`](reports/hyph_bench_5fold_v1/summary.md) | Additional held-out comparison on selected hyph-bench data. |
 
 Each report documents its protocol, datasets, selected methods, and runtime

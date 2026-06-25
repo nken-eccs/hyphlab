@@ -30,9 +30,23 @@ fn cmd_curate_typeset(args: CurateTypesetArgs) -> Result<()> {
     anyhow::ensure!(args.left_min > 0, "--left-min must be positive");
     anyhow::ensure!(args.right_min > 0, "--right-min must be positive");
 
-    let sensitive = load_sensitive_fragments(&args.sensitive_fragments)?;
     let records = read_records(&args.input)?;
     anyhow::ensure!(!records.is_empty(), "{} is empty", args.input.display());
+    let locale = records
+        .first()
+        .and_then(|record| record.locale.as_deref())
+        .or_else(|| records.first().map(|record| record.lang.as_str()))
+        .unwrap_or("und")
+        .to_string();
+    let guards = GuardPolicySet::from_options(
+        &locale,
+        args.guard_policy.as_ref(),
+        if args.guard_policy.is_some() {
+            None
+        } else {
+            Some(&args.sensitive_fragments)
+        },
+    )?;
 
     let mut report = Vec::new();
     let mut output = Vec::with_capacity(records.len());
@@ -64,23 +78,21 @@ fn cmd_curate_typeset(args: CurateTypesetArgs) -> Result<()> {
                 .map(|variant| variant.len())
                 .sum::<usize>();
 
-        let (curated_breaks, mut reasons) = curate_break_set(
+        let (curated_breaks, mut reasons) = guards.curate_breaks(
             &record.word,
             &record.breaks,
             args.left_min,
             args.right_min,
-            &sensitive,
         );
         let mut curated_variants = record
             .variants
             .iter()
             .map(|variant| {
-                let (breaks, variant_reasons) = curate_break_set(
+                let (breaks, variant_reasons) = guards.curate_breaks(
                     &record.word,
                     variant,
                     args.left_min,
                     args.right_min,
-                    &sensitive,
                 );
                 reasons.extend(variant_reasons);
                 breaks

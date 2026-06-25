@@ -1,6 +1,7 @@
 use anyhow::{Context, Result};
 use clap::{Parser, Subcommand, ValueEnum};
 // Compact integer-key maps used by learned rule tables and binary models.
+mod guards;
 mod hashing;
 // User-facing prediction command, saved-model shortcuts, and gold rendering.
 mod predict;
@@ -37,6 +38,7 @@ use std::{
 };
 use unicode_segmentation::UnicodeSegmentation;
 
+use guards::GuardPolicySet;
 use hashing::{mix_u64, U64HashMap, U64HashSet};
 use predict::{cmd_predict, PredictArgs};
 

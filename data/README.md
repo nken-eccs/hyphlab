@@ -25,6 +25,8 @@ Current evaluation usage:
   curated derivative for English typesetting experiments.
 - `data/gold/wiktextract/*_typeset.jsonl.zst` files are curated derivatives
   for multilingual typesetting experiments.
+- `data/challenges/typeset_no_break/*.jsonl.zst` files are no-break challenge
+  sets for proper names, MixedCase tokens, and ALLCAPS tokens.
 - `data/patterns/tex-hyphen/...` drives Liang / TeX pattern baselines.
 - `data/gold/hyph_bench/*.jsonl.zst` is used by the optional full-gold
   baseline matrix and the additional `hyph-bench` 5-fold report.
@@ -39,8 +41,8 @@ Use `data/gold/moby_en_us.jsonl.zst` for en-US English experiments that need
 the original Moby syllable labels and the `moby_en_us.bin` reusable model.
 
 Use `data/gold/moby_en_us_typeset.jsonl.zst` for en-US typesetting experiments
-where unsafe line fragments are filtered out by the current fragment policy.
-Regenerate it with:
+where unsafe visible fragments and configured protected tokens are filtered out
+by the current guard policy. Regenerate it with:
 
 ```bash
 bash scripts/curate_moby_typeset.sh
@@ -57,6 +59,15 @@ Wiktextract / Kaikki with:
 
 ```bash
 bash scripts/curate_wiktextract_typeset.sh
+```
+
+Use `data/challenges/typeset_no_break/*.jsonl.zst` to check that runtime
+guards keep proper names and case-sensitive tokens unbroken. Refresh the data
+and rerun the comparison with:
+
+```bash
+bash scripts/fetch_guard_challenge_data.sh
+bash scripts/run_typeset_guard_challenge.sh
 ```
 
 Use `data/gold/hyph_bench/*.jsonl.zst` for additional external-corpus checks.
@@ -77,12 +88,13 @@ hyphenations for the same word are preserved as `ambiguous=true` records with
 all distinct break sets in `variants`.
 
 The Moby typesetting curation scans every record and removes candidate
-boundaries that violate the configured line-fragment policy. It also drops
-records containing the Unicode replacement character. The curation report is
-written under `target/hyphlab-reports/curation/`.
+boundaries that violate the configured guard policy. It also drops records
+containing the Unicode replacement character. The curation report is written
+under `target/hyphlab-reports/curation/`.
 
-The Wiktextract typesetting curation uses the same boundary policy with
-language-specific fragment files under `data/curation/typeset_fragments/`.
+The Wiktextract typesetting curation uses the same policy shape with
+language-specific files under `data/curation/guard_policies/`,
+`data/curation/typeset_fragments/`, and `data/curation/proper_names/`.
 Summary notes are in
 `docs/reports/wiktextract_typeset_5fold_v1/curation.md`.
 
@@ -127,6 +139,7 @@ gzip -dc data/raw/kaikki/enwiktionary/raw-wiktextract-data.jsonl.gz | \
 - `data/patterns`: copied TeX and LibreOffice pattern files. Current Liang
   runs use the TeX pattern files.
 - `data/gold`: normalized JSONL and JSONL.zst gold corpora.
+- `data/challenges`: no-break challenge corpora for runtime guard checks.
 - `data/manifests`: source inventory and license notes.
 
 ## Restricted Data

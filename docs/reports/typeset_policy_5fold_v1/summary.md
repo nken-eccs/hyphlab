@@ -1,0 +1,67 @@
+# Typeset Policy 5-Fold Evaluation
+
+Protocol:
+
+- The selected method per dataset is fixed before this run.
+- Each dataset is evaluated with deterministic grouped `5`-fold cross-validation.
+- For each fold, trainable methods are trained only on that fold train file and evaluated on that fold test file.
+- Hypher and Liang are evaluated on the same fold test files when supported for the dataset.
+- Ambiguous records use the default `exclude` policy.
+- Typesetting datasets use a runtime guard policy for unsafe fragments, MixedCase / ALLCAPS tokens, and configured proper names.
+- Runtime uses `target/release/hyphlab`, `50` steady-state iterations, `10` init iterations, and `2` init warmup.
+- Runtime values are machine-local and should be used for within-run comparison unless hardware details are documented separately.
+
+Selected methods:
+
+| dataset | report slug | recipe |
+| --- | --- | --- |
+| `moby_en_us_typeset` | `guarded_ngram` | `safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85` |
+| `wiktextract_cs_typeset` | `guarded_ngram` | `safe-ngram-unicode-2x2-s1-p50` |
+| `wiktextract_de_typeset` | `guarded_ngram` | `safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80` |
+| `wiktextract_es_typeset` | `guarded_ngram` | `safe-ngram-unicode-3x2-s1-p60` |
+| `wiktextract_it_typeset` | `guarded_ngram` | `safe-ngram-unicode-2x2-s1-p50` |
+| `wiktextract_nl_typeset` | `guarded_ngram` | `safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80` |
+| `wiktextract_ru_cyrl_trusted_dedup_typeset` | `guarded_ngram` | `safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80` |
+| `wiktextract_tr_typeset` | `guarded_ngram` | `safe-ngram-unicode-mixcv-2x2-s1-p70` |
+
+Gold data:
+
+- `moby_en_us_typeset`: `data/gold/moby_en_us_typeset.jsonl.zst`
+- `wiktextract_cs_typeset`: `data/gold/wiktextract/cs_typeset.jsonl.zst`
+- `wiktextract_de_typeset`: `data/gold/wiktextract/de_typeset.jsonl.zst`
+- `wiktextract_es_typeset`: `data/gold/wiktextract/es_typeset.jsonl.zst`
+- `wiktextract_it_typeset`: `data/gold/wiktextract/it_typeset.jsonl.zst`
+- `wiktextract_nl_typeset`: `data/gold/wiktextract/nl_typeset.jsonl.zst`
+- `wiktextract_ru_cyrl_trusted_dedup_typeset`: `data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst`
+- `wiktextract_tr_typeset`: `data/gold/wiktextract/tr_typeset.jsonl.zst`
+
+Mean and sample standard deviation across folds:
+
+| dataset | method | folds | words | precision | recall | f1 | f0.5 | exact | serious_error | fp/100k | ns/word |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| `moby_en_us_typeset` | `hypher` | 5 | 36474.400000 (sd 28.544702) | 0.898387 (sd 0.001213) | 0.742483 (sd 0.001127) | 0.813027 (sd 0.000493) | 0.862178 (sd 0.000720) | 0.561523 (sd 0.001993) | 0.133408 (sd 0.001616) | 2818.788549 (sd 37.945521) | 425.218943 (sd 3.813758) |
+| `moby_en_us_typeset` | `liang_tex` | 5 | 36474.400000 (sd 28.544702) | 0.898403 (sd 0.001205) | 0.742489 (sd 0.001132) | 0.813037 (sd 0.000492) | 0.862192 (sd 0.000712) | 0.561534 (sd 0.002000) | 0.133381 (sd 0.001613) | 2818.305732 (sd 37.740596) | 1073.620340 (sd 28.149921) |
+| `moby_en_us_typeset` | `guarded_ngram` | 5 | 36474.400000 (sd 28.544702) | 0.954746 (sd 0.000855) | 0.835179 (sd 0.001441) | 0.890968 (sd 0.000974) | 0.928169 (sd 0.000805) | 0.706618 (sd 0.002503) | 0.071568 (sd 0.001224) | 1328.775300 (sd 28.660471) | 149.249964 (sd 5.460628) |
+| `wiktextract_cs_typeset` | `hypher` | 5 | 12447.200000 (sd 54.029622) | 0.704327 (sd 0.003245) | 0.980593 (sd 0.001325) | 0.819808 (sd 0.002332) | 0.746382 (sd 0.002949) | 0.434845 (sd 0.004748) | 0.553794 (sd 0.004696) | 13578.479605 (sd 179.869909) | 390.104098 (sd 3.117759) |
+| `wiktextract_cs_typeset` | `liang_tex` | 5 | 12447.200000 (sd 54.029622) | 0.945656 (sd 0.002372) | 0.889475 (sd 0.001985) | 0.916705 (sd 0.001880) | 0.933859 (sd 0.002105) | 0.807832 (sd 0.002333) | 0.065777 (sd 0.002235) | 2096.532182 (sd 92.041218) | 965.598100 (sd 82.224406) |
+| `wiktextract_cs_typeset` | `guarded_ngram` | 5 | 12447.200000 (sd 54.029622) | 0.956739 (sd 0.002066) | 0.931950 (sd 0.002696) | 0.944180 (sd 0.001998) | 0.951675 (sd 0.001922) | 0.856709 (sd 0.003516) | 0.061487 (sd 0.002579) | 1728.477031 (sd 84.081055) | 263.939796 (sd 12.221582) |
+| `wiktextract_de_typeset` | `hypher` | 5 | 193710.400000 (sd 53.561180) | 0.891771 (sd 0.000297) | 0.958124 (sd 0.000320) | 0.923757 (sd 0.000041) | 0.904296 (sd 0.000190) | 0.681058 (sd 0.000652) | 0.254283 (sd 0.000888) | 3367.864589 (sd 9.113455) | 694.223675 (sd 4.938500) |
+| `wiktextract_de_typeset` | `liang_tex` | 5 | 193710.400000 (sd 53.561180) | 0.945493 (sd 0.000212) | 0.958124 (sd 0.000320) | 0.951766 (sd 0.000128) | 0.947992 (sd 0.000143) | 0.817241 (sd 0.000582) | 0.104399 (sd 0.000479) | 1795.161860 (sd 7.376126) | 1632.521917 (sd 13.082325) |
+| `wiktextract_de_typeset` | `guarded_ngram` | 5 | 193710.400000 (sd 53.561180) | 0.996264 (sd 0.000090) | 0.975399 (sd 0.000354) | 0.985721 (sd 0.000190) | 0.992020 (sd 0.000107) | 0.932767 (sd 0.000797) | 0.009439 (sd 0.000209) | 118.876799 (sd 2.871079) | 409.242220 (sd 17.924866) |
+| `wiktextract_es_typeset` | `hypher` | 5 | 162191.200000 (sd 97.433054) | 0.904000 (sd 0.000620) | 0.933347 (sd 0.000203) | 0.918439 (sd 0.000364) | 0.909721 (sd 0.000516) | 0.598658 (sd 0.001464) | 0.270753 (sd 0.001512) | 3831.315565 (sd 24.950374) | 423.823006 (sd 11.886527) |
+| `wiktextract_es_typeset` | `liang_tex` | 5 | 162191.200000 (sd 97.433054) | 0.998764 (sd 0.000037) | 0.933347 (sd 0.000203) | 0.964948 (sd 0.000110) | 0.984957 (sd 0.000054) | 0.829156 (sd 0.000717) | 0.003137 (sd 0.000091) | 51.897953 (sd 1.555697) | 1033.420460 (sd 3.210465) |
+| `wiktextract_es_typeset` | `guarded_ngram` | 5 | 162191.200000 (sd 97.433054) | 0.999167 (sd 0.000017) | 0.993017 (sd 0.000149) | 0.996082 (sd 0.000074) | 0.997931 (sd 0.000031) | 0.981097 (sd 0.000408) | 0.002262 (sd 0.000044) | 37.214797 (sd 0.755500) | 176.513737 (sd 2.673308) |
+| `wiktextract_it_typeset` | `hypher` | 5 | 911.600000 (sd 12.157302) | 0.684053 (sd 0.004278) | 0.964519 (sd 0.003181) | 0.800415 (sd 0.001943) | 0.726285 (sd 0.003524) | 0.276568 (sd 0.018960) | 0.714202 (sd 0.016715) | 14008.666810 (sd 301.029752) | 260.813288 (sd 5.026492) |
+| `wiktextract_it_typeset` | `liang_tex` | 5 | 911.600000 (sd 12.157302) | 0.977336 (sd 0.004092) | 0.964519 (sd 0.003181) | 0.970884 (sd 0.003480) | 0.974745 (sd 0.003815) | 0.927138 (sd 0.008034) | 0.030089 (sd 0.006376) | 855.775835 (sd 154.262693) | 816.779838 (sd 20.492821) |
+| `wiktextract_it_typeset` | `guarded_ngram` | 5 | 911.600000 (sd 12.157302) | 0.979826 (sd 0.004548) | 0.762647 (sd 0.015439) | 0.857639 (sd 0.010444) | 0.926977 (sd 0.006392) | 0.663490 (sd 0.021020) | 0.025421 (sd 0.006275) | 601.292880 (sd 136.427258) | 114.540102 (sd 5.437334) |
+| `wiktextract_nl_typeset` | `hypher` | 5 | 125476.400000 (sd 36.671515) | 0.877353 (sd 0.000362) | 0.976189 (sd 0.000307) | 0.924136 (sd 0.000336) | 0.895486 (sd 0.000352) | 0.687498 (sd 0.001697) | 0.292861 (sd 0.001440) | 3782.554226 (sd 12.455254) | 593.969997 (sd 2.989734) |
+| `wiktextract_nl_typeset` | `liang_tex` | 5 | 125476.400000 (sd 36.671515) | 0.936336 (sd 0.000279) | 0.976189 (sd 0.000307) | 0.955847 (sd 0.000216) | 0.944044 (sd 0.000239) | 0.850780 (sd 0.000950) | 0.125510 (sd 0.000727) | 2060.103812 (sd 9.816914) | 1460.409131 (sd 22.260683) |
+| `wiktextract_nl_typeset` | `guarded_ngram` | 5 | 125476.400000 (sd 36.671515) | 0.994809 (sd 0.000159) | 0.969857 (sd 0.000257) | 0.982175 (sd 0.000122) | 0.989717 (sd 0.000115) | 0.921504 (sd 0.000459) | 0.012673 (sd 0.000410) | 157.065402 (sd 4.827181) | 150.733179 (sd 4.748514) |
+| `wiktextract_ru_cyrl_trusted_dedup_typeset` | `hypher` | 5 | 3002.400000 (sd 0.547723) | 0.840742 (sd 0.006957) | 0.926234 (sd 0.004779) | 0.881414 (sd 0.005593) | 0.856551 (sd 0.006393) | 0.809685 (sd 0.009372) | 0.163470 (sd 0.008772) | 5897.181996 (sd 273.602990) | 337.242688 (sd 6.565420) |
+| `wiktextract_ru_cyrl_trusted_dedup_typeset` | `liang_tex` | 5 | 3002.400000 (sd 0.547723) | 0.952822 (sd 0.007542) | 0.926234 (sd 0.004779) | 0.939334 (sd 0.005624) | 0.947379 (sd 0.006679) | 0.921462 (sd 0.005880) | 0.043099 (sd 0.007402) | 1891.897444 (sd 304.628445) | 799.540825 (sd 14.569300) |
+| `wiktextract_ru_cyrl_trusted_dedup_typeset` | `guarded_ngram` | 5 | 3002.400000 (sd 0.547723) | 0.952383 (sd 0.003687) | 0.938412 (sd 0.002882) | 0.945343 (sd 0.002773) | 0.949554 (sd 0.003227) | 0.929123 (sd 0.003116) | 0.042766 (sd 0.003554) | 1934.806956 (sd 142.848198) | 339.220221 (sd 3.480551) |
+| `wiktextract_tr_typeset` | `hypher` | 5 | 3686.200000 (sd 25.606640) | 0.649514 (sd 0.009328) | 0.982764 (sd 0.001085) | 0.782086 (sd 0.006561) | 0.696752 (sd 0.008527) | 0.510248 (sd 0.009552) | 0.484270 (sd 0.009260) | 16655.396768 (sd 512.896280) | 326.527267 (sd 4.248098) |
+| `wiktextract_tr_typeset` | `liang_tex` | 5 | 3686.200000 (sd 25.606640) | 0.766795 (sd 0.009924) | 0.971744 (sd 0.001935) | 0.857157 (sd 0.005948) | 0.800547 (sd 0.008557) | 0.808244 (sd 0.008514) | 0.182421 (sd 0.008581) | 11164.010455 (sd 500.543854) | 896.796659 (sd 13.085515) |
+| `wiktextract_tr_typeset` | `guarded_ngram` | 5 | 3686.200000 (sd 25.606640) | 0.986290 (sd 0.001178) | 0.995612 (sd 0.000981) | 0.990929 (sd 0.000949) | 0.988140 (sd 0.001063) | 0.976556 (sd 0.002395) | 0.022738 (sd 0.002091) | 523.197106 (sd 50.823052) | 333.453241 (sd 7.764382) |
+
+Per-dataset fold summaries are written next to each dataset report.

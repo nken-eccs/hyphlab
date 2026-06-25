@@ -15,17 +15,17 @@ dataset_config() {
   local dataset="$1"
   INPUT=""
   OUTPUT=""
-  FRAGMENTS=""
+  GUARD_POLICY=""
   case "$dataset" in
     cs|de|es|it|nl|tr)
       INPUT="data/gold/wiktextract/$dataset.jsonl.zst"
       OUTPUT="data/gold/wiktextract/${dataset}_typeset.jsonl.zst"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_${dataset}.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_${dataset}_typeset.toml"
       ;;
     ru_cyrl_trusted_dedup)
       INPUT="data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst"
       OUTPUT="data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_ru_cyrl_trusted_dedup_typeset.toml"
       ;;
     *)
       printf 'unknown Wiktextract typeset dataset: %s\n' "$dataset" >&2
@@ -46,7 +46,7 @@ for dataset in $DATASETS; do
     --input "$INPUT" \
     --output "$OUTPUT" \
     --report "$REPORT_ROOT/${dataset}_typeset.tsv" \
-    --sensitive-fragments "$FRAGMENTS" \
+    --guard-policy "$GUARD_POLICY" \
     --source-suffix typeset \
     --note-tag typeset_curated
   "$BIN" data stats --input "$OUTPUT"

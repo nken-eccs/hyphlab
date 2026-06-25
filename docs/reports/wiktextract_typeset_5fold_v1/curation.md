@@ -15,8 +15,13 @@ would create poor line fragments.
   punctuation, or spaces.
 - Remove language-specific fragments listed under
   `data/curation/typeset_fragments/`.
+- Remove breaks inside MixedCase and ALLCAPS tokens.
+- Remove breaks inside configured proper names listed under
+  `data/curation/proper_names/`.
 - Collapse identical variants after curation. If a word no longer has multiple
   distinct break sets, it is no longer marked ambiguous.
+
+The active policies are stored under `data/curation/guard_policies/`.
 
 Fragment files support three rule forms:
 
@@ -32,27 +37,27 @@ after the break. This keeps broad strings from over-filtering unrelated words.
 
 ## Source Files
 
-| language | source gold | typesetting gold | fragment file |
+| language | source gold | typesetting gold | guard policy |
 | --- | --- | --- | --- |
-| Czech | `data/gold/wiktextract/cs.jsonl.zst` | `data/gold/wiktextract/cs_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_cs.txt` |
-| German | `data/gold/wiktextract/de.jsonl.zst` | `data/gold/wiktextract/de_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_de.txt` |
-| Spanish | `data/gold/wiktextract/es.jsonl.zst` | `data/gold/wiktextract/es_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_es.txt` |
-| Italian | `data/gold/wiktextract/it.jsonl.zst` | `data/gold/wiktextract/it_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_it.txt` |
-| Dutch | `data/gold/wiktextract/nl.jsonl.zst` | `data/gold/wiktextract/nl_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_nl.txt` |
-| Russian | `data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst` | `data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt` |
-| Turkish | `data/gold/wiktextract/tr.jsonl.zst` | `data/gold/wiktextract/tr_typeset.jsonl.zst` | `data/curation/typeset_fragments/wiktextract_tr.txt` |
+| Czech | `data/gold/wiktextract/cs.jsonl.zst` | `data/gold/wiktextract/cs_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_cs_typeset.toml` |
+| German | `data/gold/wiktextract/de.jsonl.zst` | `data/gold/wiktextract/de_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_de_typeset.toml` |
+| Spanish | `data/gold/wiktextract/es.jsonl.zst` | `data/gold/wiktextract/es_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_es_typeset.toml` |
+| Italian | `data/gold/wiktextract/it.jsonl.zst` | `data/gold/wiktextract/it_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_it_typeset.toml` |
+| Dutch | `data/gold/wiktextract/nl.jsonl.zst` | `data/gold/wiktextract/nl_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_nl_typeset.toml` |
+| Russian | `data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst` | `data/gold/wiktextract/ru_cyrl_trusted_dedup_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_ru_cyrl_trusted_dedup_typeset.toml` |
+| Turkish | `data/gold/wiktextract/tr.jsonl.zst` | `data/gold/wiktextract/tr_typeset.jsonl.zst` | `data/curation/guard_policies/wiktextract_tr_typeset.toml` |
 
 ## Counts
 
 | dataset | records | breaks before | breaks after | no-break before | no-break after | ambiguous before | ambiguous after | changed records | removed breaks |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| `cs_typeset` | 62,238 | 129,350 | 94,523 | 4,185 | 12,246 | 2 | 2 | 34,601 | 34,827 |
-| `de_typeset` | 968,552 | 2,731,041 | 2,558,340 | 28,160 | 47,020 | 0 | 0 | 171,036 | 172,701 |
-| `es_typeset` | 810,956 | 2,651,634 | 2,222,200 | 1,326 | 18,123 | 0 | 0 | 382,333 | 429,434 |
-| `it_typeset` | 4,558 | 11,283 | 7,489 | 142 | 733 | 0 | 0 | 3,494 | 3,794 |
-| `nl_typeset` | 627,408 | 1,754,003 | 1,604,120 | 22,016 | 39,518 | 26 | 26 | 147,250 | 149,883 |
-| `ru_cyrl_trusted_dedup_typeset` | 15,016 | 18,433 | 14,770 | 7,388 | 8,569 | 23 | 4 | 3,430 | 3,683 |
-| `tr_typeset` | 18,435 | 43,193 | 31,256 | 711 | 3,024 | 4 | 4 | 9,995 | 11,937 |
+| `cs_typeset` | 62,238 | 129,350 | 94,520 | 4,185 | 12,248 | 2 | 2 | 34,602 | 34,830 |
+| `de_typeset` | 968,552 | 2,731,041 | 2,558,219 | 28,160 | 47,084 | 0 | 0 | 171,096 | 172,822 |
+| `es_typeset` | 810,956 | 2,651,634 | 2,222,183 | 1,326 | 18,135 | 0 | 0 | 382,337 | 429,451 |
+| `it_typeset` | 4,558 | 11,283 | 7,487 | 142 | 735 | 0 | 0 | 3,496 | 3,796 |
+| `nl_typeset` | 627,408 | 1,754,003 | 1,603,904 | 22,016 | 39,589 | 26 | 26 | 147,318 | 150,099 |
+| `ru_cyrl_trusted_dedup_typeset` | 15,016 | 18,433 | 14,769 | 7,388 | 8,570 | 23 | 4 | 3,430 | 3,684 |
+| `tr_typeset` | 18,435 | 43,193 | 31,231 | 711 | 3,036 | 4 | 4 | 9,996 | 11,962 |
 
 ## Evaluation
 

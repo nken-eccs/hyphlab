@@ -26,11 +26,15 @@ target/release/hyphlab predict --saved-model en-US-typeset \
   --text "Japanese typography needs careful hyphenation."
 ```
 
-Use `en-US-typeset` for reader-facing line breaks. It is trained from the
-curated Moby typesetting corpus and applies the same fragment guard at runtime.
-Use `en-US` when you want labels closer to the source syllable dictionary.
+Use `*-typeset` models for text shown to readers. These models are trained from
+curated corpora and apply guard policies at runtime, so unsafe fragments,
+MixedCase / ALLCAPS tokens, and configured proper names stay intact.
 
-Reader-facing multilingual models use the `*-typeset` suffix:
+Use plain models such as `en-US` when you want labels closer to the source
+syllable or lexical dictionary. For runtime details and guard-policy
+customization, see [`docs/guarded_ngram.md`](docs/guarded_ngram.md).
+
+Other reader-facing models use the same suffix:
 
 ```bash
 target/release/hyphlab predict --saved-model de-typeset --word Scheißhaus
@@ -43,7 +47,7 @@ List every reusable model:
 target/release/hyphlab predict --list-saved-models
 ```
 
-Run the smoke test:
+Check the install with a tiny experiment:
 
 ```bash
 bash scripts/run_toy_experiment.sh
@@ -61,7 +65,7 @@ target/release/hyphlab predict --saved-model en-US-typeset --with-hypher \
 
 ## Main Workflows
 
-Prepare English data:
+Prepare corpora:
 
 ```bash
 bash scripts/fetch_core_data.sh
@@ -76,34 +80,27 @@ the multilingual typesetting derivatives with:
 bash scripts/curate_wiktextract_typeset.sh
 ```
 
-Run the maintained multilingual 5-fold comparison after preparing the relevant
-corpora:
-
-```bash
-bash scripts/run_multilingual_5fold_evaluation.sh
-cat docs/reports/multilingual_5fold_v1/summary.md
-```
-
-The English typesetting comparison is summarized in
-[`docs/reports/moby_typeset_5fold_v1/summary.md`](docs/reports/moby_typeset_5fold_v1/summary.md),
-with the curation policy in
-[`docs/reports/moby_typeset_5fold_v1/curation.md`](docs/reports/moby_typeset_5fold_v1/curation.md).
-The multilingual Wiktextract typesetting comparison is summarized in
-[`docs/reports/wiktextract_typeset_5fold_v1/summary.md`](docs/reports/wiktextract_typeset_5fold_v1/summary.md),
-with the curation policy in
-[`docs/reports/wiktextract_typeset_5fold_v1/curation.md`](docs/reports/wiktextract_typeset_5fold_v1/curation.md).
-
-Build the reusable runtime models:
+Build reusable runtime models:
 
 ```bash
 bash scripts/build_guarded_ngram_models.sh
 cat models/guarded_ngram/v1/README.md
 ```
 
-For fixed baselines, custom matrices, or one-off evaluations, start from
+Run the maintained multilingual 5-fold comparison:
+
+```bash
+bash scripts/run_multilingual_5fold_evaluation.sh
+cat docs/reports/multilingual_5fold_v1/summary.md
+```
+
+Maintained reports are indexed in
+[`docs/README.md#maintained-reports`](docs/README.md#maintained-reports).
+
+For baselines, custom matrices, or one-off evaluations, start from
 [`docs/research_start.md`](docs/research_start.md).
 
-## What Goes Where
+## Project Map
 
 | location | purpose |
 | --- | --- |
@@ -112,7 +109,8 @@ For fixed baselines, custom matrices, or one-off evaluations, start from
 | `models/guarded_ngram/v1/` | Ready-to-run full-corpus runtime models. |
 | `manifests/guarded_ngram/v1/` | Matrix manifests for reusable models. |
 | `data/gold/` | Normalized training and evaluation labels. |
-| `data/curation/` | Curation policy files for derived datasets. |
+| `data/curation/` | Guard policies, fragment lists, and proper-name lists for derived datasets. |
+| `data/challenges/` | No-break challenge data for names and case-sensitive tokens. |
 | `data/patterns/` | TeX and LibreOffice pattern files for Liang-style baselines. |
 | `target/` | Local reports, temporary models, folds, and scratch outputs. |
 

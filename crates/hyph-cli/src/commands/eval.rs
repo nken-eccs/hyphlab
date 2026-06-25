@@ -18,6 +18,8 @@ fn cmd_eval(args: EvalArgs) -> Result<()> {
         method: args.method.clone(),
         locale: args.locale.clone(),
         patterns: args.patterns.clone(),
+        guard_policy: args.guard_policy.clone(),
+        guard_fragments: args.guard_fragments.clone(),
         dictionary: args.dictionary.clone().or_else(|| {
             if is_dictionary_method(&args.method) {
                 Some(args.gold.clone())
@@ -76,4 +78,3 @@ fn cmd_eval(args: EvalArgs) -> Result<()> {
     }
     Ok(())
 }
-

@@ -29,6 +29,7 @@ struct TypesetFragmentFilter {
     unicode: SensitiveFragmentRules,
     ascii_prefix_by_len: BTreeMap<usize, Vec<Vec<u8>>>,
     ascii_suffix_by_len: BTreeMap<usize, Vec<Vec<u8>>>,
+    max_fragment_len: usize,
     max_ascii_len: usize,
 }
 
@@ -36,8 +37,10 @@ impl TypesetFragmentFilter {
     fn new(unicode: SensitiveFragmentRules) -> Self {
         let mut ascii_prefix_by_len = BTreeMap::<usize, Vec<Vec<u8>>>::new();
         let mut ascii_suffix_by_len = BTreeMap::<usize, Vec<Vec<u8>>>::new();
+        let mut max_fragment_len = 0usize;
         let mut max_ascii_len = 0usize;
         for fragment in &unicode.prefix {
+            max_fragment_len = max_fragment_len.max(fragment.chars().count());
             if fragment.is_ascii() {
                 max_ascii_len = max_ascii_len.max(fragment.len());
                 ascii_prefix_by_len
@@ -47,6 +50,7 @@ impl TypesetFragmentFilter {
             }
         }
         for fragment in &unicode.suffix {
+            max_fragment_len = max_fragment_len.max(fragment.chars().count());
             if fragment.is_ascii() {
                 max_ascii_len = max_ascii_len.max(fragment.len());
                 ascii_suffix_by_len
@@ -59,6 +63,7 @@ impl TypesetFragmentFilter {
             unicode,
             ascii_prefix_by_len,
             ascii_suffix_by_len,
+            max_fragment_len,
             max_ascii_len,
         }
     }
@@ -178,6 +183,9 @@ fn filter_typeset_fragments(
         filter_typeset_fragments_ascii(word.as_bytes(), config, fragments, out);
         return;
     }
+    if filter_typeset_fragments_simple_chars(word, config, fragments, out) {
+        return;
+    }
 
     let graphemes = word.graphemes(true).collect::<Vec<_>>();
     let spans = alphabetic_spans(&graphemes);
@@ -200,6 +208,54 @@ fn filter_typeset_fragments(
         let suffix = graphemes[idx..end].concat().to_lowercase();
         !fragments.unicode.prefix.contains(&prefix) && !fragments.unicode.suffix.contains(&suffix)
     });
+}
+
+fn filter_typeset_fragments_simple_chars(
+    word: &str,
+    config: &HyphenationConfig,
+    fragments: &TypesetFragmentFilter,
+    out: &mut SmallVec<[GraphemeIndex; 8]>,
+) -> bool {
+    let mut chars = SmallVec::<[char; 32]>::new();
+    for ch in word.chars() {
+        if !char_is_single_grapheme(ch) {
+            return false;
+        }
+        chars.push(ch);
+    }
+    let len = chars.len();
+    out.retain(|break_idx| {
+        let idx = usize::from(*break_idx);
+        if idx == 0 || idx >= len {
+            return false;
+        }
+        if !chars[idx - 1].is_alphabetic() || !chars[idx].is_alphabetic() {
+            return false;
+        }
+
+        let cap = fragments
+            .max_fragment_len
+            .max(config.left_min)
+            .max(config.right_min);
+        let left_len = char_left_alpha_len_capped(&chars, idx, cap);
+        let right_len = char_right_alpha_len_capped(&chars, idx, cap);
+        if left_len < config.left_min || right_len < config.right_min {
+            return false;
+        }
+
+        let prefix_blocked = left_len <= fragments.max_fragment_len
+            && unicode_fragment_blocked(
+                chars[idx - left_len..idx].iter().copied(),
+                &fragments.unicode.prefix,
+            );
+        let suffix_blocked = right_len <= fragments.max_fragment_len
+            && unicode_fragment_blocked(
+                chars[idx..idx + right_len].iter().copied(),
+                &fragments.unicode.suffix,
+            );
+        !prefix_blocked && !suffix_blocked
+    });
+    true
 }
 
 fn filter_typeset_fragments_ascii(
@@ -239,6 +295,56 @@ fn filter_typeset_fragments_ascii(
             );
         !prefix_blocked && !suffix_blocked
     });
+}
+
+fn char_is_single_grapheme(ch: char) -> bool {
+    !matches!(
+        ch,
+        '\u{0300}'..='\u{036f}'
+            | '\u{1ab0}'..='\u{1aff}'
+            | '\u{1dc0}'..='\u{1dff}'
+            | '\u{20d0}'..='\u{20ff}'
+            | '\u{fe00}'..='\u{fe0f}'
+            | '\u{fe20}'..='\u{fe2f}'
+            | '\u{200d}'
+    )
+}
+
+fn char_left_alpha_len_capped(chars: &[char], idx: usize, cap: usize) -> usize {
+    let mut len = 0usize;
+    let mut pos = idx;
+    while pos > 0 && chars[pos - 1].is_alphabetic() {
+        if len >= cap {
+            return cap + 1;
+        }
+        len += 1;
+        pos -= 1;
+    }
+    len
+}
+
+fn char_right_alpha_len_capped(chars: &[char], idx: usize, cap: usize) -> usize {
+    let mut len = 0usize;
+    let mut pos = idx;
+    while pos < chars.len() && chars[pos].is_alphabetic() {
+        if len >= cap {
+            return cap + 1;
+        }
+        len += 1;
+        pos += 1;
+    }
+    len
+}
+
+fn unicode_fragment_blocked(
+    chars: impl Iterator<Item = char>,
+    blocked: &BTreeSet<String>,
+) -> bool {
+    let mut value = String::new();
+    for ch in chars {
+        value.extend(ch.to_lowercase());
+    }
+    blocked.contains(&value)
 }
 
 fn alphabetic_spans(graphemes: &[&str]) -> Vec<(usize, usize)> {

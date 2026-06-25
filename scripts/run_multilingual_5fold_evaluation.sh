@@ -34,7 +34,7 @@ dataset_config() {
   SELECTED_METHOD=""
   SELECTED_RUNTIME_METHOD=""
   SELECTED_SLUG=""
-  FRAGMENTS=""
+  GUARD_POLICY=""
   INCLUDE_HYPHER="1"
   INCLUDE_LIANG="1"
 
@@ -54,9 +54,9 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-en-us.tex"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p85"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/moby_en_us.txt"
+      GUARD_POLICY="data/curation/guard_policies/moby_en_us_typeset.toml"
       ;;
     wiktextract_cs)
       GOLD="data/gold/wiktextract/cs.jsonl.zst"
@@ -75,9 +75,9 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/cs/hyph_cs_CZ.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_cs.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_cs_typeset.toml"
       ;;
     wiktextract_de)
       GOLD="data/gold/wiktextract/de.jsonl.zst"
@@ -96,9 +96,9 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/de/hyph_de_DE.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_de.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_de_typeset.toml"
       ;;
     wiktextract_es)
       GOLD="data/gold/wiktextract/es.jsonl.zst"
@@ -117,9 +117,9 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/es/hyph_es.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-3x2-s1-p60"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_es.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_es_typeset.toml"
       ;;
     wiktextract_it)
       GOLD="data/gold/wiktextract/it.jsonl.zst"
@@ -137,10 +137,10 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/it/hyph_it_IT.dic"
       SELECTED_KIND="safe-ngram"
-      SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_METHOD="safe-ngram-unicode-2x2-s1-p50"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_it.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_it_typeset.toml"
       ;;
     wiktextract_nl)
       GOLD="data/gold/wiktextract/nl.jsonl.zst"
@@ -159,9 +159,9 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/nl/hyph_nl_NL.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-2x3-s1-p58-veto-unicode-3x4-s1-p80"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_nl.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_nl_typeset.toml"
       ;;
     wiktextract_ru_cyrl_trusted_dedup)
       GOLD="data/gold/wiktextract/ru_cyrl_trusted_dedup.jsonl.zst"
@@ -180,9 +180,9 @@ dataset_config() {
       LIBREOFFICE_PATTERNS="data/patterns/libreoffice/ru/hyph_ru_RU.dic"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x3-s1-p65-veto-unicode-3x4-s1-p80"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_ru_cyrl_trusted_dedup.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_ru_cyrl_trusted_dedup_typeset.toml"
       ;;
     wiktextract_tr)
       GOLD="data/gold/wiktextract/tr.jsonl.zst"
@@ -199,9 +199,9 @@ dataset_config() {
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-tr.tex"
       SELECTED_KIND="safe-ngram"
       SELECTED_METHOD="safe-ngram-unicode-mixcv-2x2-s1-p70"
-      SELECTED_RUNTIME_METHOD="typeset-safe-ngram-model"
+      SELECTED_RUNTIME_METHOD="safe-ngram-model"
       SELECTED_SLUG="guarded_ngram"
-      FRAGMENTS="data/curation/typeset_fragments/wiktextract_tr.txt"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_tr_typeset.toml"
       ;;
     hyph_bench_cs_cstenten)
       GOLD="data/gold/hyph_bench/cs_cstenten.jsonl.zst"
@@ -288,7 +288,11 @@ write_manifest() {
   local model_dir="$3"
   local training_manifest="$manifest.train.toml"
   mkdir -p "$model_dir" "$(dirname "$manifest")"
-  local method_fragments="$FRAGMENTS"
+  local method_guard_policy=""
+  local runtime_method="$SELECTED_RUNTIME_METHOD"
+  if [ -n "$GUARD_POLICY" ]; then
+    method_guard_policy="$(pwd)/$GUARD_POLICY"
+  fi
   local model_extension
   case "$SELECTED_KIND" in
     safe-ngram) model_extension="bin" ;;
@@ -321,13 +325,12 @@ write_manifest() {
     printf '[[methods]]\n'
     printf 'slug = "%s"\n' "$SELECTED_SLUG"
     printf 'method = "%s"\n' "$SELECTED_METHOD"
-    if [ -n "$method_fragments" ]; then
-      printf 'patterns = "%s"\n' "$(pwd)/$method_fragments"
-      printf 'pass_patterns = true\n'
+    if [ -n "$method_guard_policy" ]; then
+      printf 'guard_policy = "%s"\n' "$method_guard_policy"
     fi
     printf '\n'
     printf '[methods.train]\n'
-    printf 'runtime_method = "%s"\n' "$SELECTED_RUNTIME_METHOD"
+    printf 'runtime_method = "%s"\n' "$runtime_method"
     printf 'output = "{model_dir}/{slug}.%s"\n' "$model_extension"
     printf '\n'
   } > "$training_manifest"
@@ -425,6 +428,7 @@ summarize_overall() {
       printf '%s\n' '- LibreOffice hyphen dictionaries are included as an additional Liang/libhyphen pattern baseline when available.'
     fi
     printf '%s\n' '- Ambiguous records use the default `exclude` policy.'
+    printf '%s\n' '- Typesetting datasets use a runtime guard policy for unsafe fragments, MixedCase / ALLCAPS tokens, and configured proper names.'
     printf -- '- Runtime uses `target/release/hyphlab`, `%s` steady-state iterations, `%s` init iterations, and `%s` init warmup.\n' "$ITERATIONS" "$INIT_ITERATIONS" "$INIT_WARMUP"
     printf -- '- Runtime values are machine-local and should be used for within-run comparison unless hardware details are documented separately.\n\n'
     printf 'Selected methods:\n\n'

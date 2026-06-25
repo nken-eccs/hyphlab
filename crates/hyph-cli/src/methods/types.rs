@@ -1,9 +1,12 @@
 // Method runtime types and serializable model headers.
 
+#[derive(Clone)]
 struct MethodOptions {
     method: String,
     locale: String,
     patterns: Option<PathBuf>,
+    guard_policy: Option<PathBuf>,
+    guard_fragments: Option<PathBuf>,
     dictionary: Option<PathBuf>,
     dictionary_is_gold_oracle: bool,
     external_command: Option<String>,
@@ -30,12 +33,7 @@ enum PreparedMethod {
         fallback: Box<PreparedMethod>,
     },
     SafeNgram(SafeNgramMethod),
-    FragmentFiltered {
-        id: String,
-        config: HyphenationConfig,
-        inner: Box<PreparedMethod>,
-        fragments: TypesetFragmentFilter,
-    },
+    Guarded(GuardedMethod),
     ItalianSyllable(ItalianSyllableMethod),
     IdentityOracle {
         config: HyphenationConfig,
@@ -48,6 +46,13 @@ enum PreparedMethod {
         second: Box<PreparedMethod>,
     },
     ExternalJsonl(ExternalJsonlMethod),
+}
+
+struct GuardedMethod {
+    id: String,
+    config: HyphenationConfig,
+    inner: Box<PreparedMethod>,
+    guards: GuardPolicySet,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]

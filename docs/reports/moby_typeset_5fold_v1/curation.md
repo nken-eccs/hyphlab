@@ -15,8 +15,8 @@ data/gold/moby_en_us_typeset.jsonl.zst
 ## Policy
 
 The source Moby labels are syllable-oriented. For typesetting experiments, the
-curation step removes boundaries that would create unsafe visible line
-fragments.
+curation step keeps useful syllable breaks but removes boundaries that would
+create unsafe visible line fragments or split protected tokens.
 
 Rules:
 
@@ -29,6 +29,11 @@ Rules:
 - Remove boundaries that expose a listed fragment as an exact standalone prefix
   or suffix. The current fragment list is
   `data/curation/typeset_fragments/moby_en_us.txt`.
+- Remove boundaries inside configured proper names.
+- Remove boundaries inside MixedCase and ALLCAPS tokens. Ordinary titlecase
+  words are not protected by default.
+
+The active policy is `data/curation/guard_policies/moby_en_us_typeset.toml`.
 
 The curation does not copy Hypher, Liang, or Guarded N-gram output into the gold
 data. It keeps surviving Moby boundaries after applying the safety filters.
@@ -64,10 +69,9 @@ substring-only or absent candidates, including `cunt`, `dildo`, `porn`,
 ```text
 input_records: 185149
 output_records: 183865
-changed_records: 63096
-dropped_records: 1284
 dropped_replacement_char_records: 1284
-removed_breaks: 72276
+change_log_rows: 64487
+removed_main_breaks: 69154
 ```
 
 Corpus stats:
@@ -75,16 +79,21 @@ Corpus stats:
 | measure | value |
 | --- | ---: |
 | records | 183,865 |
-| breaks | 350,842 |
-| no-break words | 22,816 |
-| ambiguous words | 1,496 |
+| breaks | 350,566 |
+| no-break words | 22,962 |
+| ambiguous words | 1,493 |
 | sensitive-fragment removals | 299 |
+| proper-name removals | 122 |
+| MixedCase removals | 157 |
 
 Examples:
 
 | word | original | curated | reason |
 | --- | --- | --- | --- |
 | `Japanese` | `Jap-a-nese` | `Japa-nese` | remove `Jap-` sensitive prefix |
+| `Archimedes` | `Ar-chi-me-des` | `Archimedes` | configured proper name |
+| `CinemaScope` | `Cin-e-ma-Scope` | `CinemaScope` | MixedCase token |
+| `McDonald` | `Mc-Don-ald` | `McDonald` | configured proper name |
 | `gypsum` | `gyp-sum` | `gypsum` | remove `gyp-` fragment |
 | `Pakistan` | `Pa-ki-stan` | `Pa-kistan` | remove `paki-` fragment |
 | `bitchery` | `bitch-ery` | `bitchery` | remove `bitch-` fragment |
@@ -99,9 +108,9 @@ target/hyphlab-reports/curation/moby_en_us_typeset.tsv
 
 ## Runtime Guard
 
-The reusable `en-US-typeset` model uses the same exact fragment filter after
-Guarded N-gram prediction. This prevents a learned rule from reintroducing a
-line fragment that the curated gold corpus removed.
+The reusable `en-US-typeset` model uses the same guard policy after Guarded
+N-gram prediction. This prevents a learned rule from reintroducing a break that
+the curated gold corpus removed.
 
 Example:
 
@@ -126,4 +135,4 @@ Mean held-out results:
 | --- | ---: | ---: | ---: | ---: | ---: |
 | Hypher | 0.898820 | 0.742253 | 0.813066 | 0.132994 | 420.643676 |
 | Liang TeX | 0.898836 | 0.742258 | 0.813076 | 0.132966 | 1080.091440 |
-| Guarded N-gram with fragment guard | 0.954636 | 0.835253 | 0.890962 | 0.071821 | 84.402693 |
+| Guarded N-gram with typeset guard policy | 0.954636 | 0.835253 | 0.890962 | 0.071821 | 84.402693 |

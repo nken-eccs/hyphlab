@@ -126,7 +126,13 @@ fn cmd_fold_summary(args: FoldSummaryArgs) -> Result<()> {
         }
     }
 
-    let summary = render_fold_summary(&points_by_method, &points_by_fold);
+    let summary = render_fold_summary(
+        &args.title,
+        &args.unit_label,
+        &args.pair_label,
+        &points_by_method,
+        &points_by_fold,
+    );
     if let Some(path) = &args.output {
         create_parent(path)?;
         std::fs::write(path, &summary).with_context(|| format!("write {}", path.display()))?;
@@ -175,12 +181,15 @@ struct FoldPoint {
 }
 
 fn render_fold_summary(
+    title: &str,
+    unit_label: &str,
+    pair_label: &str,
     points_by_method: &BTreeMap<String, Vec<FoldPoint>>,
     points_by_fold: &BTreeMap<String, BTreeMap<String, FoldPoint>>,
 ) -> String {
     let mut out = String::new();
-    out.push_str("## 5-Fold Summary\n\n");
-    out.push_str("| method | folds | words | precision | recall | f1 | f0.5 | exact | serious_error | fp/100k | steady ns/word | init ms | delta f0.5 | delta recall | delta serious | delta ns/word |\n");
+    out.push_str(&format!("## {title}\n\n"));
+    out.push_str(&format!("| method | {unit_label} | words | precision | recall | f1 | f0.5 | exact | serious_error | fp/100k | steady ns/word | init ms | delta f0.5 | delta recall | delta serious | delta ns/word |\n"));
     out.push_str("| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |\n");
 
     for (method, points) in points_by_method {
@@ -206,7 +215,7 @@ fn render_fold_summary(
     }
 
     out.push('\n');
-    out.push_str("Deltas are paired against the `hypher` row in the same fold. Higher is better except `serious_error`, `fp/100k`, `steady ns/word`, and `init ms`.\n");
+    out.push_str(&format!("Deltas are paired against the `hypher` row in the same {pair_label}. Higher is better except `serious_error`, `fp/100k`, `steady ns/word`, and `init ms`.\n"));
     out
 }
 
@@ -275,4 +284,3 @@ fn mean_sd(values: &[f64]) -> (f64, f64) {
         / (values.len() - 1) as f64;
     (mean, variance.sqrt())
 }
-

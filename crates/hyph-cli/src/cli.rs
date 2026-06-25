@@ -120,6 +120,8 @@ struct CurateTypesetArgs {
     report: Option<PathBuf>,
     #[arg(long, default_value = "data/curation/typeset_fragments/moby_en_us.txt")]
     sensitive_fragments: PathBuf,
+    #[arg(long)]
+    guard_policy: Option<PathBuf>,
     #[arg(long, default_value_t = 2)]
     left_min: usize,
     #[arg(long, default_value_t = 3)]
@@ -474,6 +476,10 @@ struct EvalArgs {
     #[arg(long)]
     patterns: Option<PathBuf>,
     #[arg(long)]
+    guard_policy: Option<PathBuf>,
+    #[arg(long)]
+    guard_fragments: Option<PathBuf>,
+    #[arg(long)]
     dictionary: Option<PathBuf>,
     #[arg(long)]
     external_command: Option<String>,
@@ -515,6 +521,12 @@ struct FoldSummaryArgs {
     input_dir: PathBuf,
     #[arg(short, long)]
     output: Option<PathBuf>,
+    #[arg(long, default_value = "5-Fold Summary")]
+    title: String,
+    #[arg(long, default_value = "folds")]
+    unit_label: String,
+    #[arg(long, default_value = "fold")]
+    pair_label: String,
 }
 
 #[derive(Debug, Parser)]
@@ -527,6 +539,10 @@ struct SpeedArgs {
     locale: String,
     #[arg(long)]
     patterns: Option<PathBuf>,
+    #[arg(long)]
+    guard_policy: Option<PathBuf>,
+    #[arg(long)]
+    guard_fragments: Option<PathBuf>,
     #[arg(long)]
     dictionary: Option<PathBuf>,
     #[arg(long)]
@@ -561,6 +577,10 @@ struct InitBenchArgs {
     locale: String,
     #[arg(long)]
     patterns: Option<PathBuf>,
+    #[arg(long)]
+    guard_policy: Option<PathBuf>,
+    #[arg(long)]
+    guard_fragments: Option<PathBuf>,
     #[arg(long)]
     dictionary: Option<PathBuf>,
     #[arg(long)]
@@ -632,6 +652,10 @@ struct ManifestMethod {
     pass_patterns: bool,
     #[serde(default)]
     patterns: Option<PathBuf>,
+    #[serde(default)]
+    guard_policy: Option<PathBuf>,
+    #[serde(default)]
+    guard_fragments: Option<PathBuf>,
     #[serde(default)]
     dictionary: Option<PathBuf>,
     #[serde(default)]

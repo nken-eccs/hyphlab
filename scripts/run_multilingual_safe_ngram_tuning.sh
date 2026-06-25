@@ -32,6 +32,7 @@ dataset_config() {
   GOLD=""
   LOCALE=""
   PATTERNS=""
+  GUARD_POLICY=""
 
   case "$dataset" in
     moby_en_us)
@@ -58,6 +59,12 @@ dataset_config() {
       GOLD="data/gold/wiktextract/it.jsonl.zst"
       LOCALE="it"
       PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
+      ;;
+    wiktextract_it_typeset)
+      GOLD="data/gold/wiktextract/it_typeset.jsonl.zst"
+      LOCALE="it"
+      PATTERNS="data/patterns/tex-hyphen/tex/hyph-it.tex"
+      GUARD_POLICY="data/curation/guard_policies/wiktextract_it_typeset.toml"
       ;;
     wiktextract_nl)
       GOLD="data/gold/wiktextract/nl.jsonl.zst"
@@ -246,6 +253,9 @@ write_manifest() {
       printf 'slug = "%s"\n' "$slug"
       printf 'method = "safe-ngram-model"\n'
       printf 'dictionary = "%s"\n' "$model"
+      if [ -n "$GUARD_POLICY" ]; then
+        printf 'guard_policy = "%s"\n' "$(pwd)/$GUARD_POLICY"
+      fi
       printf '\n'
     } >> "$manifest"
   done

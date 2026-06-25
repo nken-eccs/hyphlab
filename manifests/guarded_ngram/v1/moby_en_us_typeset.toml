@@ -1,5 +1,5 @@
 # Reusable runtime manifest.
-# Model trained from full curated corpus plus runtime fragment guard: data/gold/moby_en_us_typeset.jsonl.zst
+# Model trained from full curated corpus plus runtime guard policy: data/gold/moby_en_us_typeset.jsonl.zst
 # Use split-based or 5-fold runs for unbiased accuracy evaluation.
 
 [[methods]]
@@ -13,7 +13,6 @@ requires_patterns = true
 
 [[methods]]
 slug = "guarded_ngram"
-method = "typeset-safe-ngram-model"
+method = "safe-ngram-model"
 dictionary = "../../../models/guarded_ngram/v1/moby_en_us_typeset.bin"
-patterns = "../../../data/curation/typeset_fragments/moby_en_us.txt"
-pass_patterns = true
+guard_policy = "../../../data/curation/guard_policies/moby_en_us_typeset.toml"
